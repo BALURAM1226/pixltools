@@ -1,0 +1,126 @@
+.resizer-preview-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.orig-dim-chip {
+    align-self: flex-start;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    font-family: var(--font-mono);
+}
+
+.dim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.input-with-symbol {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-symbol input {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 35px 10px 14px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    outline: none;
+    transition: all var(--transition);
+}
+
+.input-with-symbol input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.input-with-symbol span {
+    position: absolute;
+    right: 12px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.empty-settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 200px;
+}
+
+.tip-box {
+    background: var(--bg-elevated);
+    border: 1px dashed var(--border);
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.tip-icon {
+    font-size: 2rem;
+}
+
+.tip-box p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 250px;
+}
+
+.resizer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Reuse Passport result layout but adjust */
+.result-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.result-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 600px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: var(--shadow-xl);
+    border-radius: var(--radius-md);
+}
+
+.result-actions {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 40px;
+    align-items: center;
+    width: 100%;
+    padding: 12px 0;
+}
+
+@media (max-width: 992px) {
+    .result-actions {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}

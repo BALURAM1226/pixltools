@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pixltools.vercel.app/sitemap.xml

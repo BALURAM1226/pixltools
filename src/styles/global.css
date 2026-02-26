@@ -1,0 +1,215 @@
+/* ============================================================
+   PIXLTOOLS — DESIGN SYSTEM
+   Two themes driven by [data-theme="dark"|"light"] on <html>
+   ============================================================ */
+
+/* ── DARK THEME (default) ─────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-base:        #080c14;
+  --bg-surface:     #0d1424;
+  --bg-elevated:    #111827;
+  --bg-card:        rgba(255,255,255,0.032);
+  --bg-card-hover:  rgba(255,255,255,0.055);
+
+  --border:         rgba(255,255,255,0.07);
+  --border-hover:   rgba(255,255,255,0.14);
+  --border-active:  rgba(99,179,237,0.45);
+
+  --accent:         #63b3ed;
+  --accent-bright:  #90cdf4;
+  --accent-dim:     rgba(99,179,237,0.12);
+
+  --green:          #68d391;
+  --green-dim:      rgba(104,211,145,0.12);
+  --red:            #fc8181;
+  --red-dim:        rgba(252,129,129,0.12);
+  --amber:          #f6ad55;
+  --amber-dim:      rgba(246,173,85,0.12);
+  --purple:         #b794f4;
+  --pink:           #f687b3;
+
+  --text-primary:   #f0f4f8;
+  --text-secondary: #8899a6;
+  --text-muted:     #4a5568;
+
+  --shadow-sm:   0 1px 3px  rgba(0,0,0,0.40);
+  --shadow-md:   0 4px 20px rgba(0,0,0,0.50);
+  --shadow-lg:   0 12px 48px rgba(0,0,0,0.60);
+
+  --scrollbar-thumb: rgba(255,255,255,0.10);
+  --scrollbar-hover: rgba(255,255,255,0.18);
+
+  color-scheme: dark;
+}
+
+/* ── LIGHT THEME ──────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-base:        #f8fafc;
+  --bg-surface:     #ffffff;
+  --bg-elevated:    #ffffff;
+  --bg-card:        #ffffff;
+  --bg-card-hover:  #f1f5f9;
+
+  --border:         #e2e8f0;
+  --border-hover:   #cbd5e1;
+  --border-active:  #3b82f6;
+
+  --accent:         #2563eb;
+  --accent-bright:  #3b82f6;
+  --accent-dim:     #eff6ff;
+
+  --green:          #16a34a;
+  --green-dim:      #f0fdf4;
+  --red:            #dc2626;
+  --red-dim:        #fef2f2;
+  --amber:          #d97706;
+  --amber-dim:      #fffbeb;
+  --purple:         #7c3aed;
+  --pink:           #db2777;
+
+  --text-primary:   #0f172a;
+  --text-secondary: #334155;
+  --text-muted:     #64748b;
+
+  --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-hover: #94a3b8;
+
+  color-scheme: light;
+}
+
+/* ── SHARED TOKENS (theme-independent) ───────────────── */
+:root {
+  --font-display: 'Outfit', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-full: 9999px;
+
+  --transition:      0.2s cubic-bezier(0.4,0,0.2,1);
+  --transition-slow: 0.4s cubic-bezier(0.4,0,0.2,1);
+
+  --max-width:      1280px;
+  --sidebar-width:  260px;
+  --header-height:  64px;
+}
+
+/* ── RESET ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  /* Smooth theme transitions on everything EXCEPT images */
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth transitions on key structural elements */
+header, aside, main, .panel, .btn, .select,
+.sidebar, .header, .tool-card, .why-card,
+.info-chip, .faq-item, .status-bar, .dropzone,
+.preview-box, input, select, textarea {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+/* ── SCROLLBAR ────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+
+/* ── SELECTION ────────────────────────────────────────── */
+::selection { background: var(--accent-dim); color: var(--accent-bright); }
+
+/* ── ANIMATIONS ───────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ── SPINNER ──────────────────────────────────────────── */
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--accent-dim);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+.spinner-lg { width: 36px; height: 36px; border-width: 3px; }
+
+/* ── TOAST ────────────────────────────────────────────── */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  z-index: 9999; pointer-events: none;
+}
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem; font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  animation: fadeUp 0.3s ease both;
+  pointer-events: all;
+  max-width: 340px;
+}
+.toast.success { border-color: rgba(104,211,145,0.35); color: var(--green); }
+.toast.error   { border-color: rgba(252,129,129,0.35); color: var(--red);   }
+.toast.info    { border-color: var(--accent-dim);       color: var(--accent); }
+.toast.warning { border-color: rgba(246,173,85,0.35);  color: var(--amber); }
+
+[data-theme="light"] .toast.success { border-color: rgba(22,163,74,0.3); }
+[data-theme="light"] .toast.error   { border-color: rgba(220,38,38,0.3); }
+[data-theme="light"] .toast.warning { border-color: rgba(217,119,6,0.3); }
+
+/* ── UTILITY ──────────────────────────────────────────── */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+}
+.col-stack { display: flex; flex-direction: column; gap: 16px; }

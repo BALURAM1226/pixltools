@@ -1,0 +1,63 @@
+.dropzone {
+  border: 1.5px dashed var(--border-hover);
+  border-radius: var(--radius-lg);
+  padding: 40px 24px;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--bg-card);
+  position: relative;
+  overflow: hidden;
+}
+.dropzone::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(99,179,237,0.04) 0%, transparent 70%);
+  pointer-events: none; transition: opacity var(--transition);
+}
+.dropzone:hover, .dropzone.dz-active {
+  border-color: var(--border-active);
+  background: var(--accent-dim);
+}
+.dropzone:hover::before, .dropzone.dz-active::before { opacity: 2; }
+.dropzone.dz-reject { border-color: rgba(252,129,129,0.45); background: var(--red-dim); }
+
+.dz-inner {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; text-align: center; position: relative;
+}
+.dz-icon-wrap {
+  width: 60px; height: 60px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.dropzone:hover .dz-icon-wrap, .dropzone.dz-active .dz-icon-wrap {
+  border-color: var(--border-active);
+  background: var(--accent-dim);
+  animation: float 2s ease-in-out infinite;
+}
+.dz-icon { width: 26px; height: 26px; color: var(--accent); }
+.dz-icon.red { color: var(--red); }
+.dz-label { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.dz-sub { font-size: 0.85rem; color: var(--text-secondary); }
+.dz-sub strong { color: var(--accent); }
+.dz-formats { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; }
+
+/* ── Light theme overrides ── */
+[data-theme="light"] .dropzone {
+  border-color: rgba(0,0,0,0.15);
+  background: var(--bg-surface);
+}
+[data-theme="light"] .dropzone:hover,
+[data-theme="light"] .dropzone.dz-active {
+  border-color: rgba(37,99,235,0.5);
+  background: rgba(37,99,235,0.04);
+}
+[data-theme="light"] .dz-icon-wrap {
+  background: var(--bg-base);
+}
+[data-theme="light"] .dropzone.dz-reject {
+  background: rgba(220,38,38,0.04);
+}

@@ -1,0 +1,22 @@
+.col-stack { display: flex; flex-direction: column; gap: 16px; }
+
+/* Quick format pills */
+.format-quick {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+}
+.fmt-pill {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border-radius: var(--radius-full);
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-secondary); font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; transition: all var(--transition);
+  font-family: var(--font-display);
+}
+.fmt-pill:hover {
+  border-color: var(--border-active);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.fmt-from { color: var(--text-muted); }
+.fmt-arrow { color: var(--accent); font-size: 0.7rem; }
+.fmt-to { color: var(--text-primary); }
