@@ -619,3 +619,54 @@
 [data-theme="light"] .ad-placeholder {
   background: rgba(0, 0, 0, 0.02);
 }
+
+/* ============================
+   SEO CONTENT BLOCK
+   ============================ */
+.seo-content-block {
+  margin-top: 56px;
+  padding: 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+
+.scb-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+}
+
+.scb-body h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 32px 0 12px;
+}
+
+.scb-body p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.scb-body ul {
+  margin-bottom: 16px;
+  padding-left: 20px;
+}
+
+.scb-body li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 640px) {
+  .seo-content-block {
+    padding: 24px;
+  }
+}

@@ -5,8 +5,8 @@ import DropZone from '../components/DropZone';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
   ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn,
-  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, InfoChips, AdBanner, FAQ,
-} from '../components/ToolShell';
+  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, InfoChips, AdBanner, FAQ, SEOContent,
+} from "../components/ToolShell";
 import '../components/ToolShell.css';
 import './ImageCompressor.css';
 
@@ -186,12 +186,12 @@ function ImageCompressorInner() {
   /* ── render ───────────────────────────────────────────── */
   return (
     <>
-      <SEO
-        title="Image Compressor – Compress Image to 50KB, 100KB, 200KB Online"
-        description="Free online image compressor to reduce image size to 50KB, 100KB or 200KB. Perfect for government forms, exam uploads, and website optimization. 100% private."
-        keywords="compress image to 50kb, reduce image size to 100kb, compress image to 200kb, online image compressor for government forms, image compressor india, ssc exam image upload"
-        canonicalPath="/image-compressor"
-      />
+            <SEO
+                title="Compress Image to 50KB or 100KB Online – Free Tool Hub"
+                description="Reduce image size to 50KB, 100KB, or 200KB instantly. Perfect for official applications and document portals globally. 100% private and secure."
+                keywords="compress image to 50kb online, reduce image size to 100kb, photo size reducer, official document compressor, free online image compressor"
+                canonicalPath="/image-compressor"
+            />
 
       <ToolHeader
         title="Image"
@@ -320,6 +320,24 @@ function ImageCompressorInner() {
       </ToolGrid>
 
       <AdBanner slot="8888888888" />
+
+      <SEOContent title="How to Compress Images for Official Portals Online">
+        <p>Reducing image file size is essential for fast websites, official document portals, and application forms. iLoveToolHub allows you to compress images to specific sizes like 50KB, 100KB, or 200KB without losing critical quality.</p>
+        
+        <h3>Perfect for Global Application Portals</h3>
+        <p>Many official and educational portals require photos to be under specific file limits (e.g., under 50KB or 100KB). Our intelligent algorithm analyzes your image and applies the perfect balance of resolution and compression to meet these strict requirements.</p>
+
+        <h3>Why use iLoveToolHub for Image Compression?</h3>
+        <ul>
+          <li><strong>Privacy First:</strong> Your photos never reach our servers. Everything happens entirely in your browser.</li>
+          <li><strong>Precise KB Goals:</strong> Use our "Target Max Size" feature to hit your exact file size limits.</li>
+          <li><strong>Quality Control:</strong> Manually adjust the quality to find the perfect look for your compressed image.</li>
+          <li><strong>Format Support:</strong> Convert and compress JPG, PNG, and WebP instantly with zero cost.</li>
+        </ul>
+
+        <h3>Step-by-Step Guide to Under 50KB</h3>
+        <p>1. Upload your photo above.<br />2. Slide the "Target Max Size" to 0.05MB (which is 50KB).<br />3. Click "Compress Image".<br />4. Download your perfectly sized result.</p>
+      </SEOContent>
 
       <FAQ items={[
         {

@@ -13,6 +13,13 @@ const ImageResizer = lazy(() => import('./pages/ImageResizer'));
 const Base64Converter = lazy(() => import('./pages/Base64Converter'));
 const OCR = lazy(() => import('./pages/OCR'));
 
+/* Legal & Info Pages */
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Disclaimer = lazy(() => import('./pages/Disclaimer'));
+
 function PageLoader() {
   return (
     <div style={{
@@ -40,6 +47,13 @@ export default function App() {
             <Route path="/image-resizer" element={<ImageResizer />} />
             <Route path="/base64-converter" element={<Base64Converter />} />
             <Route path="/ocr" element={<OCR />} />
+
+            {/* Legal & Info Routes */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
           </Routes>
         </Suspense>
       </Layout>

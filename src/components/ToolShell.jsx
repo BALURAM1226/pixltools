@@ -3,12 +3,12 @@ import './ToolShell.css';
 
 /* ─── Google AdSense Banner ─────────────────────────────── */
 export function AdBanner({ slot }) {
-  const ref   = useRef(null);
+  const ref = useRef(null);
   const fired = useRef(false);
   useEffect(() => {
     if (fired.current || !ref.current) return;
     fired.current = true;
-    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch {}
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch { }
   }, []);
   return (
     <div className="ad-wrap">
@@ -62,7 +62,7 @@ export function Control({ label, hint, children }) {
       {(label || hint) && (
         <div className="control-header">
           {label && <span className="control-label">{label}</span>}
-          {hint  && <span className="control-hint">{hint}</span>}
+          {hint && <span className="control-hint">{hint}</span>}
         </div>
       )}
       {children}
@@ -125,7 +125,7 @@ export function Select({ value, onChange, options, placeholder }) {
       </select>
       <svg className="select-arrow" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" strokeWidth="2">
-        <polyline points="6 9 12 15 18 9"/>
+        <polyline points="6 9 12 15 18 9" />
       </svg>
     </div>
   );
@@ -153,9 +153,9 @@ export function DownloadBtn({ href, filename, children }) {
     <a href={href} download={filename} className="btn btn-success btn-full">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
       </svg>
       {children}
     </a>
@@ -174,7 +174,7 @@ export function ResetBtn({ onClick }) {
 /* ─── Status bar ─────────────────────────────────────────── */
 export function StatusBar({ status }) {
   if (!status) return null;
-  const cls  = { processing: 'status-processing', success: 'status-success', error: 'status-error', warning: 'status-warning' };
+  const cls = { processing: 'status-processing', success: 'status-success', error: 'status-error', warning: 'status-warning' };
   const icon = { success: '✓', error: '✕', warning: '⚠' };
   return (
     <div className={`status-bar ${cls[status.type] || ''}`}>
@@ -203,9 +203,9 @@ export function PreviewBox({ children, checkerboard = false, minHeight = 260, la
         <div className="preview-empty">
           <svg width="44" height="44" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" strokeWidth="1" opacity="0.25">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
           </svg>
           <span>{label || 'Result will appear here'}</span>
         </div>
@@ -240,6 +240,17 @@ export function FAQ({ items }) {
             <p className="faq-a">{item.a}</p>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+/* ─── SEO Content Block ───────────────────────────────────── */
+export function SEOContent({ title, children }) {
+  return (
+    <div className="seo-content-block">
+      <h2 className="scb-title">{title}</h2>
+      <div className="scb-body">
+        {children}
       </div>
     </div>
   );

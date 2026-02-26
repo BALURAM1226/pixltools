@@ -13,10 +13,11 @@ import {
 	DownloadBtn,
 	ResetBtn,
 	StatusBar,
-	PreviewBox,
-	InfoChips,
-	AdBanner,
-	FAQ,
+    PreviewBox,
+    InfoChips,
+    AdBanner,
+    FAQ,
+    SEOContent,
 } from "../components/ToolShell";
 import "../components/ToolShell.css";
 import "./PassportPhoto.css";
@@ -317,9 +318,9 @@ function PassportPhotoInner() {
 	return (
 		<>
 			<SEO
-				title="Free Passport Size Photo Maker – Printable Online Generator"
-				description="Generate printable passport size photos for US, UK, India (3.5x4.5 cm), and EU. High-quality 2x2 inch prints with AI background removal for government exams."
-				keywords="printable passport size photo, passport photo maker india, ssc photo resizer, 3.5x4.5 cm photo maker, 2x2 inch photo online, free passport photo generator"
+				title="Printable Passport Size Photo Maker – Global Official Standards"
+				description="Generate official passport photos for US, UK, India, EU, and 100+ countries. Choose background colors and print layouts (4x6, A4) for free. 100% private."
+				keywords="passport size photo maker online, printable passport photo, 2x2 inch photo, 35x45 mm photo maker, official visa photo generator, free passport photo tool"
 				canonicalPath="/passport-photo"
 			/>
 
@@ -544,6 +545,24 @@ function PassportPhotoInner() {
 			}
 
 			<AdBanner slot="12345678" />
+
+			<SEOContent title="Printable Passport & Visa Photo Maker for Any Country">
+				<p>Creating professional passport photos shouldn't require a trip to a studio or an expensive subscription. iLoveToolHub's AI-assisted passport photo maker helps you generate <strong>printable passport size photos</strong> for over 100 countries including the USA, UK, Europe, China, and India.</p>
+				
+				<h3>Global Standards Supported</h3>
+				<p>Whether you need a <strong>2x2 inch</strong> photo for a US Visa, a <strong>35x45 mm</strong> photo for the UK or Schengen area, or a custom size for a specific regional application, our tool has the correct presets built-in. We ensure your photos meet the exact dimensional requirements of official government agencies globally.</p>
+
+				<h3>Smart Layouts for Cheap Printing</h3>
+				<ul>
+				  <li><strong>Multi-Photo Sheets:</strong> Automatically arrange your photos on standard <strong>4x6 inch (10x15 cm)</strong> or <strong>A4 paper</strong>.</li>
+				  <li><strong>Extreme Savings:</strong> Download the grid and print it locally for the cost of a single standard print.</li>
+				  <li><strong>AI Background Swap:</strong> Instantly change your background to white, off-white, or light blue as required by different countries.</li>
+				  <li><strong>Privacy by Design:</strong> Your sensitive biometric photos are never uploaded to our servers. All work happens in your browser.</li>
+				</ul>
+
+				<h3>How to make a Passport Photo Online</h3>
+				<p>1. Upload a clear, front-facing portrait.<br/>2. Select your country or target dimension preset.<br/>3. Align your face within the digital framing guides.<br/>4. Choose your background color and print sheet layout.<br/>5. Download and print your professional results instantly.</p>
+			</SEOContent>
 
 			<FAQ
 				items={[

@@ -223,6 +223,14 @@ export default function Layout({ children }) {
               )}
             </div>
 
+            <div className="footer-links">
+              <Link to="/about">About</Link>
+              <Link to="/contact">Contact</Link>
+              <Link to="/privacy-policy">Privacy</Link>
+              <Link to="/terms">Terms</Link>
+              <Link to="/disclaimer">Disclaimer</Link>
+            </div>
+
             <div className="footer-right">
               <span className="footer-trust">Privacy First • No Uploads</span>
             </div>

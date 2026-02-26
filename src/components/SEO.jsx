@@ -26,6 +26,24 @@ export default function SEO({ title, description, keywords, canonicalPath }) {
             <meta name="twitter:title" content={fullTitle} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
+
+            {/* Schema.org JSON-LD for Search Engines */}
+            <script type="application/ld+json">
+                {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebApplication",
+                    "name": title,
+                    "url": fullCanonical,
+                    "description": description,
+                    "applicationCategory": "MultimediaApplication",
+                    "operatingSystem": "Web Browser",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "USD"
+                    }
+                })}
+            </script>
         </Helmet>
     );
 }

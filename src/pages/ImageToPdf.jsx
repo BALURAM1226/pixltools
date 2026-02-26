@@ -4,8 +4,8 @@ import { useDropzone } from 'react-dropzone';
 import jsPDF from 'jspdf';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
-  ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn,
-  ResetBtn, StatusBar, ProgressBar, PreviewBox, InfoChips, AdBanner, FAQ,
+  ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn, DownloadBtn,
+  ResetBtn, StatusBar, ProgressBar, InfoChips, PreviewBox, AdBanner, FAQ, SEOContent,
 } from '../components/ToolShell';
 import '../components/ToolShell.css';
 import './ImageToPdf.css';
@@ -180,9 +180,9 @@ function ImageToPdfInner() {
   return (
     <>
       <SEO
-        title="Convert JPG to PDF Free – Online Image to PDF Hub"
-        description="Convert multiple images (JPG, PNG, WEBP) into a single PDF document for free. Perfect for document uploads, admissions, and government forms. 100% private."
-        keywords="convert jpg to pdf free, image to pdf online, combine images to pdf, jpg to pdf converter india, free image to pdf hub"
+        title="Combine Images to PDF Online – Fast, Free & Private"
+        description="Convert JPG, PNG, and WebP images to high-quality PDF. Merge multiple pages, reorder them, and choose page sizes for all official and professional documents globally."
+        keywords="image to pdf converter, combine jpg to pdf, merge png to pdf, photo to pdf maker, official document pdf builder, free online pdf tool"
         canonicalPath="/image-to-pdf"
       />
 
@@ -328,6 +328,24 @@ function ImageToPdfInner() {
       </ToolGrid>
 
       <AdBanner slot="7777777777" />
+
+      <SEOContent title="Professional Image to PDF Converter for Global Standards">
+        <p>Whether you need to merge multiple images into a single professional document or convert a high-quality scan to a PDF, iLoveToolHub provides the fastest and most private way to do it. No file is ever uploaded to our servers—the entire conversion happens locally on your device.</p>
+
+        <h3>Merge Certificates, Reports, and Scans</h3>
+        <p>Users often need to combine multiple document photos or scans into a single PDF for <strong>university admissions, professional portals, or legal applications</strong>. Our tool is designed specifically for this, allowing you to reorder images and choose standard page sizes like A4, Letter, or Fit to Image.</p>
+
+        <h3>Key Features of Our PDF Builder</h3>
+        <ul>
+          <li><strong>Universal Format Support:</strong> Seamlessly convert JPEG, PNG, and WebP images to high-fidelity PDF.</li>
+          <li><strong>Complete Layout Control:</strong> Set orientation to Portrait or Landscape and adjust margins for a clean finish.</li>
+          <li><strong>No File Size Limits:</strong> Since it's browser-based, you can merge as many pages as your CPU can handle.</li>
+          <li><strong>100% Secure & Private:</strong> Your sensitive documents stay exactly where they belong—with you.</li>
+        </ul>
+
+        <h3>How to Convert Images to PDF Online Free</h3>
+        <p>1. Drag and drop your images into the upload area above.<br/>2. Reorder the pages by dragging them into your preferred sequence.<br/>3. Select your desired page layout, orientation, and margins.<br/>4. Click "Combine into PDF" and download your result instantly.</p>
+      </SEOContent>
 
       <FAQ items={[
         { q: 'Is this JPG to PDF converter free for all?', a: 'Yes. iLoveToolHub provides a 100% free JPG to PDF service. There are no limits on the number of pages or file size for your PDF documents.' },

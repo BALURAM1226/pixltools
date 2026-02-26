@@ -4,7 +4,7 @@ import DropZone from '../components/DropZone';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
   ToolHeader, ToolGrid, Panel, Btn,
-  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, AdBanner, FAQ,
+  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, AdBanner, FAQ, SEOContent,
 } from '../components/ToolShell';
 import '../components/ToolShell.css';
 import './BgRemover.css';
@@ -297,6 +297,24 @@ function BgRemoverInner() {
       </ToolGrid>
 
       <AdBanner slot="9999999999" />
+
+      <SEOContent title="AI Background Remover Online – 100% Free & Private">
+        <p>Removing the background from an image used to require expensive software like Photoshop. Now, with iLoveToolHub's AI-powered background remover, you can create high-quality transparent PNGs in seconds, completely free and directly in your browser.</p>
+
+        <h3>Create Transparent PNGs for Any Purpose</h3>
+        <p>Whether you're an e-commerce seller needing clean product photos, a graphic designer workspace, or a professional creating official documents, our tool provides studio-quality results. Our AI model specifically identifies subjects and cleans up edges for a <strong>pixel-perfect transparent background</strong>.</p>
+
+        <h3>Privacy First Background Removal</h3>
+        <ul>
+          <li><strong>No Data Leaks:</strong> Unlike other popular AI tools, we don't send your images to a remote server. The AI heavy-lifting happens 100% on your local CPU/GPU.</li>
+          <li><strong>High Precision:</strong> Our model handles hair, fur, and complex edges with surprising accuracy.</li>
+          <li><strong>Custom Backgrounds:</strong> Once the background is removed, you can instantly add a solid color or a gradient to your subject.</li>
+          <li><strong>Commercial Use:</strong> The output is yours to keep. No watermarks, no hidden fees—ever.</li>
+        </ul>
+
+        <h3>How to Remove Background from Image Online</h3>
+        <p>1. Upload your photo (JPG, PNG, or WebP).<br/>2. Click "Remove Background Now" to start the AI analysis.<br/>3. Choose a transparent background or select a custom color.<br/>4. Download your professional PNG result.</p>
+      </SEOContent>
 
       <FAQ items={[
         { q: 'Is this AI background remover free for commercial use?', a: 'Absolutely. iLoveToolHub provides this AI tool 100% free. You can use the transparent PNG results for your website, marketing, or personal projects without any watermarks.' },

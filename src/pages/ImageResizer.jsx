@@ -17,6 +17,7 @@ import {
     InfoChips,
     AdBanner,
     FAQ,
+    SEOContent,
 } from "../components/ToolShell";
 import "../components/ToolShell.css";
 import "./ImageResizer.css";
@@ -150,9 +151,9 @@ function ImageResizerInner() {
     return (
         <>
             <SEO
-                title="Online Image Resizer – Resize Image for Exam & Govt Forms"
-                description="Resize and crop images for SSC, UPSC, bank exams and government forms online. Compress and resize to specific dimensions (px, cm) for free."
-                keywords="image resizer for govt forms, resize image for exam upload, ssc photo resizer, upsc image resizer, online image cropper for exams, image crop for 50kb"
+                title="Online Image Resizer – Resize for Exams, Apps & Social Media"
+                description="Resize images to any dimension (px, cm, mm) for official applications, LinkedIn, or Instagram. Perfect for global document standards and high-quality photo resizing."
+                keywords="online image resizer, resize image for official forms, image dimensions converter, resize photo for applications, crop image online free"
                 canonicalPath="/image-resizer"
             />
 
@@ -282,6 +283,24 @@ function ImageResizerInner() {
             </ToolGrid>
 
             <AdBanner slot="12345678" />
+
+            <SEOContent title="Professional Image Resizer for Global Requirements">
+                <p>Resizing images to specific dimensions is often the most time-consuming part of filling out official forms or preparing social media content. iLoveToolHub simplifies this with a professional-grade image resizer designed for global standards.</p>
+                
+                <h3>Ready-to-Use Presets for Any Platform</h3>
+                <p>Don't waste time checking dimension requirements. We've built in presets for <strong>Social Media (Instagram, LinkedIn)</strong>, and <strong>Official Documents</strong>. Whether you need a specific pixel count for a website or a centimeter measurement for a physical application, we have you covered.</p>
+
+                <h3>Advanced Resizing Features</h3>
+                <ul>
+                  <li><strong>Unit Flexibility:</strong> Switch between Pixels (px), Centimeters (cm), and Millimeters (mm) instantly.</li>
+                  <li><strong>Maintain Aspect Ratio:</strong> Ensure your image doesn't look stretched by locking the original proportions.</li>
+                  <li><strong>Integrated Compression:</strong> Adjust the output quality to meet file size limits directly while resizing.</li>
+                  <li><strong>Private Processing:</strong> Your identity documents and personal photos never leave your device.</li>
+                </ul>
+
+                <h3>Fastest Way to Meet Official Requirements</h3>
+                <p>Our tool is optimized to help professionals and students globally. By combining resizing, cropping, and compression in one view, you can generate the exact file needed for any <strong>application, passport, or platform</strong> in seconds.</p>
+            </SEOContent>
 
             <FAQ
                 items={[
