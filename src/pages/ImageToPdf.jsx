@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import jsPDF from 'jspdf';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
-  ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn, DownloadBtn,
+  ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn,
   ResetBtn, StatusBar, ProgressBar, InfoChips, PreviewBox, AdBanner, FAQ, SEOContent,
 } from '../components/ToolShell';
 import '../components/ToolShell.css';
