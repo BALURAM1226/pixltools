@@ -187,16 +187,17 @@ function ImageCompressorInner() {
   return (
     <>
       <SEO
-        title="Image Compressor – Reduce Image Size (MB/KB)"
-        description="Compress images or reduce file size without losing quality. Set target MB or percentage. Supports PNG, JPG, and WEBP. Browser-local processing."
+        title="Image Compressor – Compress Image to 50KB, 100KB, 200KB Online"
+        description="Free online image compressor to reduce image size to 50KB, 100KB or 200KB. Perfect for government forms, exam uploads, and website optimization. 100% private."
+        keywords="compress image to 50kb, reduce image size to 100kb, compress image to 200kb, online image compressor for government forms, image compressor india, ssc exam image upload"
         canonicalPath="/image-compressor"
       />
 
       <ToolHeader
         title="Image"
         highlight="Compressor"
-        badge="🗜️ Up to 90% Smaller"
-        desc="Reduce image file sizes dramatically without visible quality loss. Target size, max dimension, quality, and format are all fully configurable."
+        badge="🗜️ 50KB / 100KB Ready"
+        desc="Reduce image file sizes to the exact KB you need. Perfect for online applications, government forms, and exam uploads. Fast, free, and private."
       />
 
       <ToolGrid>
@@ -322,8 +323,12 @@ function ImageCompressorInner() {
 
       <FAQ items={[
         {
-          q: 'Why is "Target Max Size" not always reached exactly?',
-          a: 'The compression library tries to get below your target but some images (especially PNG) cannot be compressed below a certain size without converting format. If you need a smaller file, try switching to JPEG or WebP output.',
+          q: 'How can I compress my image to exactly 50KB or 100KB?',
+          a: 'For government forms or exam uploads, use the "Target Max Size" slider. Set it to 0.05MB for a 50KB file or 0.1MB for a 100KB file. iLoveToolHub will automatically adjust the quality to stay under your limit.',
+        },
+        {
+          q: 'Is this tool safe for government document uploads?',
+          a: 'Yes. iLoveToolHub processes everything locally in your browser. Your official images or documents are never uploaded to our servers, making it 100% safe for sensitive document preparation.',
         },
         {
           q: 'What does "Max Width / Height" do?',

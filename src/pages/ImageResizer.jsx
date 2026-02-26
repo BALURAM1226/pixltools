@@ -23,11 +23,11 @@ import "./ImageResizer.css";
 
 const PRESETS = [
     { id: "custom", label: "Custom Size", w: 0, h: 0 },
+    { id: "ssc_photo", label: "SSC / Bank Photo (3.5×4.5 cm)", w: 413, h: 531 },
+    { id: "upsc_sign", label: "UPSC / Govt Signature", w: 350, h: 150 },
     { id: "ig_post", label: "Instagram Post (1:1)", w: 1080, h: 1080 },
-    { id: "ig_story", label: "Instagram Story (9:16)", w: 1080, h: 1920 },
     { id: "yt_thumb", label: "YouTube Thumbnail", w: 1280, h: 720 },
     { id: "li_banner", label: "LinkedIn Banner", w: 1584, h: 396 },
-    { id: "fb_cover", label: "Facebook Cover", w: 820, h: 312 },
 ];
 
 function ImageResizerInner() {
@@ -150,16 +150,17 @@ function ImageResizerInner() {
     return (
         <>
             <SEO
-                title="Professional Image Resizer – Resize for Social Media"
-                description="Resize images for Instagram, YouTube, LinkedIn and more. High-quality image scaling with custom dimensions."
+                title="Online Image Resizer – Resize Image for Exam & Govt Forms"
+                description="Resize and crop images for SSC, UPSC, bank exams and government forms online. Compress and resize to specific dimensions (px, cm) for free."
+                keywords="image resizer for govt forms, resize image for exam upload, ssc photo resizer, upsc image resizer, online image cropper for exams, image crop for 50kb"
                 canonicalPath="/image-resizer"
             />
 
             <ToolHeader
                 title="Image"
                 highlight="Resizer"
-                badge="✨ Social Presets"
-                desc="Optimized resizing for all social platforms. Maintain quality and aspect ratio with one-click presets."
+                badge="✨ Exam & Form Ready"
+                desc="Resize and crop images for SSC, UPSC, and Indian government forms instantly. Free, fast, and optimized for perfect application uploads."
             />
 
             <ToolGrid>
@@ -284,7 +285,8 @@ function ImageResizerInner() {
 
             <FAQ
                 items={[
-                    { q: "Will I lose quality when resizing?", a: "We use high-quality Lanczos-style interpolation in the browser to ensure your images stay as sharp as possible when downscaling." },
+                    { q: "How do I resize an image for SSC or UPSC exams?", a: "Select the 'SSC Photo' or 'UPSC Signature' preset from our presets menu. These are pre-configured to meet the official pixel requirements for Indian government portals." },
+                    { q: "Can I resize an image to 50KB using this tool?", a: "Yes. After resizing to the correct dimensions, use our 'Quality' slider or use our dedicated Image Compressor tool to hit the exact 50KB or 20KB limit." },
                     { q: "What is the best size for Instagram?", a: "For posts, 1080x1080 is standard. For stories, 1080x1920 (9:16 ratio) is recommended." },
                     { q: "Is WebP better than JPG?", a: "WebP generally provides better quality at smaller file sizes compared to JPG, and is supported by most modern browsers and platforms." }
                 ]}

@@ -180,8 +180,9 @@ function ImageToPdfInner() {
   return (
     <>
       <SEO
-        title="Images to PDF Converter – JPG to PDF, PNG to PDF"
-        description="Convert multiple images (JPG, PNG, WEBP) into a single PDF document. Adjust margins, page size, and quality. 100% free and private."
+        title="Convert JPG to PDF Free – Online Image to PDF Hub"
+        description="Convert multiple images (JPG, PNG, WEBP) into a single PDF document for free. Perfect for document uploads, admissions, and government forms. 100% private."
+        keywords="convert jpg to pdf free, image to pdf online, combine images to pdf, jpg to pdf converter india, free image to pdf hub"
         canonicalPath="/image-to-pdf"
       />
 
@@ -329,8 +330,8 @@ function ImageToPdfInner() {
       <AdBanner slot="7777777777" />
 
       <FAQ items={[
-        { q: 'How many images can I add?', a: 'There is no hard limit. For very large batches (100+ images) we recommend processing in groups for best performance.' },
-        { q: 'Can I reorder images?', a: 'Yes! Use the ↑ and ↓ arrows next to each image to change page order before converting.' },
+        { q: 'Is this JPG to PDF converter free for all?', a: 'Yes. iLoveToolHub provides a 100% free JPG to PDF service. There are no limits on the number of pages or file size for your PDF documents.' },
+        { q: 'Can I use this for document upload in admissions?', a: 'Definitely. Most admission portals require a single PDF. You can upload all your certificates as images and our tool will merge them into a high-quality PDF ready for upload.' },
         { q: 'What is Auto page size?', a: 'Auto creates a PDF page that exactly matches each images dimensions. Useful when you want no cropping or scaling.' },
         { q: 'What does the Quality slider do?', a: 'It controls JPEG compression when embedding images. Lower values create smaller PDF files but with more compression artefacts.' },
       ]} />

@@ -317,8 +317,9 @@ function PassportPhotoInner() {
 	return (
 		<>
 			<SEO
-				title="Free Passport Size Photo Converter – US, UK, India, EU"
-				description="Convert any photo to official passport or visa sizes online. US, UK, India, EU standards supported with AI background removal."
+				title="Free Passport Size Photo Maker – Printable Online Generator"
+				description="Generate printable passport size photos for US, UK, India (3.5x4.5 cm), and EU. High-quality 2x2 inch prints with AI background removal for government exams."
+				keywords="printable passport size photo, passport photo maker india, ssc photo resizer, 3.5x4.5 cm photo maker, 2x2 inch photo online, free passport photo generator"
 				canonicalPath="/passport-photo"
 			/>
 
@@ -546,9 +547,9 @@ function PassportPhotoInner() {
 
 			<FAQ
 				items={[
-					{ q: "What is the US passport photo size?", a: "2×2 inches (51×51 mm). Our tool provides a high-res 600×600 pixel file at 300 DPI." },
-					{ q: "Can I change the background to white?", a: "Yes. Simply click the white swatch in Step 2, and our AI will swap the background for you." },
-					{ q: "Is this tool free?", a: "Yes, 100% free and processed directly in your browser for privacy." }
+					{ q: "What is the official passport photo size for India?", a: "The standard size is 3.5 x 4.5 cm (35x45 mm). Our tool provides a dedicated India Passport preset that follows these official guidelines perfectly." },
+					{ q: "How can I print my passport photo?", a: "After generating the photo, select the '4x6 in' or 'A4 Sheet' print layout. This will arrange multiple photos on a single page, ready for you to print at any local studio or at home." },
+					{ q: "Is this tool free for government exam photos?", a: "Yes, 100% free. It is designed to help students and applicants create photos for SSC, Bank, and Railway exams without needing professional software." }
 				]}
 			/>
 		</>

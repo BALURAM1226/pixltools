@@ -146,8 +146,9 @@ function BgRemoverInner() {
   return (
     <>
       <SEO
-        title="AI Background Remover – Remove Image BG Online Free"
-        description="Automatically remove image backgrounds using AI. No uploads required – processing happens in your browser. Fast, free, and private."
+        title="Remove Image BG Online Free – AI Background Remover"
+        description="Automatically remove image backgrounds using AI for free. Get transparent PNGs instantly. No server uploads – 100% private and safe for official documents."
+        keywords="remove image bg online free, transparent png maker, background remover online, ai background removal, remove background from photo free"
         canonicalPath="/background-remover"
       />
 
@@ -297,12 +298,11 @@ function BgRemoverInner() {
 
       <AdBanner slot="9999999999" />
 
-      <FAQ items={[
-        { q: 'How does AI background removal work?', a: 'The tool uses the @imgly/background-removal library which runs the RMBG neural network via WebAssembly in your browser. No image data leaves your device.' },
-        { q: 'What images work best?', a: 'Images with a clear subject (person, product, animal) against a contrasting background. Well-lit photos with defined edges give the best results.' },
-        { q: 'Why does the first run take longer?', a: 'The AI model weights (~60 MB) are downloaded on first use and cached in your browser. All subsequent uses load the cached model instantly.' },
-        { q: 'What format is the output?', a: 'Always PNG, which supports transparency. If you choose a background colour, the PNG will have that colour as its background.' },
-        { q: 'Can I use the result commercially?', a: 'Yes. The AI runs on open-source models in your browser. The output image is yours — you own it completely.' },
+      {q: 'Is this AI background remover free for commercial use?', a: 'Absolutely. iLoveToolHub provides this AI tool 100% free. You can use the transparent PNG results for your website, marketing, or personal projects without any watermarks.' },
+      {q: 'How can I make an image background transparent?', a: 'Simply upload your photo, click "Remove Background Now", and ensure the "Transparent" option is selected. You will get a high-quality PNG with no background instantly.' },
+      {q: 'Why does the first run take longer?', a: 'The AI model weights (~60 MB) are downloaded on first use and cached in your browser. All subsequent uses load the cached model instantly.' },
+      {q: 'What format is the output?', a: 'Always PNG, which supports transparency. If you choose a background colour, the PNG will have that colour as its background.' },
+      {q: 'Can I use the result commercially?', a: 'Yes. The AI runs on open-source models in your browser. The output image is yours — you own it completely.' },
       ]} />
     </>
   );
