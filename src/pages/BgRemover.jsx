@@ -298,11 +298,12 @@ function BgRemoverInner() {
 
       <AdBanner slot="9999999999" />
 
-      {q: 'Is this AI background remover free for commercial use?', a: 'Absolutely. iLoveToolHub provides this AI tool 100% free. You can use the transparent PNG results for your website, marketing, or personal projects without any watermarks.' },
-      {q: 'How can I make an image background transparent?', a: 'Simply upload your photo, click "Remove Background Now", and ensure the "Transparent" option is selected. You will get a high-quality PNG with no background instantly.' },
-      {q: 'Why does the first run take longer?', a: 'The AI model weights (~60 MB) are downloaded on first use and cached in your browser. All subsequent uses load the cached model instantly.' },
-      {q: 'What format is the output?', a: 'Always PNG, which supports transparency. If you choose a background colour, the PNG will have that colour as its background.' },
-      {q: 'Can I use the result commercially?', a: 'Yes. The AI runs on open-source models in your browser. The output image is yours — you own it completely.' },
+      <FAQ items={[
+        { q: 'Is this AI background remover free for commercial use?', a: 'Absolutely. iLoveToolHub provides this AI tool 100% free. You can use the transparent PNG results for your website, marketing, or personal projects without any watermarks.' },
+        { q: 'How can I make an image background transparent?', a: 'Simply upload your photo, click "Remove Background Now", and ensure the "Transparent" option is selected. You will get a high-quality PNG with no background instantly.' },
+        { q: 'Why does the first run take longer?', a: 'The AI model weights (~60 MB) are downloaded on first use and cached in your browser. All subsequent uses load the cached model instantly.' },
+        { q: 'What format is the output?', a: 'Always PNG, which supports transparency. If you choose a background colour, the PNG will have that colour as its background.' },
+        { q: 'Can I use the result commercially?', a: 'Yes. The AI runs on open-source models in your browser. The output image is yours — you own it completely.' },
       ]} />
     </>
   );

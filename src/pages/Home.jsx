@@ -87,8 +87,9 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="iLoveToolHub – The Fast, Free & Private Online Utility Suite"
-        description="iLoveToolHub is your one-stop hub for free online image, PDF, and productivity tools. Convert, compress, scan (OCR), and more—all 100% in-browser."
+        title="iLoveToolHub – Free Online Utility Suite | Compress Image to 50KB & 100KB"
+        description="The ultimate free online tool hub. Compress image to 50KB, convert JPG to PDF, remove background, and resize images for exams (SSC, UPSC). 100% private."
+        keywords="ilove tool hub, compress image to 50kb online, image to pdf converter, resize image for exam upload, ssc photo resizer, image to text hindi, free image converter"
         canonicalPath="/"
       />
       <div className="home">
@@ -107,7 +108,7 @@ export default function Home() {
                 <span className="hero-gradient">Fast & Private</span>
               </h1>
               <p className="hero-sub">
-                Convert images, combine PDFs, scan documents (OCR), create passport photos — all in your browser. Zero uploads. Zero cost.
+                Compress image to 50KB or 100KB, convert JPG to PDF, resize for exams (SSC/UPSC), and remove background — all 100% in your browser. Fast, free, and private.
               </p>
               <div className="hero-actions">
                 <Link to="/image-converter" className="cta-primary">
