@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 export default function SEO({ title, description, keywords, canonicalPath }) {
-    const siteUrl = "https://ilovetoolhub.vercel.app"; // Change to your actual domain
+    const siteUrl = "https://ilovetoolhub.com"; // Your official domain
     const fullCanonical = `${siteUrl}${canonicalPath || ""}`;
     const fullTitle = `${title} | iLoveToolHub`;
 
