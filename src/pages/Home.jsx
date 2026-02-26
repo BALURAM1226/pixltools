@@ -72,6 +72,15 @@ const TOOLS = [
     color: '#ed64a6',
     badge: 'HOT',
   },
+  {
+    path: '/qr-generator',
+    icon: '📱',
+    title: 'QR Code Expert',
+    desc: 'Generate professional QR codes with custom colors and logos. High-res output for print.',
+    tags: ['Custom Colors', 'Add Logo', 'High Res'],
+    color: '#ed8936',
+    badge: 'NEW',
+  },
 ];
 
 const WHY = [

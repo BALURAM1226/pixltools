@@ -6,35 +6,50 @@ export default function About() {
     return (
         <div className="legal-page">
             <SEO
-                title="About Us – The Story Behind iLoveToolHub"
-                description="Learn more about iLoveToolHub, a mission-driven platform providing free, private, and fast online utility tools for everyone, everywhere."
+                title="About Us – The Mission Behind iLoveToolHub"
+                description="Discover the story of iLoveToolHub. We are dedicated to providing fast, free, and private browser-based utility tools for everyone, everywhere."
                 canonicalPath="/about"
             />
 
             <header className="legal-header">
+                <span className="legal-eyebrow">The Story</span>
                 <h1 className="legal-title">About iLoveToolHub</h1>
-                <p className="legal-sub">Our mission is to simplify digital tasks through accessible, high-performance web technology.</p>
+                <p className="legal-sub">Empowering users with private, high-performance web utilities since 2026.</p>
             </header>
 
             <div className="legal-content">
-                <h2>Who We Are</h2>
-                <p>iLoveToolHub is an all-in-one digital utility hub designed to provide the world with fast, free, and private online tools. Whether you're a student preparing for competitive exams, a professional optimizing images for the web, or a casual user needing a quick file conversion, we are built for you.</p>
+                <section>
+                    <h2>Our Mission</h2>
+                    <p>iLoveToolHub was born from a simple observation: the digital tools we use every day are either too expensive, cluttered with ads, or compromise our privacy by uploading data to the cloud. Our mission is to democratize high-end digital utilities by making them free, lightning-fast, and 100% private.</p>
+                </section>
 
-                <h2>Why We Built This</h2>
-                <p>In today's digital world, most utility tools either charge expensive subscriptions or compromise user privacy by uploading files to remote servers. We wanted to change that. iLoveToolHub leverages advanced web technologies (WASM and Client-Side JS) to process your files entirely within your own browser.</p>
+                <section>
+                    <h2>The "Privacy-First" Philosophy</h2>
+                    <p>We believe your data belongs to you. That's why we built iLoveToolHub as a <strong>browser-only platform</strong>. Unlike traditional "converter" sites, your images and documents never leave your computer. We use cutting-edge WebAssembly (WASM) technology to bring server-side power directly to your browser tab.</p>
+                </section>
 
-                <h2>Our Core Values</h2>
-                <ul>
-                    <li><strong>Privacy First:</strong> Your files never touch our servers. Processing stays local on your machine.</li>
-                    <li><strong>High Performance:</strong> We use the latest hardware-accelerated libraries for lightning-fast results.</li>
-                    <li><strong>Zero Cost:</strong> No subscriptions, no hidden limits, and no watermarks—ever.</li>
-                    <li><strong>User Centric:</strong> We design our tools to be clean, easy to navigate, and mobile-friendly.</li>
-                </ul>
+                <div className="about-grid">
+                    <div className="about-card">
+                        <h3>🔒 100% Secure</h3>
+                        <p>No uploads. No storage. No data leaks. Everything happens on your device.</p>
+                    </div>
+                    <div className="about-card">
+                        <h3>⚡ Peak Performance</h3>
+                        <p>Hardware-accelerated processing for instant results on any device.</p>
+                    </div>
+                    <div className="about-card">
+                        <h3>💸 Forever Free</h3>
+                        <p>No subscriptions, no watermarks, and no hidden features behind paywalls.</p>
+                    </div>
+                </div>
 
-                <h2>The Technology</h2>
-                <p>iLoveToolHub is built using React and modern Web APIs. By using WebAssembly-powered libraries like Tesseract.js (for OCR) and @imgly/background-removal (for AI tasks), we bring desktop-class power directly to your browser tab.</p>
+                <section>
+                    <h2>Our Technology</h2>
+                    <p>By leveraging modern frameworks like React and specialized libraries like Tesseract.js (for OCR) and @imgly/background-removal (for AI tasks), we provide desktop-class performance without requiring any installation.</p>
+                    <p>We are constantly evolving, adding new tools and optimizing our existing suite to ensure iLoveToolHub remains the world's most trusted utility toolkit.</p>
+                </section>
 
-                <p>Thank you for choosing iLoveToolHub. We are constantly working to add more tools and improve your experience.</p>
+                <p className="about-closing">Thank you for trusting iLoveToolHub with your digital workflow.</p>
             </div>
         </div>
     );

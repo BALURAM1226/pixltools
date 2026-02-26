@@ -8,13 +8,15 @@ import './Layout.css';
 const NAV = [
   { path: '/', label: 'Home', icon: <HomeIcon />, exact: true },
   { path: '/image-converter', label: 'Image Converter', icon: <ConvertIcon />, badge: 'NEW' },
-  { path: '/passport-photo', label: 'Passport Photo', icon: <PassportIcon /> },
-  { path: '/image-to-pdf', label: 'Image to PDF', icon: <PdfIcon /> },
-  { path: '/image-compressor', label: 'Image Compressor', icon: <CompressIcon /> },
   { path: '/background-remover', label: 'BG Remover', icon: <BgIcon />, badge: 'AI' },
+  { path: '/passport-photo', label: 'Passport Photo', icon: <PassportIcon /> },
+  { path: '/image-compressor', label: 'Image Compressor', icon: <CompressIcon /> },
+  { path: '/ocr', label: 'OCR Scanner', icon: <ScanIcon />, badge: 'HOT' },
+  /* Hidden in dropdown on desktop */
+  { path: '/image-to-pdf', label: 'Image to PDF', icon: <PdfIcon /> },
   { path: '/image-resizer', label: 'Image Resizer', icon: <ResizeIcon /> },
   { path: '/base64-converter', label: 'Base64 Converter', icon: <B64Icon /> },
-  { path: '/ocr', label: 'OCR Scanner', icon: <ScanIcon />, badge: 'HOT' },
+  { path: '/qr-generator', label: 'QR Generator', icon: <QRIcon />, badge: 'NEW' },
 ];
 
 /* ── SVG Icons ──────────────────────────────────────────── */
@@ -44,6 +46,9 @@ function B64Icon() {
 }
 function ScanIcon() {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7V5a2 2 0 012-2h2" /><path d="M17 3h2a2 2 0 012 2v2" /><path d="M21 17v2a2 2 0 01-2 2h-2" /><path d="M7 21H5a2 2 0 01-2-2v-2" /><line x1="7" y1="8" x2="17" y2="8" /><line x1="7" y1="12" x2="17" y2="12" /><line x1="7" y1="16" x2="13" y2="16" /></svg>;
+}
+function QRIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><path d="M14 14h3" /><path d="M21 14v3" /><path d="M14 17h3" /><path d="M14 21h7" /><path d="M17 14h4" /><path d="M21 17h-3" /><path d="M14 14v7" /></svg>;
 }
 function MenuIcon({ open }) {
   return open
@@ -105,6 +110,7 @@ function Logo() {
 export default function Layout({ children }) {
   const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => { setSidebarOpen(false); }, [pathname]);
   useEffect(() => {
@@ -125,16 +131,48 @@ export default function Layout({ children }) {
         </div>
 
         <nav className="header-nav">
-          {NAV.slice(1).map(item => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) => `header-nav-link ${isActive ? 'active' : ''}`}
-            >
-              {item.label}
-              {item.badge && <span className="nav-badge">{item.badge}</span>}
-            </NavLink>
-          ))}
+          <div className="header-nav-main">
+            {NAV.slice(1, 6).map(item => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) => `header-nav-link ${isActive ? 'active' : ''}`}
+              >
+                {item.label}
+                {item.badge && <span className="nav-badge">{item.badge}</span>}
+              </NavLink>
+            ))}
+          </div>
+
+          <div
+            className="tools-dropdown-container"
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+          >
+            <button className="tools-dropdown-trigger">
+              More Tools
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dropdown-arrow"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+
+            {dropdownOpen && (
+              <div className="tools-dropdown-menu">
+                {NAV.slice(6).map(item => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className="dropdown-item"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <span className="dropdown-icon">{item.icon}</span>
+                    <div className="dropdown-info">
+                      <span className="dropdown-label">{item.label}</span>
+                      {item.badge && <span className="nav-badge">{item.badge}</span>}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
 
         <div className="header-right">

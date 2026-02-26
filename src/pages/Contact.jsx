@@ -6,35 +6,52 @@ export default function Contact() {
     return (
         <div className="legal-page">
             <SEO
-                title="Contact Us – Get in Touch with iLoveToolHub"
-                description="Have a question, feedback, or a tool request? Contact the iLoveToolHub team today. We'd love to hear from you."
+                title="Contact Us – We'd Love to Hear From You"
+                description="Have a question, feedback, or a partnership inquiry? Get in touch with the iLoveToolHub team today for support and guidance."
                 canonicalPath="/contact"
             />
 
             <header className="legal-header">
-                <h1 className="legal-title">Contact Us</h1>
-                <p className="legal-sub">Have a question or feedback? We'd love to hear from you.</p>
+                <span className="legal-eyebrow">Get in Touch</span>
+                <h1 className="legal-title">Contact iLoveToolHub</h1>
+                <p className="legal-sub">Our team is here to help with any inquiries, feedback, or technical support.</p>
             </header>
 
             <div className="legal-content">
-                <h2>We're Here to Help</h2>
-                <p>Whether you've found a bug, want to request a new tool, or just want to say hi, feel free to reach out. Your feedback helps us make iLoveToolHub better for everyone.</p>
+                <section>
+                    <h2>How Can We Help?</h2>
+                    <p>Whether you've encountered a bug, have an idea for a new tool, or simply want to share your experience using our platform, we value your input. Your feedback is what drives the continuous improvement of <strong>iLoveToolHub</strong>.</p>
+                </section>
 
-                <h2>Email Us</h2>
-                <p>The best way to reach us is via email. We aim to respond to all inquiries within 48 hours.</p>
+                <div className="contact-methods">
+                    <div className="contact-card">
+                        <div className="contact-icon">📧</div>
+                        <div className="contact-info">
+                            <h3>General Support</h3>
+                            <p>For help using our tools or reporting issues.</p>
+                            <a href="mailto:support@ilovetoolhub.com" className="contact-link">support@ilovetoolhub.com</a>
+                        </div>
+                    </div>
 
-                <div className="contact-card">
-                    <div className="contact-icon">✉️</div>
-                    <div className="contact-info">
-                        <h3>Support & Feedback</h3>
-                        <a href="mailto:support@ilovetoolhub.com">support@ilovetoolhub.com</a>
+                    <div className="contact-card">
+                        <div className="contact-icon">🛡️</div>
+                        <div className="contact-info">
+                            <h3>Privacy Inquiries</h3>
+                            <p>For questions about our data handling technology.</p>
+                            <a href="mailto:privacy@ilovetoolhub.com" className="contact-link">privacy@ilovetoolhub.com</a>
+                        </div>
                     </div>
                 </div>
 
-                <h2>Social Support</h2>
-                <p>You can also reach out to us via our GitHub repository for technical issues, bug reports, and feature requests. We are an open-source friendly project and value community contributions.</p>
+                <section>
+                    <h2>Average Response Time</h2>
+                    <p>We take every message seriously. Please allow <strong>24 to 48 hours</strong> for our small but dedicated team to review your inquiry and get back to you with a personal response.</p>
+                </section>
 
-                <p>Stay tuned for more ways to connect with us in the future!</p>
+                <section>
+                    <h2>Open Source & Community</h2>
+                    <p>iLoveToolHub is a community-driven project. If you're a developer and want to contribute or report a technical issue, you can also reach us through our official project channels.</p>
+                </section>
             </div>
         </div>
     );

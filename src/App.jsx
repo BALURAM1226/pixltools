@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 
@@ -12,6 +13,7 @@ const BgRemover = lazy(() => import('./pages/BgRemover'));
 const ImageResizer = lazy(() => import('./pages/ImageResizer'));
 const Base64Converter = lazy(() => import('./pages/Base64Converter'));
 const OCR = lazy(() => import('./pages/OCR'));
+const QRCodeGenerator = lazy(() => import('./pages/QRCodeGenerator'));
 
 /* Legal & Info Pages */
 const About = lazy(() => import('./pages/About'));
@@ -35,28 +37,31 @@ function PageLoader() {
 export default function App() {
   return (
     <ThemeProvider>
-      <Layout>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/image-converter" element={<ImageConverter />} />
-            <Route path="/passport-photo" element={<PassportPhoto />} />
-            <Route path="/image-to-pdf" element={<ImageToPdf />} />
-            <Route path="/image-compressor" element={<ImageCompressor />} />
-            <Route path="/background-remover" element={<BgRemover />} />
-            <Route path="/image-resizer" element={<ImageResizer />} />
-            <Route path="/base64-converter" element={<Base64Converter />} />
-            <Route path="/ocr" element={<OCR />} />
+      <ErrorBoundary>
+        <Layout>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/image-converter" element={<ImageConverter />} />
+              <Route path="/passport-photo" element={<PassportPhoto />} />
+              <Route path="/image-to-pdf" element={<ImageToPdf />} />
+              <Route path="/image-compressor" element={<ImageCompressor />} />
+              <Route path="/background-remover" element={<BgRemover />} />
+              <Route path="/image-resizer" element={<ImageResizer />} />
+              <Route path="/base64-converter" element={<Base64Converter />} />
+              <Route path="/ocr" element={<OCR />} />
+              <Route path="/qr-generator" element={<QRCodeGenerator />} />
 
-            {/* Legal & Info Routes */}
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/disclaimer" element={<Disclaimer />} />
-          </Routes>
-        </Suspense>
-      </Layout>
+              {/* Legal & Info Routes */}
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/disclaimer" element={<Disclaimer />} />
+            </Routes>
+          </Suspense>
+        </Layout>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }
