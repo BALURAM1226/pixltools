@@ -21,7 +21,6 @@ import "./Base64Converter.css";
 function Base64ConverterInner() {
     const toast = useToast();
     const [mode, setMode] = useState("encode"); // encode or decode
-    const [file, setFile] = useState(null);
     const [base64String, setBase64String] = useState("");
     const [decodedPreview, setDecodedPreview] = useState(null);
     const [includePrefix, setIncludePrefix] = useState(true);
@@ -29,7 +28,6 @@ function Base64ConverterInner() {
     const [info, setInfo] = useState({ size: "", type: "" });
 
     const handleFile = useCallback((f) => {
-        setFile(f);
         const reader = new FileReader();
         reader.onload = (e) => {
             const b64 = e.target.result;
@@ -86,7 +84,6 @@ function Base64ConverterInner() {
     };
 
     const reset = () => {
-        setFile(null);
         setBase64String("");
         setDecodedPreview(null);
         setInfo({ size: "", type: "" });

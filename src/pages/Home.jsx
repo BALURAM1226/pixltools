@@ -62,7 +62,6 @@ const TOOLS = [
     desc: 'Encode images to Base64 strings or decode them back. Perfect for developer integration.',
     tags: ['Dev Tool', 'Real-time', 'Data URIs'],
     color: '#a0aec0',
-    tags: ['Dev Tool', 'Real-time', 'Data URIs'],
   },
   {
     path: '/ocr',

@@ -35,14 +35,12 @@ const LANGUAGES = [
 
 function OCRInner() {
     const toast = useToast();
-    const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [pdfPages, setPdfPages] = useState([]); // Store all rendered pages
     const [resultText, setResultText] = useState("");
     const [running, setRunning] = useState(false);
     const [status, setStatus] = useState(null);
     const [progress, setProgress] = useState(0);
-    const [pageProgress, setPageProgress] = useState({ current: 0, total: 0 });
     const [lang, setLang] = useState("eng");
 
     const resultRef = useRef(null);
@@ -56,7 +54,6 @@ function OCRInner() {
             return;
         }
 
-        setFile(f);
         setResultText("");
         setPreview(null);
         setPdfPages([]);
@@ -89,7 +86,6 @@ function OCRInner() {
                     }
 
                     setPdfPages(pages);
-                    setPageProgress({ current: 0, total: numPages });
                     setStatus(null);
                 } catch (err) {
                     toast("PDF error: " + err.message, "error");
@@ -128,7 +124,6 @@ function OCRInner() {
             for (let i = 0; i < imagesToProcess.length; i++) {
                 const img = imagesToProcess[i];
                 if (isPdf) {
-                    setPageProgress(prev => ({ ...prev, current: i + 1 }));
                     setStatus({ type: "processing", msg: `Analyzing Page ${i + 1} of ${imagesToProcess.length}...` });
                 } else {
                     setStatus({ type: "processing", msg: "Analyzing image text..." });
@@ -180,7 +175,6 @@ function OCRInner() {
     };
 
     const reset = () => {
-        setFile(null);
         setPreview(null);
         setResultText("");
         setStatus(null);

@@ -103,7 +103,6 @@ function PassportPhotoInner() {
 	const [showBorders, setShowBorders] = useState(true);
 	const [manualRemoveBg, setManualRemoveBg] = useState(false);
 	const [aiCache, setAiCache] = useState(null);
-	const [copies, setCopies] = useState(1);
 
 	const [zoom, setZoom] = useState(1);
 	const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -128,8 +127,6 @@ function PassportPhotoInner() {
 		const imgAR = naturalAR;
 		const canvasAR = sz.w / sz.h;
 
-		// Perfect initial fit: scale image to cover the entire container without gaps
-		let initialZoom = 1;
 		let ox = 0, oy = 0;
 
 		if (imgAR > canvasAR) {
@@ -145,7 +142,7 @@ function PassportPhotoInner() {
 		setZoom(1); // Reset zoom to baseline
 		setOffset({ x: ox, y: oy });
 		setResult(null);
-	}, [preview, sizeKey]);
+	}, [preview, sizeKey, naturalAR, sz.h, sz.w]);
 
 	useEffect(() => {
 		setResult(null);
@@ -270,13 +267,13 @@ function PassportPhotoInner() {
 			if (paper.id !== "single") {
 				const sheet = document.createElement("canvas"); sheet.width = paper.w; sheet.height = paper.h;
 				const sCtx = sheet.getContext("2d"); sCtx.fillStyle = "#fff"; sCtx.fillRect(0, 0, paper.w, paper.h);
-				const margin = 60, gap = 20; let x = margin, y = margin, count = 0;
+				const margin = 60, gap = 20; let x = margin, y = margin;
 				while (y + sz.h + margin <= paper.h) {
-					while (x + sz.w + margin <= paper.w) { sCtx.drawImage(portraitCanvas, x, y); x += sz.w + gap; count++; }
+					while (x + sz.w + margin <= paper.w) { sCtx.drawImage(portraitCanvas, x, y); x += sz.w + gap; }
 					x = margin; y += sz.h + gap;
 				}
-				finalCanvas = sheet; setCopies(count);
-			} else { setCopies(1); }
+				finalCanvas = sheet;
+			}
 
 			// 4. Handle Image + Smart Compression
 			let quality = jpegQ / 100;

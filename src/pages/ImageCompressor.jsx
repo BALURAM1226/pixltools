@@ -56,7 +56,6 @@ function ImageCompressorInner() {
   const [isRunning, setIsRunning] = useState(false);
 
   /* Refs */
-  const abortRef = useRef(null);
   const resultRef = useRef(null);
 
   /* ── load file ────────────────────────────────────────── */

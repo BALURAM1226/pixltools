@@ -32,7 +32,6 @@ const PRESETS = [
 
 function ImageResizerInner() {
     const toast = useToast();
-    const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [result, setResult] = useState(null);
     const [running, setRunning] = useState(false);
@@ -55,7 +54,6 @@ function ImageResizerInner() {
             toast("Please upload a valid image", "error");
             return;
         }
-        setFile(f);
         const reader = new FileReader();
         reader.onload = (e) => {
             const img = new Image();
@@ -144,7 +142,6 @@ function ImageResizerInner() {
     };
 
     const reset = () => {
-        setFile(null);
         setPreview(null);
         setResult(null);
         setStatus(null);
