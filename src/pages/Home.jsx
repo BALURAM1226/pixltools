@@ -87,8 +87,8 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="PixlTools – Free Online Image Tools | Convert, Compress, Edit"
-        description="Free online image tools: convert PNG to JPG, SVG to PNG, image to PDF, compress images, remove backgrounds. No signup. All processing in your browser."
+        title="iLoveToolHub – The Fast, Free & Private Online Utility Suite"
+        description="iLoveToolHub is your one-stop hub for free online image, PDF, and productivity tools. Convert, compress, scan (OCR), and more—all 100% in-browser."
         canonicalPath="/"
       />
       <div className="home">
@@ -100,14 +100,14 @@ export default function Home() {
             <div className="hero-content">
               <div className="hero-eyebrow">
                 <span className="eyebrow-dot" />
-                Free Online Image Tools
+                The Ultimate Online Tool Hub
               </div>
               <h1 className="hero-title">
-                Transform Images<br />
-                <span className="hero-gradient">Instantly & Free</span>
+                Instant Productivity Tools<br />
+                <span className="hero-gradient">Fast & Private</span>
               </h1>
               <p className="hero-sub">
-                Convert formats, compress, create passport photos, build PDFs, remove backgrounds — all in your browser. Zero uploads. Zero cost.
+                Convert images, combine PDFs, scan documents (OCR), create passport photos — all in your browser. Zero uploads. Zero cost.
               </p>
               <div className="hero-actions">
                 <Link to="/image-converter" className="cta-primary">
@@ -135,8 +135,8 @@ export default function Home() {
         {/* Tools Grid */}
         <section className="tools-section">
           <div className="section-head">
-            <h2 className="section-title">All Tools</h2>
-            <p className="section-sub">Click any tool to get started — no signup required</p>
+            <h2 className="section-title">Utility Toolkit</h2>
+            <p className="section-sub">Free, private, and powerful tools for everyone.</p>
           </div>
           <div className="tools-grid">
             {TOOLS.map(t => (
@@ -161,7 +161,7 @@ export default function Home() {
         {/* Why Section */}
         <section className="why-section">
           <div className="section-head">
-            <h2 className="section-title">Why PixlTools?</h2>
+            <h2 className="section-title">Why iLoveToolHub?</h2>
           </div>
           <div className="why-grid">
             {WHY.map(w => (
@@ -176,9 +176,9 @@ export default function Home() {
 
         {/* SEO content */}
         <section className="seo-block">
-          <h2>Free Online Image Conversion & Editing Tools</h2>
-          <p>PixlTools is a free suite of browser-based image utilities. Whether you need to convert a PNG to JPG, an SVG to PNG, compress images for your website, generate passport photos for a visa application, combine images into a PDF document, or remove backgrounds from product photos — every tool works directly in your browser with no server uploads.</p>
-          <p>All tools are built using modern web technologies including the Canvas API, WebAssembly, and AI models that run locally. Your files stay private on your device at all times.</p>
+          <h2>All-in-One Free Online Utility & Image Hub</h2>
+          <p>iLoveToolHub is the premier free online suite for all your digital utility needs. Whether you are looking to convert image formats, combine multiple images into a PDF, extract text using high-accuracy OCR, or generate official passport photos—every single tool runs directly in your web browser.</p>
+          <p>We believe in privacy and performance. By using advanced client-side processing, iLoveToolHub ensures that your files never leave your device. It’s fast, secure, and completely free to use without any signup or watermarks.</p>
         </section>
 
       </div>

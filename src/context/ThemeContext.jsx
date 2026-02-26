@@ -6,9 +6,9 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     // 1. Respect user's saved preference
     try {
-      const saved = localStorage.getItem('pixltools-theme');
+      const saved = localStorage.getItem('ilovetoolhub-theme');
       if (saved === 'light' || saved === 'dark') return saved;
-    } catch {}
+    } catch { }
     // 2. Fall back to OS colour-scheme preference
     return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   });
@@ -16,7 +16,7 @@ export function ThemeProvider({ children }) {
   // Apply theme attribute to <html> and persist
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    try { localStorage.setItem('pixltools-theme', theme); } catch {}
+    try { localStorage.setItem('ilovetoolhub-theme', theme); } catch { }
   }, [theme]);
 
   const toggle = useCallback(() =>

@@ -149,7 +149,7 @@ function ImageToPdfInner() {
       }
 
       setProgress(97);
-      pdf.save(`pixltools-pdf-${Date.now()}.pdf`);
+      pdf.save(`ilovetoolhub-pdf-${Date.now()}.pdf`);
       setProgress(100);
       setStatus({ type: 'success', msg: `✓ PDF with ${images.length} page${images.length > 1 ? 's' : ''} downloaded!` });
       toast('PDF created and downloaded!', 'success');
