@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Download, RotateCcw } from 'lucide-react';
 import './ToolShell.css';
 
 /* ─── Google AdSense Banner ─────────────────────────────── */
@@ -56,27 +57,22 @@ export function Panel({ title, children, className = '' }) {
 }
 
 /* ─── Control row ────────────────────────────────────────── */
-export function Control({ label, hint, children }) {
+export function Control({ label, hint, children, id }) {
   return (
     <div className="control">
       {(label || hint) && (
         <div className="control-header">
-          {label && <span className="control-label">{label}</span>}
+          {label && <label htmlFor={id} className="control-label">{label}</label>}
           {hint && <span className="control-hint">{hint}</span>}
         </div>
       )}
-      {children}
+      {id ? React.cloneElement(children, { id }) : children}
     </div>
   );
 }
 
-/* ─── Slider ─────────────────────────────────────────────── *
- *  ROOT CAUSE FIX: CSS var() set via inline style on        *
- *  <input> does NOT cascade into ::webkit-slider-runnable-  *
- *  track pseudo-element in Firefox/Safari. We write the     *
- *  gradient directly into the element's style attribute     *
- *  so every browser applies it to the track correctly.      */
-export function Slider({ min, max, step = 1, value, onChange, formatValue }) {
+/* ─── Slider ─────────────────────────────────────────────── */
+export function Slider({ min, max, step = 1, value, onChange, formatValue, id, label }) {
   const numVal = parseFloat(value) || 0;
   const numMin = parseFloat(min) || 0;
   const numMax = parseFloat(max) || 100;
@@ -85,6 +81,7 @@ export function Slider({ min, max, step = 1, value, onChange, formatValue }) {
   return (
     <div className="slider-wrap">
       <input
+        id={id}
         type="range"
         min={min}
         max={max}
@@ -92,29 +89,31 @@ export function Slider({ min, max, step = 1, value, onChange, formatValue }) {
         value={numVal}
         onChange={e => onChange(parseFloat(e.target.value))}
         className="slider"
+        aria-label={label}
+        aria-valuemin={numMin}
+        aria-valuemax={numMax}
+        aria-valuenow={numVal}
         style={{
-          background: `linear-gradient(to right, #63b3ed ${pct}%, rgba(255,255,255,0.09) ${pct}%)`
+          background: `linear-gradient(to right, var(--accent) ${pct}%, var(--border) ${pct}%)`
         }}
       />
-      <span className="slider-val">
+      <span className="slider-val" aria-hidden="true">
         {formatValue ? formatValue(numVal) : numVal}
       </span>
     </div>
   );
 }
 
-/* ─── Select ─────────────────────────────────────────────── *
- *  FIX: HTML select always returns a STRING from            *
- *  e.target.value. Stringify the controlled value so        *
- *  React doesn't show "uncontrolled" warnings and the       *
- *  comparison works correctly even for numeric values.      */
-export function Select({ value, onChange, options, placeholder }) {
+/* ─── Select ─────────────────────────────────────────────── */
+export function Select({ value, onChange, options, placeholder, id, label }) {
   return (
     <div className="select-wrap">
       <select
+        id={id}
         value={String(value)}
         onChange={e => onChange(e.target.value)}
         className="select"
+        aria-label={label}
       >
         {placeholder && <option value="" disabled>{placeholder}</option>}
         {options.map((o, i) =>
@@ -124,7 +123,7 @@ export function Select({ value, onChange, options, placeholder }) {
         )}
       </select>
       <svg className="select-arrow" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" strokeWidth="2">
+        stroke="currentColor" strokeWidth="2" aria-hidden="true">
         <polyline points="6 9 12 15 18 9" />
       </svg>
     </div>
@@ -132,31 +131,27 @@ export function Select({ value, onChange, options, placeholder }) {
 }
 
 /* ─── Primary button ─────────────────────────────────────── */
-export function Btn({ onClick, disabled, loading, children, variant = 'primary', full = true }) {
+export function Btn({ onClick, disabled, loading, children, variant = 'primary', full = true, ...props }) {
   return (
     <button
       type="button"
       className={`btn btn-${variant} ${full ? 'btn-full' : ''}`}
       onClick={onClick}
       disabled={disabled || loading}
+      {...props}
     >
-      {loading && <span className="spinner" />}
+      {loading && <span className="spinner" aria-hidden="true" />}
       {children}
     </button>
   );
 }
 
 /* ─── Download link ──────────────────────────────────────── */
-export function DownloadBtn({ href, filename, children }) {
+export function DownloadBtn({ href, filename, children, ...props }) {
   if (!href) return null;
   return (
-    <a href={href} download={filename} className="btn btn-success btn-full">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-        <polyline points="7 10 12 15 17 10" />
-        <line x1="12" y1="15" x2="12" y2="3" />
-      </svg>
+    <a href={href} download={filename} className="btn btn-success btn-full btn-premium-download" {...props}>
+      <Download size={18} strokeWidth={2.5} />
       {children}
     </a>
   );
@@ -165,8 +160,9 @@ export function DownloadBtn({ href, filename, children }) {
 /* ─── Ghost reset button ─────────────────────────────────── */
 export function ResetBtn({ onClick }) {
   return (
-    <button type="button" className="btn btn-ghost btn-full" onClick={onClick}>
-      ↺ Start over
+    <button type="button" className="btn btn-ghost btn-full" onClick={onClick} aria-label="Start over">
+      <RotateCcw size={16} />
+      Start over
     </button>
   );
 }
@@ -176,21 +172,34 @@ export function StatusBar({ status }) {
   if (!status) return null;
   const cls = { processing: 'status-processing', success: 'status-success', error: 'status-error', warning: 'status-warning' };
   const icon = { success: '✓', error: '✕', warning: '⚠' };
+
   return (
-    <div className={`status-bar ${cls[status.type] || ''}`}>
+    <div
+      className={`status-bar ${cls[status.type] || ''}`}
+      role="status"
+      aria-live={status.type === 'error' ? 'assertive' : 'polite'}
+    >
       {status.type === 'processing'
-        ? <span className="spinner" />
-        : <span className="status-icon">{icon[status.type]}</span>}
+        ? <span className="spinner" aria-hidden="true" />
+        : <span className="status-icon" aria-hidden="true">{icon[status.type]}</span>}
       <span>{status.msg}</span>
     </div>
   );
 }
 
 /* ─── Progress bar ───────────────────────────────────────── */
-export function ProgressBar({ value }) {
+export function ProgressBar({ value, label = "Processing" }) {
+  const safeVal = Math.min(100, Math.max(0, value));
   return (
-    <div className="progress-track">
-      <div className="progress-fill" style={{ width: `${Math.min(100, Math.max(0, value))}%` }} />
+    <div
+      className="progress-track"
+      role="progressbar"
+      aria-valuenow={safeVal}
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-label={label}
+    >
+      <div className="progress-fill" style={{ width: `${safeVal}%` }} />
     </div>
   );
 }
@@ -198,11 +207,16 @@ export function ProgressBar({ value }) {
 /* ─── Preview box ────────────────────────────────────────── */
 export function PreviewBox({ children, checkerboard = false, minHeight = 260, label }) {
   return (
-    <div className={`preview-box ${checkerboard ? 'checker' : ''}`} style={{ minHeight }}>
+    <div
+      className={`preview-box ${checkerboard ? 'checker' : ''}`}
+      style={{ minHeight }}
+      aria-label={label || "Preview area"}
+      role="region"
+    >
       {children || (
         <div className="preview-empty">
           <svg width="44" height="44" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" strokeWidth="1" opacity="0.25">
+            stroke="currentColor" strokeWidth="1" opacity="0.25" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <circle cx="8.5" cy="8.5" r="1.5" />
             <polyline points="21 15 16 10 5 21" />
@@ -217,9 +231,9 @@ export function PreviewBox({ children, checkerboard = false, minHeight = 260, la
 /* ─── Info chips ─────────────────────────────────────────── */
 export function InfoChips({ items }) {
   return (
-    <div className="info-chips">
+    <div className="info-chips" role="list">
       {items.map((item, i) => (
-        <div key={i} className="info-chip">
+        <div key={i} className="info-chip" role="listitem">
           <span className="chip-label">{item.label}</span>
           <span className="chip-value">{item.value}</span>
         </div>
@@ -228,30 +242,81 @@ export function InfoChips({ items }) {
   );
 }
 
+/* ─── Target Size Control ────────────────────────────────── */
+export function TargetSizeControl({ enabled, onToggle, value, onChange, id = "target-size-opt", min = 20, max = 10240, step = 10 }) {
+  const formatKB = (v) => v < 1000 ? `${v} KB` : `${(v / 1024).toFixed(1)} MB`;
+
+  return (
+    <div className="target-size-control">
+      <label className="checkbox-wrap" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <input
+          type="checkbox"
+          checked={enabled}
+          onChange={(e) => onToggle(e.target.checked)}
+          aria-label="Enable target file size"
+        />
+        <span className="control-label" style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700 }}>Target File Size? (Smart Compression)</span>
+      </label>
+
+      {enabled && (
+        <div className="target-size-inputs" style={{ marginTop: 20, paddingLeft: 8 }}>
+          <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            <span>Min: {formatKB(min)}</span>
+            <span>Max: {formatKB(max)}</span>
+          </div>
+          <Slider
+            id={id}
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={onChange}
+            formatValue={formatKB}
+            label="Adjust target file size limit"
+          />
+          <div className="size-presets" style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
+            {[100, 500, 2048, 5120].filter(bp => bp >= min && bp <= max).map(bp => (
+              <button
+                key={bp}
+                type="button"
+                className="preset-chip"
+                onClick={() => onChange(bp)}
+                style={{ fontSize: '0.72rem', padding: '5px 12px' }}
+              >
+                {formatKB(bp)}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ─── FAQ ────────────────────────────────────────────────── */
 export function FAQ({ items }) {
   return (
-    <div className="faq">
-      <h2 className="faq-title">Frequently Asked Questions</h2>
+    <section className="faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" className="faq-title">Frequently Asked Questions</h2>
       <div className="faq-list">
         {items.map((item, i) => (
-          <div key={i} className="faq-item">
+          <article key={i} className="faq-item">
             <h3 className="faq-q">{item.q}</h3>
             <p className="faq-a">{item.a}</p>
-          </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 /* ─── SEO Content Block ───────────────────────────────────── */
 export function SEOContent({ title, children }) {
   return (
-    <div className="seo-content-block">
-      <h2 className="scb-title">{title}</h2>
+    <section className="seo-content-block" aria-labelledby="seo-title">
+      <h2 id="seo-title" className="scb-title">{title}</h2>
       <div className="scb-body">
         {children}
       </div>
-    </div>
+    </section>
   );
 }

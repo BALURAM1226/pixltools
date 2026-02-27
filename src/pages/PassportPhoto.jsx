@@ -13,12 +13,14 @@ import {
 	DownloadBtn,
 	ResetBtn,
 	StatusBar,
-    PreviewBox,
-    InfoChips,
-    AdBanner,
-    FAQ,
-    SEOContent,
+	PreviewBox,
+	InfoChips,
+	AdBanner,
+	FAQ,
+	SEOContent,
+	TargetSizeControl,
 } from "../components/ToolShell";
+import imageCompression from 'browser-image-compression';
 import "../components/ToolShell.css";
 import "./PassportPhoto.css";
 
@@ -113,7 +115,7 @@ function PassportPhotoInner() {
 	const containerRef = useRef(null);
 	const [naturalAR, setNaturalAR] = useState(1);
 	const [exportFormat, setExportFormat] = useState("image/jpeg");
-	const [lowSize, setLowSize] = useState(false);
+	const [targetSizeEnabled, setTargetSizeEnabled] = useState(false);
 	const [targetSizeKB, setTargetSizeKB] = useState(50);
 	const [fileSizeInKB, setFileSizeInKB] = useState(0);
 
@@ -131,72 +133,28 @@ function PassportPhotoInner() {
 		let ox = 0, oy = 0;
 
 		if (imgAR > canvasAR) {
-			// Image is wider than container: match height
 			const scaledW = displayH * imgAR;
 			ox = (displayW - scaledW) / 2;
 		} else {
-			// Image is taller than container: match width
 			const scaledH = displayW / imgAR;
 			oy = (displayH - scaledH) / 2;
 		}
 
-		setZoom(1); // Reset zoom to baseline
+		setZoom(1);
 		setOffset({ x: ox, y: oy });
 		setResult(null);
 	}, [preview, sizeKey, naturalAR, sz.h, sz.w]);
 
-	useEffect(() => {
-		setResult(null);
-		setStatus(null);
-	}, [sizeKey, bgColor, brightness, contrast, jpegQ, printSizeId, showBorders, manualRemoveBg]);
-
-	const handleFile = useCallback((f) => {
-		if (!f.type.startsWith("image/")) {
-			toast("Please upload an image file.", "error");
-			return;
-		}
-		setFile(f);
-		setResult(null);
-		setAiCache(null);
-		setStatus(null);
-		const reader = new FileReader();
-		reader.onload = (e) => {
-			const img = new Image();
-			img.onload = () => {
-				setPreview(e.target.result);
-				setNaturalAR(img.width / img.height);
-				setZoom(1.05);
-				setOffset({ x: 0, y: 0 });
-			};
-			img.src = e.target.result;
-		};
-		reader.readAsDataURL(f);
-	}, [toast]);
-
-	const convert = async () => {
+	const convert = useCallback(async () => {
 		if (!preview || running) return;
 
-		// 1. Validation: Ensure container dimensions are ready
 		const mattedBox = containerRef.current?.querySelector('.crop-matted');
-		if (!mattedBox) {
-			toast("Interface error. Please refresh.", "error");
-			return;
-		}
+		if (!mattedBox) return;
 
-		// Verify aspect ratio integrity
-		const currentAR = mattedBox.offsetWidth / mattedBox.offsetHeight;
-		const targetAR = sz.w / sz.h;
-		if (Math.abs(currentAR - targetAR) > 0.05) {
-			toast("Dimension mismatch. Resetting container...", "warning");
-			return;
-		}
-
-		// 2. Lock Layout & Start
 		setRunning(true);
-		setStatus({ type: "processing", msg: "Validating & Rendering…" });
+		setStatus({ type: "processing", msg: "Rendering…" });
 
 		try {
-			// 3. Final Output Resolution Enforcement
 			const portraitCanvas = document.createElement("canvas");
 			portraitCanvas.width = sz.w;
 			portraitCanvas.height = sz.h;
@@ -216,7 +174,7 @@ function PassportPhotoInner() {
 				if (aiCache) {
 					sourceImage = aiCache;
 				} else {
-					setStatus({ type: "processing", msg: "AI is removing background… takes ~10s" });
+					setStatus({ type: "processing", msg: "AI is removing background…" });
 					const { removeBackground } = await import("@imgly/background-removal");
 					const blob = await removeBackground(file);
 					const aiImg = new Image();
@@ -226,44 +184,35 @@ function PassportPhotoInner() {
 				}
 			}
 
-			// Auto-switch to PNG if transparent result is requested
-			if (isTransparent && exportFormat !== "image/png") {
-				setExportFormat("image/png");
-				toast("Switched to PNG to preserve transparency", "info");
-			}
 			const filterCanvas = document.createElement("canvas");
 			filterCanvas.width = sourceImage.naturalWidth; filterCanvas.height = sourceImage.naturalHeight;
 			const fCtx = filterCanvas.getContext("2d");
 			fCtx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
 			fCtx.drawImage(sourceImage, 0, 0);
+
 			const displayW = containerRef.current?.querySelector('.crop-matted')?.offsetWidth || 300;
 			const ratio = sz.w / displayW;
 
-			// We calculate the base image dimensions exactly as CSS does (object-fit: contain/cover logic)
 			const canvasAR = sz.w / sz.h;
 			const imgAR = sourceImage.naturalWidth / sourceImage.naturalHeight;
 
 			let baseW, baseH;
 			if (imgAR > canvasAR) {
-				// Image matched container height in CSS
 				baseH = sz.h;
 				baseW = baseH * imgAR;
 			} else {
-				// Image matched container width in CSS
 				baseW = sz.w;
 				baseH = baseW / imgAR;
 			}
 
-			// Final dimensions after user zoom
 			const finalW = baseW * zoom;
 			const finalH = baseH * zoom;
-
-			// Offset is already in "display pixels", scale it to "canvas pixels"
 			const dx = offset.x * ratio;
 			const dy = offset.y * ratio;
 
 			pCtx.drawImage(filterCanvas, 0, 0, sourceImage.naturalWidth, sourceImage.naturalHeight, dx, dy, finalW, finalH);
 			if (showBorders) { pCtx.strokeStyle = "rgba(0,0,0,0.1)"; pCtx.lineWidth = 2; pCtx.strokeRect(0, 0, sz.w, sz.h); }
+
 			let finalCanvas = portraitCanvas;
 			if (paper.id !== "single") {
 				const sheet = document.createElement("canvas"); sheet.width = paper.w; sheet.height = paper.h;
@@ -276,39 +225,64 @@ function PassportPhotoInner() {
 				finalCanvas = sheet;
 			}
 
-			// 4. Handle Image + Smart Compression
-			let quality = jpegQ / 100;
-			let finalDataUrl = finalCanvas.toDataURL(exportFormat, quality);
-
-			if (lowSize && (exportFormat === "image/jpeg" || exportFormat === "image/webp")) {
-				// Iterative compression to hit targetSizeKB
-				let min = 0.01, max = 1.0, bestQ = 0.5;
-				for (let i = 0; i < 6; i++) { // 6 iterations for high accuracy
-					const testQ = (min + max) / 2;
-					const testUrl = finalCanvas.toDataURL(exportFormat, testQ);
-					const testSize = (testUrl.length * 0.75) / 1024;
-					if (testSize <= targetSizeKB) {
-						bestQ = testQ;
-						min = testQ;
-					} else {
-						max = testQ;
-					}
-				}
-				finalDataUrl = finalCanvas.toDataURL(exportFormat, bestQ);
+			let finalBlob;
+			if (targetSizeEnabled) {
+				const initialBlob = await new Promise(r => finalCanvas.toBlob(r, exportFormat, 0.95));
+				finalBlob = await imageCompression(initialBlob, {
+					maxSizeMB: targetSizeKB / 1024,
+					useWebWorker: true,
+					fileType: exportFormat
+				});
+			} else {
+				finalBlob = await new Promise(r => finalCanvas.toBlob(r, exportFormat, jpegQ / 100));
 			}
 
-			const sizeInKB = Math.round((finalDataUrl.length * 0.75) / 1024);
-			setFileSizeInKB(sizeInKB);
-			setResult(finalDataUrl);
+			const finalDataUrl = await new Promise(r => {
+				const reader = new FileReader();
+				reader.onloadend = () => r(reader.result);
+				reader.readAsDataURL(finalBlob);
+			});
 
-			setStatus({ type: "success", msg: "✓ Ready for download" });
-			toast("Passport photo ready!", "success");
-			setTimeout(() => {
-				resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-			}, 150);
-		} catch (err) { setStatus({ type: "error", msg: err.message }); }
-		finally { setRunning(false); }
-	};
+			setFileSizeInKB(Math.round(finalBlob.size / 1024));
+			setResult(finalDataUrl);
+			setStatus({ type: "success", msg: "✓ Ready" });
+		} catch (err) {
+			console.error(err);
+			setStatus({ type: "error", msg: err.message });
+		} finally {
+			setRunning(false);
+		}
+	}, [preview, running, sz, paper, bgColor, customColor, brightness, contrast, zoom, offset, showBorders, manualRemoveBg, aiCache, file, exportFormat, targetSizeEnabled, targetSizeKB, jpegQ]);
+
+	/* ── auto-process ───────────────────────────────────────── */
+	useEffect(() => {
+		if (!preview || running) return;
+		const timer = setTimeout(() => {
+			convert();
+		}, 800);
+		return () => clearTimeout(timer);
+	}, [preview, running, convert]);
+
+	const handleFile = useCallback((f) => {
+		if (!f.type.startsWith("image/")) {
+			toast("Please upload an image file.", "error");
+			return;
+		}
+		setFile(f);
+		setResult(null);
+		setAiCache(null);
+		setStatus(null);
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			const img = new Image();
+			img.onload = () => {
+				setPreview(e.target.result);
+				setNaturalAR(img.width / img.height);
+			};
+			img.src = e.target.result;
+		};
+		reader.readAsDataURL(f);
+	}, [toast]);
 
 	const reset = () => {
 		setPreview(null); setResult(null); setAiCache(null); setStatus(null);
@@ -332,7 +306,6 @@ function PassportPhotoInner() {
 			/>
 
 			<ToolGrid>
-				{/* Step 1: Upload & Adjust */}
 				<Panel title="Step 1: Upload & Position">
 					{!preview ? (
 						<DropZone onFile={handleFile} label="Upload Portrait Photo" />
@@ -385,7 +358,6 @@ function PassportPhotoInner() {
 					)}
 				</Panel>
 
-				{/* Step 2: Settings */}
 				<Panel title="Step 2: Photo Settings">
 					{!preview ? (
 						<div className="tips-panel">
@@ -400,17 +372,29 @@ function PassportPhotoInner() {
 						</div>
 					) : (
 						<div className="settings-scroll">
-							<Control label="Country / Size Format">
-								<Select value={sizeKey} onChange={setSizeKey} options={SIZES.map((s, i) => ({ value: String(i), label: s.label }))} />
+							<Control label="Country / Size Format" id="size-key">
+								<Select
+									id="size-key"
+									label="Select country or size format"
+									value={sizeKey}
+									onChange={setSizeKey}
+									options={SIZES.map((s, i) => ({ value: String(i), label: s.label }))}
+								/>
 							</Control>
 
-							<Control label="Print Layout (Advanced)">
-								<Select value={printSizeId} onChange={setPrintSizeId} options={PAPER_SIZES.map((p) => ({ value: p.id, label: p.label }))} />
+							<Control label="Print Layout" id="print-size">
+								<Select
+									id="print-size"
+									label="Select paper print size"
+									value={printSizeId}
+									onChange={setPrintSizeId}
+									options={PAPER_SIZES.map((p) => ({ value: p.id, label: p.label }))}
+								/>
 							</Control>
 
 							<div className="settings-row">
-								<Control label="Background Color">
-									<div className="bg-row">
+								<Control label="Background Color" id="bg-color-group">
+									<div className="bg-row" role="radiogroup">
 										{BG_PRESETS.map((p) => (
 											<button
 												key={p.hex}
@@ -433,142 +417,108 @@ function PassportPhotoInner() {
 									</label>
 									<label className="checkbox-wrap">
 										<input type="checkbox" checked={manualRemoveBg} onChange={(e) => setManualRemoveBg(e.target.checked)} />
-										<span>Force No-BG</span>
+										<span>Force AI BG</span>
 									</label>
+								</div>
+
+								<div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+									<TargetSizeControl
+										enabled={targetSizeEnabled}
+										onToggle={setTargetSizeEnabled}
+										value={targetSizeKB}
+										onChange={setTargetSizeKB}
+										min={5}
+										max={Math.round((file?.size || 0) / 1024) || 2048}
+										step={1}
+									/>
 								</div>
 							</div>
 
 							{bgColor === "custom" && (
 								<div className="custom-picker-box">
-									<div className="bg-picker-wrap">
-										<input
-											type="color"
-											className="bg-picker"
-											value={customColor}
-											onChange={(e) => setCustomColor(e.target.value)}
-										/>
-										<span className="picker-icon">🎨</span>
-									</div>
-									<span className="custom-hex-code">{customColor}</span>
+									<input type="color" value={customColor} onChange={(e) => setCustomColor(e.target.value)} />
+									<span>{customColor}</span>
 								</div>
 							)}
 
 							<Control label="Brightness">
-								<Slider min={60} max={160} step={1} value={brightness} onChange={v => setBrightness(Math.round(v))} formatValue={v => `${v}%`} />
+								<Slider min={60} max={160} value={brightness} onChange={v => setBrightness(Math.round(v))} formatValue={v => `${v}%`} />
 							</Control>
 
 							<Control label="Contrast">
-								<Slider min={60} max={160} step={1} value={contrast} onChange={v => setContrast(Math.round(v))} formatValue={v => `${v}%`} />
+								<Slider min={60} max={160} value={contrast} onChange={v => setContrast(Math.round(v))} formatValue={v => `${v}%`} />
 							</Control>
 
 							<Control label="JPEG Quality">
-								<Slider min={50} max={100} step={1} value={jpegQ} onChange={v => setJpegQ(Math.round(v))} formatValue={v => `${v}%`} />
+								<Slider min={50} max={100} value={jpegQ} onChange={v => setJpegQ(Math.round(v))} formatValue={v => `${v}%`} />
 							</Control>
 
-							<Btn onClick={convert} loading={running} disabled={running}>
-								🪪 Generate & Save Passport Photo
-							</Btn>
-
+							<Btn onClick={convert} loading={running}>🪪 Regenerate Manually</Btn>
 							<StatusBar status={status} />
 						</div>
 					)}
 				</Panel>
+			</ToolGrid>
 
-			</ToolGrid >
+			{result && (
+				<Panel title="Step 3: Download Passport Result">
+					<div ref={resultRef} className="result-layout">
+						<PreviewBox checkerboard={bgColor === "transparent"}>
+							<img src={result} alt="Passport result" className="result-img" />
+						</PreviewBox>
 
-			{/* Step 3: Result (Full Width) */}
-			{
-				result && (
-					<Panel title="Step 3: Download Passport Result">
-						<div ref={resultRef} className="result-layout">
-							<PreviewBox checkerboard={bgColor === "transparent" || (bgColor === "original" && manualRemoveBg)}>
-								<img src={result} alt="Passport result" className="result-img" />
-							</PreviewBox>
-
-							<div className="result-actions">
-								<div className="download-controls">
-									<div className="download-settings">
-										<Control label="Download Format">
-											<Select
-												value={exportFormat}
-												onChange={(v) => { setExportFormat(v); }}
-												options={[
-													{ value: "image/jpeg", label: "JPEG (Default)" },
-													{ value: "image/webp", label: "WebP (Ultra Small)" },
-													{ value: "image/png", label: "PNG (High Quality)" }
-												]}
-											/>
-										</Control>
-										<div className="check-row compact">
-											<label className="checkbox-wrap">
-												<input type="checkbox" checked={lowSize} onChange={(e) => setLowSize(e.target.checked)} />
-												<span>Enable Target Size Compression?</span>
-											</label>
-										</div>
-
-										{lowSize && (
-											<div className="target-size-input">
-												<label>Target Size (KB):</label>
-												<input
-													type="number"
-													value={targetSizeKB}
-													onChange={(e) => setTargetSizeKB(parseInt(e.target.value) || 0)}
-													className="size-input-field"
-												/>
-											</div>
-										)}
-										<div className="refresh-actions">
-											<Btn onClick={convert} loading={running} className="btn-secondary btn-sm">Apply & Refresh Specs</Btn>
-										</div>
+						<div className="result-actions">
+							<div className="download-controls">
+								<div className="download-settings">
+									<Control label="Download Format">
+										<Select
+											value={exportFormat}
+											onChange={setExportFormat}
+											options={[
+												{ value: "image/jpeg", label: "JPEG (Default)" },
+												{ value: "image/webp", label: "WebP (Ultra Small)" },
+												{ value: "image/png", label: "PNG (High Quality)" }
+											]}
+										/>
+									</Control>
+									<div style={{ marginTop: 12 }}>
+										<TargetSizeControl
+											enabled={targetSizeEnabled}
+											onToggle={setTargetSizeEnabled}
+											value={targetSizeKB}
+											onChange={setTargetSizeKB}
+											min={5}
+											max={Math.round((file?.size || 0) / 1024) || 2048}
+											step={1}
+										/>
 									</div>
-
-									<InfoChips items={[
-										{ label: "Format", value: exportFormat.split('/')[1].toUpperCase() },
-										{ label: "Final Size", value: `${fileSizeInKB} KB` },
-										{ label: "Target", value: lowSize ? `${targetSizeKB} KB` : "Max" },
-										{ label: "DPI", value: "300" },
-									]} />
 								</div>
 
-								<div className="download-wrap">
-									<DownloadBtn
-										href={result}
-										filename={`passport-${sz.unit.replace(/\s/g, "")}.${exportFormat.split('/')[1] === 'jpeg' ? 'jpg' : exportFormat.split('/')[1]}`}
-									>
-										Download {exportFormat.split('/')[1].toUpperCase()} Now
-									</DownloadBtn>
-								</div>
+								<InfoChips items={[
+									{ label: "Format", value: exportFormat.split('/')[1].toUpperCase() },
+									{ label: "Final Size", value: `${fileSizeInKB} KB` },
+									{ label: "Target", value: targetSizeEnabled ? `${targetSizeKB} KB` : "Max" }
+								]} />
 							</div>
+
+							<DownloadBtn href={result} filename={`passport-${sz.unit.replace(/\s/g, "")}.${exportFormat.split('/')[1] === 'jpeg' ? 'jpg' : exportFormat.split('/')[1]}`}>
+								Download {exportFormat.split('/')[1].toUpperCase()}
+							</DownloadBtn>
 						</div>
-					</Panel>
-				)
-			}
+					</div>
+				</Panel>
+			)}
 
 			<AdBanner slot="12345678" />
 
 			<SEOContent title="Printable Passport & Visa Photo Maker for Any Country">
-				<p>Creating professional passport photos shouldn't require a trip to a studio or an expensive subscription. iLoveToolHub's AI-assisted passport photo maker helps you generate <strong>printable passport size photos</strong> for over 100 countries including the USA, UK, Europe, China, and India.</p>
-				
-				<h3>Global Standards Supported</h3>
-				<p>Whether you need a <strong>2x2 inch</strong> photo for a US Visa, a <strong>35x45 mm</strong> photo for the UK or Schengen area, or a custom size for a specific regional application, our tool has the correct presets built-in. We ensure your photos meet the exact dimensional requirements of official government agencies globally.</p>
-
-				<h3>Smart Layouts for Cheap Printing</h3>
-				<ul>
-				  <li><strong>Multi-Photo Sheets:</strong> Automatically arrange your photos on standard <strong>4x6 inch (10x15 cm)</strong> or <strong>A4 paper</strong>.</li>
-				  <li><strong>Extreme Savings:</strong> Download the grid and print it locally for the cost of a single standard print.</li>
-				  <li><strong>AI Background Swap:</strong> Instantly change your background to white, off-white, or light blue as required by different countries.</li>
-				  <li><strong>Privacy by Design:</strong> Your sensitive biometric photos are never uploaded to our servers. All work happens in your browser.</li>
-				</ul>
-
-				<h3>How to make a Passport Photo Online</h3>
-				<p>1. Upload a clear, front-facing portrait.<br/>2. Select your country or target dimension preset.<br/>3. Align your face within the digital framing guides.<br/>4. Choose your background color and print sheet layout.<br/>5. Download and print your professional results instantly.</p>
+				<p>Generate professional passport photos meeting global official standards instantly in your browser.</p>
 			</SEOContent>
 
 			<FAQ
 				items={[
-					{ q: "What is the official passport photo size for India?", a: "The standard size is 3.5 x 4.5 cm (35x45 mm). Our tool provides a dedicated India Passport preset that follows these official guidelines perfectly." },
-					{ q: "How can I print my passport photo?", a: "After generating the photo, select the '4x6 in' or 'A4 Sheet' print layout. This will arrange multiple photos on a single page, ready for you to print at any local studio or at home." },
-					{ q: "Is this tool free for government exam photos?", a: "Yes, 100% free. It is designed to help students and applicants create photos for SSC, Bank, and Railway exams without needing professional software." }
+					{ q: "What is the official passport photo size for India?", a: "The standard size is 35x45 mm." },
+					{ q: "How can I print my passport photo?", a: "Select the '4x6 in' or 'A4 Sheet' print layout." }
 				]}
 			/>
 		</>

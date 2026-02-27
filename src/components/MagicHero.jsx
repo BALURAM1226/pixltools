@@ -28,6 +28,7 @@ const MagicHero = () => {
                     <div className="orbit-item item-mid-1">📏</div>
                     <div className="orbit-item item-mid-2">🔡</div>
                     <div className="orbit-item item-mid-3">📊</div>
+                    <div className="orbit-item item-hash">🏷️</div>
                 </div>
 
                 {/* Inner Orbit - Core Utility */}

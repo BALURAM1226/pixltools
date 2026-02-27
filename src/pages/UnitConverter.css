@@ -1,0 +1,132 @@
+.unit-converter {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+}
+
+.uc-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2xl);
+    padding: 40px;
+    box-shadow: var(--shadow-2xl);
+    margin-top: 30px;
+}
+
+.uc-modes-wrapper {
+    margin-bottom: 40px;
+}
+
+.uc-modes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    background: var(--bg-base);
+    padding: 12px;
+    border-radius: 20px;
+}
+
+.uc-modes button {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.uc-modes button.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px var(--accent-dim);
+}
+
+.uc-modes button:not(.active):hover {
+    background: var(--bg-surface);
+    color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.uc-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.uc-input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.uc-input-box label {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+.uc-input-box input {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.uc-input-box input.readonly {
+    background: var(--bg-surface);
+    cursor: default;
+}
+
+.uc-input-box select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.uc-divider {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.uc-history {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.uc-history p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .uc-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .uc-divider {
+        transform: rotate(90deg);
+        height: 40px;
+        margin: 0;
+    }
+
+    .uc-modes {
+        width: 100%;
+    }
+}

@@ -66,65 +66,85 @@ export default function QRCodeGenerator() {
             />
 
             <ToolGrid>
-                <Panel title="Configuration" className="grid-left">
-                    <Control label="Content (URL or Text)">
+                <Panel title="QR Data & Stylings" className="grid-left">
+                    <Control label="QR Content (URL or Text)" id="qr-content">
                         <textarea
-                            className="qr-input"
+                            id="qr-content"
+                            className="modern-input"
+                            style={{ minHeight: '100px', resize: 'vertical' }}
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
-                            placeholder="Enter link or text here..."
+                            placeholder="Enter link, text, or data here..."
+                            aria-label="Target text or URL for QR code"
                         />
                     </Control>
 
-                    <Control label="QR Code Color">
-                        <input
-                            type="color"
-                            className="color-picker"
-                            value={fgColor}
-                            onChange={(e) => setFgColor(e.target.value)}
+                    <div className="settings-row" style={{ marginTop: 20 }}>
+                        <Control label="Pattern Color" id="qr-color">
+                            <div className="color-input-wrap">
+                                <input
+                                    id="qr-color"
+                                    type="color"
+                                    value={fgColor}
+                                    onChange={(e) => setFgColor(e.target.value)}
+                                    aria-label="Pick QR code pattern color"
+                                />
+                                <span className="custom-hex-code" aria-hidden="true">{fgColor}</span>
+                            </div>
+                        </Control>
+                    </div>
+
+                    <Control label="Resolution (Output)" id="qr-size">
+                        <Slider
+                            id="qr-size"
+                            label="Output image resolution"
+                            min={128}
+                            max={2048}
+                            step={64}
+                            value={size}
+                            onChange={setSize}
+                            formatValue={v => `${v}×${v} px`}
                         />
                     </Control>
 
-                    <Slider
-                        label={`Size: ${size}px`}
-                        min={128}
-                        max={2048}
-                        step={64}
-                        value={size}
-                        onChange={setSize}
-                    />
-
-                    <Select
-                        label="Correction Level (Resilience)"
-                        value={level}
-                        options={[
-                            { value: 'L', label: 'Low (7%)' },
-                            { value: 'M', label: 'Medium (15%)' },
-                            { value: 'Q', label: 'Quartile (25%)' },
-                            { value: 'H', label: 'High (30%) - Better for logos' },
-                        ]}
-                        onChange={setLevel}
-                    />
+                    <Control label="Correction Level (Resilience)" id="qr-level">
+                        <Select
+                            id="qr-level"
+                            label="Error correction level"
+                            value={level}
+                            options={[
+                                { value: 'L', label: 'Low (7%)' },
+                                { value: 'M', label: 'Medium (15%)' },
+                                { value: 'Q', label: 'Quartile (25%)' },
+                                { value: 'H', label: 'High (30%) - Better for logos' },
+                            ]}
+                            onChange={setLevel}
+                        />
+                    </Control>
 
                     <div className="logo-section">
-                        <Control label="Brand Logo Overlay">
+                        <Control label="Brand Logo Overlay" id="logo-file">
                             <div className="logo-group">
                                 <input type="file" id="logo-file" accept="image/*" onChange={handleLogoUpload} hidden />
-                                <label htmlFor="logo-file" className="logo-upload-trigger">
+                                <label htmlFor="logo-file" className="logo-upload-trigger" role="button" tabIndex="0">
                                     {logoBase64 ? '✨ Change Logo' : '📁 Upload Logo'}
                                 </label>
                                 {logoBase64 && (
-                                    <button className="logo-remove-btn" onClick={() => setLogoBase64(null)} title="Remove Logo">✕</button>
+                                    <button className="logo-remove-btn" onClick={() => setLogoBase64(null)} title="Remove Logo" aria-label="Remove logo overlay">✕</button>
                                 )}
                             </div>
                         </Control>
 
                         {logoBase64 && (
-                            <Slider
-                                label={`Logo Scale: ${logoPercentage}%`}
-                                min={10} max={35} value={logoPercentage}
-                                onChange={setLogoPercentage}
-                            />
+                            <Control label={`Logo Scale: ${logoPercentage}%`} id="logo-scale">
+                                <Slider
+                                    id="logo-scale"
+                                    label="Logo display scale"
+                                    min={10} max={35} value={logoPercentage}
+                                    onChange={setLogoPercentage}
+                                    formatValue={v => `${v}%`}
+                                />
+                            </Control>
                         )}
                     </div>
                 </Panel>

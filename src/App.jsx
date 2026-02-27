@@ -14,6 +14,11 @@ const ImageResizer = lazy(() => import('./pages/ImageResizer'));
 const Base64Converter = lazy(() => import('./pages/Base64Converter'));
 const OCR = lazy(() => import('./pages/OCR'));
 const QRCodeGenerator = lazy(() => import('./pages/QRCodeGenerator'));
+const JSONFormatter = lazy(() => import('./pages/JSONFormatter'));
+const PasswordGenerator = lazy(() => import('./pages/PasswordGenerator'));
+const UnitConverter = lazy(() => import('./pages/UnitConverter'));
+const SecretKeyGenerator = lazy(() => import('./pages/SecretKeyGenerator'));
+const HashtagGenerator = lazy(() => import('./pages/HashtagGenerator'));
 
 /* Legal & Info Pages */
 const About = lazy(() => import('./pages/About'));
@@ -24,11 +29,15 @@ const Disclaimer = lazy(() => import('./pages/Disclaimer'));
 
 function PageLoader() {
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center',
-      justifyContent: 'center', minHeight: '60vh', gap: 16, color: 'var(--text-muted)'
-    }}>
-      <div className="spinner spinner-lg" />
+    <div
+      role="status"
+      aria-live="polite"
+      style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        justifyContent: 'center', minHeight: '60vh', gap: 16, color: 'var(--text-muted)'
+      }}
+    >
+      <div className="spinner spinner-lg" aria-hidden="true" />
       <span style={{ fontSize: '0.9rem' }}>Loading tool…</span>
     </div>
   );
@@ -51,6 +60,11 @@ export default function App() {
               <Route path="/base64-converter" element={<Base64Converter />} />
               <Route path="/ocr" element={<OCR />} />
               <Route path="/qr-generator" element={<QRCodeGenerator />} />
+              <Route path="/json-formatter" element={<JSONFormatter />} />
+              <Route path="/password-generator" element={<PasswordGenerator />} />
+              <Route path="/unit-converter" element={<UnitConverter />} />
+              <Route path="/secret-generator" element={<SecretKeyGenerator />} />
+              <Route path="/hashtag-generator" element={<HashtagGenerator />} />
 
               {/* Legal & Info Routes */}
               <Route path="/about" element={<About />} />

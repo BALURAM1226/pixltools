@@ -1,11 +1,12 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import SEO from '../components/SEO';
 import DropZone from '../components/DropZone';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
   ToolHeader, ToolGrid, Panel, Btn,
-  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, AdBanner, FAQ, SEOContent,
+  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, AdBanner, FAQ, SEOContent, TargetSizeControl
 } from '../components/ToolShell';
+import imageCompression from 'browser-image-compression';
 import '../components/ToolShell.css';
 import './BgRemover.css';
 
@@ -24,12 +25,16 @@ function BgRemoverInner() {
 
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [result, setResult] = useState(null);   // data-URL or blob-URL
+  const [result, setResult] = useState(null);
+  const [rawResultBlob, setRawResultBlob] = useState(null); // AI transparent result
+  // data-URL or blob-URL
   const [bgChoice, setBgChoice] = useState('transparent');
   const [customHex, setCustomHex] = useState('#3b82f6');
   const [status, setStatus] = useState(null);
   const [progress, setProgress] = useState(0);
   const [running, setRunning] = useState(false);
+  const [targetSizeEnabled, setTargetSizeEnabled] = useState(false);
+  const [targetSizeKB, setTargetSizeKB] = useState(500);
   const resultBlobRef = useRef(null);
   const resultRef = useRef(null);
 
@@ -41,7 +46,7 @@ function BgRemoverInner() {
     // release old result blob
     if (resultBlobRef.current) { URL.revokeObjectURL(resultBlobRef.current); resultBlobRef.current = null; }
 
-    setFile(f); setResult(null); setStatus(null); setProgress(0);
+    setFile(f); setResult(null); setStatus(null); setProgress(0); setRawResultBlob(null);
     const reader = new FileReader();
     reader.onload = e => setPreview(e.target.result);
     reader.onerror = () => toast('Could not read file.', 'error');
@@ -72,23 +77,32 @@ function BgRemoverInner() {
         },
       });
 
-      setProgress(90);
-      setStatus({ type: 'processing', msg: 'Applying background…' });
+      setRawResultBlob(resultBlob); // Store for live updates
+    } catch (err) {
+      console.error('[BgRemover AI Error]', err);
+      setStatus({ type: 'error', msg: `AI Error: ${err.message}` });
+      toast('Background removal failed', 'error');
+      setRunning(false);
+    }
+  }, [file, running, toast]);
 
+  /* ── composite & compress ─────────────────────────────── */
+  const applyFinalSettings = useCallback(async () => {
+    if (!rawResultBlob) return;
+    setRunning(true);
+    try {
       // Effective background colour
       const effectiveBg = bgChoice === '__custom__' ? customHex : bgChoice;
+      let workBlob;
 
       if (effectiveBg === 'transparent') {
-        // Serve directly as blob-URL (smaller memory footprint)
-        if (resultBlobRef.current) URL.revokeObjectURL(resultBlobRef.current);
-        resultBlobRef.current = URL.createObjectURL(resultBlob);
-        setResult(resultBlobRef.current);
+        workBlob = rawResultBlob;
       } else {
         // Composite onto a coloured canvas
         const img = new Image();
-        const tmpUrl = URL.createObjectURL(resultBlob);
+        const tmpUrl = URL.createObjectURL(rawResultBlob);
 
-        await new Promise((resolve, reject) => {
+        workBlob = await new Promise((resolve, reject) => {
           img.onload = () => {
             const canvas = document.createElement('canvas');
             canvas.width = img.naturalWidth;
@@ -98,41 +112,52 @@ function BgRemoverInner() {
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0);
             URL.revokeObjectURL(tmpUrl);
-            setResult(canvas.toDataURL('image/png', 1.0));
-            resolve();
+            canvas.toBlob((b) => resolve(b), 'image/png', 1.0);
           };
           img.onerror = () => { URL.revokeObjectURL(tmpUrl); reject(new Error('Could not composite background')); };
           img.src = tmpUrl;
         });
       }
 
+      // Apply Smart Compression if enabled
+      if (targetSizeEnabled) {
+        setStatus({ type: 'processing', msg: 'Optimizing file size…' });
+        const options = {
+          maxSizeMB: targetSizeKB / 1024,
+          useWebWorker: true,
+          fileType: effectiveBg === 'transparent' ? 'image/png' : 'image/jpeg'
+        };
+        workBlob = await imageCompression(workBlob, options);
+      }
+
+      if (resultBlobRef.current) URL.revokeObjectURL(resultBlobRef.current);
+      resultBlobRef.current = URL.createObjectURL(workBlob);
+      setResult(resultBlobRef.current);
+
       setProgress(100);
-      setStatus({ type: 'success', msg: '✓ Background removed successfully!' });
-      toast('Background removed!', 'success');
-
-      // Auto-scroll to result
-      setTimeout(() => {
-        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 150);
-
+      setStatus({ type: 'success', msg: '✓ Background processed successfully!' });
     } catch (err) {
-      console.error('[BgRemover]', err);
-      const isNetwork = /fetch|network|load/i.test(err.message || '');
-      const msg = isNetwork
-        ? 'Could not download AI model. Check your internet connection and try again.'
-        : `Error: ${err.message || 'Unknown error'}`;
-      setStatus({ type: 'error', msg: `✗ ${msg}` });
-      toast(msg, 'error');
-      setProgress(0);
+      console.error('[BgRemover Apply Error]', err);
+      setStatus({ type: 'error', msg: `Processing Error: ${err.message}` });
     } finally {
       setRunning(false);
     }
-  }, [file, running, bgChoice, customHex, toast]);
+  }, [rawResultBlob, bgChoice, customHex, targetSizeEnabled, targetSizeKB]);
+
+  /* ── auto-process ───────────────────────────────────────── */
+  useEffect(() => {
+    if (!rawResultBlob) return;
+    const timer = setTimeout(() => {
+      applyFinalSettings();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [bgChoice, customHex, targetSizeEnabled, targetSizeKB, rawResultBlob, applyFinalSettings]);
 
   /* ── reset ───────────────────────────────────────────── */
   const reset = useCallback(() => {
     if (resultBlobRef.current) { URL.revokeObjectURL(resultBlobRef.current); resultBlobRef.current = null; }
     setFile(null); setPreview(null); setResult(null);
+    setRawResultBlob(null);
     setStatus(null); setProgress(0); setRunning(false);
   }, []);
 
@@ -220,17 +245,21 @@ function BgRemoverInner() {
         ) : (
           <Panel title="Step 2: Output Background">
             {/* Preset grid */}
-            <div className="bg-grid">
+            <div className="bg-grid" role="radiogroup" aria-label="Select output background">
               {BG_OPTIONS.map(opt => (
                 <button key={opt.id} type="button"
+                  id={`bg-option-${opt.id.replace('#', '')}`}
+                  role="radio"
+                  aria-checked={bgChoice === opt.id}
                   className={`bg-btn ${bgChoice === opt.id ? 'active' : ''}`}
                   onClick={() => setBgChoice(opt.id)}
+                  aria-label={`Change background to ${opt.label}`}
                 >
-                  {opt.checker && <span className="bg-checker-swatch" />}
-                  {opt.hex && <span className="bg-color-swatch" style={{ background: opt.hex }} />}
+                  {opt.checker && <span className="bg-checker-swatch" aria-hidden="true" />}
+                  {opt.hex && <span className="bg-color-swatch" style={{ background: opt.hex }} aria-hidden="true" />}
                   {opt.picker && (
                     <span className="bg-color-swatch" style={{ background: customHex }}
-                      title="Click to pick colour" />
+                      title="Click to pick colour" aria-hidden="true" />
                   )}
                   <span className="bg-btn-label">{opt.label}</span>
                 </button>
@@ -239,22 +268,38 @@ function BgRemoverInner() {
 
             {bgChoice === '__custom__' && (
               <div className="custom-color-row">
-                <label className="custom-label">Custom color:</label>
+                <label className="custom-label" htmlFor="bg-custom-picker">Custom color:</label>
                 <input
+                  id="bg-custom-picker"
                   type="color"
                   value={customHex}
                   onChange={e => setCustomHex(e.target.value)}
                   className="custom-picker"
+                  aria-label="Pick custom background color"
                 />
-                <span className="custom-hex">{customHex}</span>
+                <span className="custom-hex" aria-hidden="true">{customHex}</span>
               </div>
             )}
 
-            <Btn onClick={removeBg} loading={running} disabled={running}>
-              ✂️ Remove Background Now
-            </Btn>
-            <StatusBar status={status} />
-            {running && <ProgressBar value={progress} />}
+            <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+              <TargetSizeControl
+                enabled={targetSizeEnabled}
+                onToggle={setTargetSizeEnabled}
+                value={targetSizeKB}
+                onChange={setTargetSizeKB}
+                min={Math.max(5, Math.round((file?.size || 1024) / 1024 / 100))}
+                max={Math.round((file?.size || 0) / 1024) || 10240}
+                step={5}
+              />
+            </div>
+
+            <div className="bg-action-wrap" style={{ marginTop: 24 }}>
+              <Btn onClick={removeBg} loading={running} disabled={running} aria-label="Start AI Background Removal">
+                🪄 Remove Background Now
+              </Btn>
+              <StatusBar status={status} />
+              {running && <ProgressBar value={progress} label="Removing background" />}
+            </div>
           </Panel>
         )}
 
@@ -313,7 +358,7 @@ function BgRemoverInner() {
         </ul>
 
         <h3>How to Remove Background from Image Online</h3>
-        <p>1. Upload your photo (JPG, PNG, or WebP).<br/>2. Click "Remove Background Now" to start the AI analysis.<br/>3. Choose a transparent background or select a custom color.<br/>4. Download your professional PNG result.</p>
+        <p>1. Upload your photo (JPG, PNG, or WebP).<br />2. Click "Remove Background Now" to start the AI analysis.<br />3. Choose a transparent background or select a custom color.<br />4. Download your professional PNG result.</p>
       </SEOContent>
 
       <FAQ items={[

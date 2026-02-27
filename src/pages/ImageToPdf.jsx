@@ -5,7 +5,7 @@ import jsPDF from 'jspdf';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
   ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn,
-  ResetBtn, StatusBar, ProgressBar, InfoChips, PreviewBox, AdBanner, FAQ, SEOContent,
+  ResetBtn, StatusBar, ProgressBar, InfoChips, PreviewBox, AdBanner, FAQ, SEOContent, TargetSizeControl
 } from '../components/ToolShell';
 import '../components/ToolShell.css';
 import './ImageToPdf.css';
@@ -33,6 +33,8 @@ function ImageToPdfInner() {
   const [orientation, setOrientation] = useState('portrait');
   const [margin, setMargin] = useState(10);
   const [quality, setQuality] = useState(88);
+  const [targetSizeEnabled, setTargetSizeEnabled] = useState(false);
+  const [targetSizeKB, setTargetSizeKB] = useState(2048);
   const [status, setStatus] = useState(null);
   const [progress, setProgress] = useState(0);
   const [running, setRunning] = useState(false);
@@ -120,6 +122,13 @@ function ImageToPdfInner() {
       const docW = pdf.internal.pageSize.getWidth();
       const docH = pdf.internal.pageSize.getHeight();
 
+      let effectiveQuality = quality;
+      if (targetSizeEnabled) {
+        const totalInputSize = images.reduce((a, img) => a + img.size, 0) / 1024;
+        const ratio = Math.min(0.9, targetSizeKB / totalInputSize);
+        effectiveQuality = Math.max(10, Math.round(90 * ratio));
+      }
+
       for (let i = 0; i < images.length; i++) {
         setProgress(10 + Math.round((i / images.length) * 82));
         setStatus({ type: 'processing', msg: `Processing page ${i + 1} of ${images.length}…` });
@@ -132,7 +141,7 @@ function ImageToPdfInner() {
         canvas.height = img.naturalHeight;
         canvas.getContext('2d').drawImage(img, 0, 0);
 
-        const dataUrl = canvas.toDataURL('image/jpeg', quality / 100);
+        const dataUrl = canvas.toDataURL('image/jpeg', effectiveQuality / 100);
 
         const m = Math.max(0, margin);
         const maxW = docW - m * 2;
@@ -234,6 +243,19 @@ function ImageToPdfInner() {
                   </div>
                 ))}
               </div>
+
+              <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+                <TargetSizeControl
+                  enabled={targetSizeEnabled}
+                  onToggle={setTargetSizeEnabled}
+                  value={targetSizeKB}
+                  onChange={setTargetSizeKB}
+                  min={Math.max(20, Math.round(images.reduce((s, img) => s + img.size, 0) / 1024 / 100))}
+                  max={Math.round(images.reduce((s, img) => s + img.size, 0) / 1024) || 20480}
+                  step={50}
+                />
+              </div>
+
               <InfoChips items={[
                 { label: 'Total Pages', value: images.length },
                 { label: 'Total Size', value: fmtBytes(totalBytes) },
@@ -344,7 +366,7 @@ function ImageToPdfInner() {
         </ul>
 
         <h3>How to Convert Images to PDF Online Free</h3>
-        <p>1. Drag and drop your images into the upload area above.<br/>2. Reorder the pages by dragging them into your preferred sequence.<br/>3. Select your desired page layout, orientation, and margins.<br/>4. Click "Combine into PDF" and download your result instantly.</p>
+        <p>1. Drag and drop your images into the upload area above.<br />2. Reorder the pages by dragging them into your preferred sequence.<br />3. Select your desired page layout, orientation, and margins.<br />4. Click "Combine into PDF" and download your result instantly.</p>
       </SEOContent>
 
       <FAQ items={[

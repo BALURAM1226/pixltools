@@ -4,83 +4,158 @@ import SEO from '../components/SEO';
 import MagicHero from '../components/MagicHero';
 import './Home.css';
 
-const TOOLS = [
+const CATEGORIES = [
   {
-    path: '/image-converter',
-    icon: '🔄',
-    title: 'Image Converter',
-    desc: 'Convert between JPG, PNG, WEBP, SVG, GIF, BMP, TIFF, ICO — any format to any format.',
-    tags: ['PNG → JPG', 'SVG → PNG', 'WEBP → JPG', '+20 formats'],
-    color: '#63b3ed',
-    badge: 'NEW',
+    id: 'image-tools',
+    title: 'Image Tools',
+    icon: '🖼️',
+    tools: [
+      {
+        path: '/image-converter',
+        icon: '🔄',
+        title: 'Image Converter',
+        desc: 'Convert between JPG, PNG, WEBP, SVG, GIF, BMP, TIFF, ICO — any format to any format.',
+        tags: ['PNG → JPG', 'SVG → PNG', 'WEBP → JPG'],
+        color: '#63b3ed',
+        badge: 'NEW',
+      },
+      {
+        path: '/image-compressor',
+        icon: '🗜️',
+        title: 'Image Compressor',
+        desc: 'Reduce image file size up to 90% without visible quality loss. Supports batch files.',
+        tags: ['Smart Compress', 'JPG/PNG/WEBP'],
+        color: '#68d391',
+      },
+      {
+        path: '/background-remover',
+        icon: '✂️',
+        title: 'BG Remover',
+        desc: 'AI-powered background removal. Get transparent PNG or replace with any color.',
+        tags: ['AI-powered', 'Transparent PNG'],
+        color: '#f6ad55',
+        badge: 'AI',
+      },
+      {
+        path: '/passport-photo',
+        icon: '🪪',
+        title: 'Passport Photo',
+        desc: 'Convert to official passport size for US, UK, India, EU, China and more.',
+        tags: ['2×2 in', '35×45 mm'],
+        color: '#b794f4',
+      },
+      {
+        path: '/image-resizer',
+        icon: '📏',
+        title: 'Image Resizer',
+        desc: 'Resize images for Instagram, YouTube, LinkedIn or custom dimensions.',
+        tags: ['Social Presets', 'Custom Resize'],
+        color: '#4fd1c5',
+      },
+      {
+        path: '/base64-converter',
+        icon: '🔡',
+        title: 'Base64 Converter',
+        desc: 'Encode images to Base64 strings or decode back. Perfect for developers.',
+        tags: ['Dev Tool', 'Data URIs'],
+        color: '#a0aec0',
+      },
+    ]
   },
   {
-    path: '/passport-photo',
-    icon: '🪪',
-    title: 'Passport Photo',
-    desc: 'Convert to official passport size for US, UK, India, EU, China, Schengen and more.',
-    tags: ['2×2 inch', '35×45 mm', '7 formats'],
-    color: '#b794f4',
-  },
-  {
-    path: '/image-to-pdf',
+    id: 'pdf-tools',
+    title: 'PDF Tools',
     icon: '📄',
-    title: 'Image to PDF',
-    desc: 'Combine multiple images into a single PDF. Choose page size, orientation and margins.',
-    tags: ['Multi-page', 'A4/Letter', 'Reorder pages'],
-    color: '#f687b3',
+    tools: [
+      {
+        path: '/image-to-pdf',
+        icon: '📄',
+        title: 'Image to PDF',
+        desc: 'Combine multiple images into a single PDF. Choose page size and orientation.',
+        tags: ['Multi-page', 'A4/Letter', 'Reorder'],
+        color: '#f687b3',
+      },
+    ]
   },
   {
-    path: '/image-compressor',
-    icon: '🗜️',
-    title: 'Image Compressor',
-    desc: 'Reduce image file size up to 90% without visible quality loss. Supports batch files.',
-    tags: ['Up to 90% off', 'JPG/PNG/WEBP', 'Batch mode'],
-    color: '#68d391',
-  },
-  {
-    path: '/background-remover',
-    icon: '✂️',
-    title: 'BG Remover',
-    desc: 'AI-powered background removal. Get transparent PNG or replace with any color.',
-    tags: ['AI-powered', 'Transparent PNG', 'Custom BG'],
-    color: '#f6ad55',
-    badge: 'AI',
-  },
-  {
-    path: '/image-resizer',
-    icon: '📏',
-    title: 'Image Resizer',
-    desc: 'Resize images for Instagram, YouTube, LinkedIn or custom dimensions with quality control.',
-    tags: ['Social Presets', 'Custom Resize', 'WebP/PNG/JPG'],
-    color: '#4fd1c5',
-  },
-  {
-    path: '/base64-converter',
-    icon: '🔡',
-    title: 'Base64 Converter',
-    desc: 'Encode images to Base64 strings or decode them back. Perfect for developer integration.',
-    tags: ['Dev Tool', 'Real-time', 'Data URIs'],
-    color: '#a0aec0',
-  },
-  {
-    path: '/ocr',
+    id: 'ocr-tools',
+    title: 'OCR Tools',
     icon: '🔍',
-    title: 'OCR Scanner',
-    desc: 'Extract text from images, documents, and receipts instantly. 100% private and accurate.',
-    tags: ['Image to Text', 'Document Scan', 'PNG/JPG/SVG'],
-    color: '#ed64a6',
-    badge: 'HOT',
+    tools: [
+      {
+        path: '/ocr',
+        icon: '🔍',
+        title: 'Smart OCR Scanner',
+        desc: 'Extract text from images & scanned PDFs instantly. 100% private and accurate.',
+        tags: ['Image to Text', 'Scanned PDF', 'No Upload'],
+        color: '#ed64a6',
+        badge: 'HOT',
+      },
+    ]
   },
   {
-    path: '/qr-generator',
-    icon: '📱',
-    title: 'QR Code Expert',
-    desc: 'Generate professional QR codes with custom colors and logos. High-res output for print.',
-    tags: ['Custom Colors', 'Add Logo', 'High Res'],
-    color: '#ed8936',
-    badge: 'NEW',
+    id: 'other-tools',
+    title: 'Essential Utilities',
+    icon: '🛠️',
+    tools: [
+      {
+        path: '/qr-generator',
+        icon: '📱',
+        title: 'QR Code Expert',
+        desc: 'Generate professional QR codes with custom colors and logos for print.',
+        tags: ['Custom Colors', 'Add Logo'],
+        color: '#ed8936',
+        badge: 'NEW',
+      },
+      {
+        path: '/json-formatter',
+        icon: '📜',
+        title: 'JSON Formatter',
+        desc: 'Beautify, validate, and minify your JSON data with ease.',
+        tags: ['Validate', 'Beautify'],
+        color: '#4299e1',
+      },
+      {
+        path: '/password-generator',
+        icon: '🔐',
+        title: 'Password Generator',
+        desc: 'Create ultra-secure, random passwords with custom settings.',
+        tags: ['Custom Length', 'High Entropy'],
+        color: '#48bb78',
+      },
+      {
+        path: '/unit-converter',
+        icon: '⚖️',
+        title: 'Unit Converter',
+        desc: 'Convert Length, Weight, and Temp units instantly.',
+        tags: ['Precise', 'Fast'],
+        color: '#f6ad55',
+      },
+      {
+        path: '/secret-generator',
+        icon: '🔑',
+        title: 'Secret Key Expert',
+        desc: 'Generate high-entropy keys for JWT, Auth, and Encryption.',
+        tags: ['JWT Ready', 'HEX/Base64'],
+        color: '#ed64a6',
+      },
+    ]
   },
+  {
+    id: 'social-tools',
+    title: 'Social Media Tools',
+    icon: '💬',
+    tools: [
+      {
+        path: '/hashtag-generator',
+        icon: '🏷️',
+        title: 'Hashtag Generator',
+        desc: 'Generate viral hashtags to boost your social media reach.',
+        tags: ['Trending', 'Viral'],
+        color: '#38b2ac',
+      }
+    ]
+  }
 ];
 
 const WHY = [
@@ -108,7 +183,7 @@ export default function Home() {
           "description": "ilovetoolhub.com is a free online toolkit offering powerful image and PDF tools, including conversion, compression, background removal (BG Remover), editing, OCR scanner, and other utility features. No signup required, easy to use, and accessible from any device.",
           "mainEntity": {
             "@type": "ItemList",
-            "itemListElement": TOOLS.map((t, i) => ({
+            "itemListElement": CATEGORIES.flatMap(cat => cat.tools).map((t, i) => ({
               "@type": "ListItem",
               "position": i + 1,
               "item": {
@@ -149,7 +224,7 @@ export default function Home() {
                 <Link to="/background-remover" className="cta-secondary">Remove Background →</Link>
               </div>
               <div className="hero-stats">
-                {[['100%', 'Free'], ['0', 'Uploads'], ['8', 'Tools'], ['Private', 'Processing']].map(([val, label]) => (
+                {[['100%', 'Free'], ['0', 'Uploads'], ['14', 'Tools'], ['Private', 'Processing']].map(([val, label]) => (
                   <div key={label} className="hero-stat">
                     <span className="hs-val">{val}</span>
                     <span className="hs-label">{label}</span>
@@ -164,30 +239,38 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Tools Grid */}
+        {/* Tools Section */}
         <section className="tools-section">
-          <div className="section-head">
-            <h2 className="section-title">Utility Toolkit</h2>
-            <p className="section-sub">Free, private, and powerful tools for everyone.</p>
-          </div>
-          <div className="tools-grid">
-            {TOOLS.map(t => (
-              <Link key={t.path} to={t.path} className="tool-card" style={{ '--c': t.color }}>
-                <div className="tc-top">
-                  <div className="tc-icon">{t.icon}</div>
-                  {t.badge && <span className="tc-badge">{t.badge}</span>}
-                </div>
-                <h3 className="tc-title">{t.title}</h3>
-                <p className="tc-desc">{t.desc}</p>
-                <div className="tc-tags">
-                  {t.tags.map(tag => <span key={tag} className="tc-tag">{tag}</span>)}
-                </div>
-                <div className="tc-arrow">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {CATEGORIES.map(category => (
+            <div key={category.id} className="category-group" id={category.id}>
+              <div className="section-head">
+                <h2 className="section-title">
+                  <span className="section-title-icon">{category.icon}</span>
+                  {category.title}
+                </h2>
+                <div className="title-underline" />
+              </div>
+
+              <div className="tools-grid">
+                {category.tools.map(t => (
+                  <Link key={t.path} to={t.path} className="tool-card" style={{ '--c': t.color }}>
+                    <div className="tc-top">
+                      <div className="tc-icon">{t.icon}</div>
+                      {t.badge && <span className="tc-badge">{t.badge}</span>}
+                    </div>
+                    <h3 className="tc-title">{t.title}</h3>
+                    <p className="tc-desc">{t.desc}</p>
+                    <div className="tc-tags">
+                      {t.tags.map(tag => <span key={tag} className="tc-tag">{tag}</span>)}
+                    </div>
+                    <div className="tc-arrow">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
         </section>
 
         {/* Why Section */}

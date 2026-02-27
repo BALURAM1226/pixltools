@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import SEO from '../components/SEO';
 import imageCompression from 'browser-image-compression';
 import DropZone from '../components/DropZone';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
   ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn,
-  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, InfoChips, AdBanner, FAQ, SEOContent,
+  DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox, InfoChips, AdBanner, FAQ, SEOContent, TargetSizeControl
 } from "../components/ToolShell";
 import '../components/ToolShell.css';
 import './ImageCompressor.css';
@@ -19,10 +19,7 @@ function fmtBytes(b) {
   return `${(b / (1024 * 1024)).toFixed(2)} MB`;
 }
 
-function sizeLabelMB(mb) {
-  if (mb < 1) return `${(mb * 1024).toFixed(0)} KB`;
-  return `${mb % 1 === 0 ? mb : mb.toFixed(1)} MB`;
-}
+
 
 const FORMAT_OPTIONS = [
   { value: 'image/jpeg', label: 'JPEG – Smallest, lossy', ext: 'jpg' },
@@ -151,14 +148,23 @@ function ImageCompressorInner() {
       }, 150);
 
     } catch (err) {
-      const msg = err?.message || 'Unknown compression error';
-      setStatus({ type: 'error', msg: `Error: ${msg}` });
-      toast(msg, 'error');
+      console.error(err);
+      setStatus({ type: 'error', msg: `✗ ${err.message}` });
+      toast(err.message, 'error');
       setProgress(0);
     } finally {
       setIsRunning(false);
     }
   }, [file, isRunning, maxSizeMB, maxDim, quality, outputFmt, origSize, toast]);
+
+  /* ── auto-process ───────────────────────────────────────── */
+  useEffect(() => {
+    if (!file) return;
+    const timer = setTimeout(() => {
+      compress();
+    }, 600); // 600ms debounce
+    return () => clearTimeout(timer);
+  }, [maxSizeMB, maxDim, quality, outputFmt, file, compress]);
 
   /* ── reset ────────────────────────────────────────────── */
   const reset = useCallback(() => {
@@ -186,12 +192,12 @@ function ImageCompressorInner() {
   /* ── render ───────────────────────────────────────────── */
   return (
     <>
-            <SEO
-                title="Compress Image to 50KB or 100KB Online – Free Tool Hub"
-                description="Reduce image size to 50KB, 100KB, or 200KB instantly. Perfect for official applications and document portals globally. 100% private and secure."
-                keywords="compress image to 50kb online, reduce image size to 100kb, photo size reducer, official document compressor, free online image compressor"
-                canonicalPath="/image-compressor"
-            />
+      <SEO
+        title="Compress Image to 50KB or 100KB Online – Free Tool Hub"
+        description="Reduce image size to 50KB, 100KB, or 200KB instantly. Perfect for official applications and document portals globally. 100% private and secure."
+        keywords="compress image to 50kb online, reduce image size to 100kb, photo size reducer, official document compressor, free online image compressor"
+        canonicalPath="/image-compressor"
+      />
 
       <ToolHeader
         title="Image"
@@ -258,38 +264,60 @@ function ImageCompressorInner() {
         ) : (
           <Panel title="Step 2: Compression Settings">
             <div className="settings-scroll">
-              <Control label="Target Max Size" hint={sizeLabelMB(maxSizeMB)}>
-                <Slider min={0.05} max={20} step={0.05} value={maxSizeMB} onChange={setMaxSizeMB} formatValue={sizeLabelMB} />
-              </Control>
+              <div style={{ marginBottom: 20 }}>
+                <TargetSizeControl
+                  enabled={true}
+                  onToggle={() => { }}
+                  value={maxSizeMB * 1024}
+                  onChange={(kb) => setMaxSizeMB(kb / 1024)}
+                  min={Math.max(5, Math.round(origSize / 1024 / 100))}
+                  max={Math.round(origSize / 1024)}
+                  step={5}
+                />
+              </div>
 
-              <Control label="Max Width / Height" hint={`${maxDim} px`}>
-                <Slider min={100} max={8000} step={50} value={maxDim} onChange={v => setMaxDim(Math.round(v))} formatValue={v => `${v} px`} />
+              <Control label="Max Width / Height" hint={`${maxDim} px`} id="target-dim">
+                <Slider
+                  id="target-dim"
+                  label="Target maximum image dimension in pixels"
+                  min={100} max={8000} step={50} value={maxDim} onChange={v => setMaxDim(Math.round(v))} formatValue={v => `${v} px`}
+                />
               </Control>
 
               <div className="settings-row">
-                <Control label="Output Format">
-                  <Select value={outputFmt} onChange={setOutputFmt} options={FORMAT_OPTIONS.map(f => ({ value: f.value, label: f.label }))} />
+                <Control label="Output Format" id="comp-fmt">
+                  <Select
+                    id="comp-fmt"
+                    label="Select compressed output format"
+                    value={outputFmt}
+                    onChange={setOutputFmt}
+                    options={FORMAT_OPTIONS.map(f => ({ value: f.value, label: f.label }))}
+                  />
                 </Control>
 
                 {outputFmt !== 'image/png' && (
-                  <Control label="Quality" hint={`${quality}%`}>
-                    <Slider min={1} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${v}%`} />
+                  <Control label="Quality" hint={`${quality}%`} id="comp-quality">
+                    <Slider
+                      id="comp-quality"
+                      label="Output image quality"
+                      min={1} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${v}%`}
+                    />
                   </Control>
                 )}
               </div>
 
-              <div className="preset-row">
-                <span className="preset-label">Direct presets:</span>
-                <button type="button" className="preset-chip" onClick={() => { setMaxSizeMB(0.1); setQuality(70); setMaxDim(1280); setOutputFmt('image/jpeg'); }}>Web Thumb</button>
-                <button type="button" className="preset-chip" onClick={() => { setMaxSizeMB(0.5); setQuality(80); setMaxDim(1920); setOutputFmt('image/jpeg'); }}>Social</button>
-                <button type="button" className="preset-chip" onClick={() => { setMaxSizeMB(3); setQuality(92); setMaxDim(3840); setOutputFmt('image/jpeg'); }}>High Qual</button>
+              <div className="preset-row" role="group" aria-label="Compression presets">
+                <span className="preset-label" id="presets-label">Direct presets:</span>
+                <button type="button" className="preset-chip" onClick={() => { setMaxSizeMB(0.1); setQuality(70); setMaxDim(1280); setOutputFmt('image/jpeg'); }} aria-describedby="presets-label">Web Thumb</button>
+                <button type="button" className="preset-chip" onClick={() => { setMaxSizeMB(0.5); setQuality(80); setMaxDim(1920); setOutputFmt('image/jpeg'); }} aria-describedby="presets-label">Social</button>
+                <button type="button" className="preset-chip" onClick={() => { setMaxSizeMB(3); setQuality(92); setMaxDim(3840); setOutputFmt('image/jpeg'); }} aria-describedby="presets-label">High Qual</button>
               </div>
 
-              <Btn onClick={compress} loading={isRunning} disabled={isRunning}>
+              <Btn onClick={compress} loading={isRunning} disabled={isRunning} aria-label="Start Image Compression">
                 🗜️ Start Compression
               </Btn>
               <StatusBar status={status} />
-              {isRunning && <ProgressBar value={progress} />}
+              {isRunning && <ProgressBar value={progress} label="Compressing images" />}
             </div>
           </Panel>
         )}
@@ -323,7 +351,7 @@ function ImageCompressorInner() {
 
       <SEOContent title="How to Compress Images for Official Portals Online">
         <p>Reducing image file size is essential for fast websites, official document portals, and application forms. iLoveToolHub allows you to compress images to specific sizes like 50KB, 100KB, or 200KB without losing critical quality.</p>
-        
+
         <h3>Perfect for Global Application Portals</h3>
         <p>Many official and educational portals require photos to be under specific file limits (e.g., under 50KB or 100KB). Our intelligent algorithm analyzes your image and applies the perfect balance of resolution and compression to meet these strict requirements.</p>
 

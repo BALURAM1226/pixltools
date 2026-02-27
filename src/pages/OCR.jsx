@@ -12,6 +12,7 @@ import {
     Btn,
     ResetBtn,
     StatusBar,
+    ProgressBar,
     PreviewBox,
     AdBanner,
     FAQ,
@@ -187,7 +188,7 @@ function OCRInner() {
                 title="Image to Text Converter Online Free – OCR Hub"
                 description="Extract text from images (JPG, PNG) and PDF documents online for free. Highly accurate OCR supporting English and Hindi. 100% private and secure scan."
                 keywords="image to text converter online free, ocr hub, extract text from image, scan image to text hindi, free photo to text converter"
-                canonicalPath="/ocr-image-to-text"
+                canonicalPath="/ocr"
             />
 
             <ToolHeader
@@ -225,8 +226,10 @@ function OCRInner() {
                         </div>
                     ) : (
                         <div className="ocr-controls">
-                            <Control label="Document Language">
+                            <Control label="Document Language" id="ocr-lang">
                                 <Select
+                                    id="ocr-lang"
+                                    label="Select document language"
                                     value={lang}
                                     onChange={setLang}
                                     options={LANGUAGES}
@@ -241,14 +244,19 @@ function OCRInner() {
                                 </ul>
                             </div>
 
-                            <Btn onClick={process} loading={running} disabled={running || resultText.length > 5}>
+                            <Btn
+                                onClick={process}
+                                loading={running}
+                                disabled={running || (resultText.length > 5 && resultText !== "No readable text found.")}
+                                aria-label="Extract text from document"
+                            >
                                 🔍 Extract Text from Image/Page
                             </Btn>
 
                             {running && (
                                 <div className="ocr-progress-container">
-                                    <div className="ocr-progress-bar" style={{ width: `${progress}%` }}></div>
-                                    <span className="ocr-progress-label">{progress}% Complete</span>
+                                    <ProgressBar value={progress} label="Analyzing document text" />
+                                    <span className="ocr-progress-label" aria-live="polite">{progress}% Complete</span>
                                 </div>
                             )}
 
@@ -262,7 +270,9 @@ function OCRInner() {
                 <Panel title="Step 3: Extracted Text">
                     <div ref={resultRef} className="ocr-result-layout">
                         <div className="ocr-text-area-wrap">
+                            <label htmlFor="ocr-output" className="sr-only">Extracted Text Result</label>
                             <textarea
+                                id="ocr-output"
                                 className="ocr-textarea"
                                 value={resultText}
                                 readOnly
@@ -271,12 +281,12 @@ function OCRInner() {
                         </div>
 
                         <div className="ocr-actions">
-                            <button className="ocr-action-btn copy" onClick={copyToClipboard}>
-                                <span>📋</span> Copy to Clipboard
-                            </button>
-                            <button className="ocr-action-btn download" onClick={downloadTxt}>
-                                <span>📥</span> Download .TXT
-                            </button>
+                            <Btn variant="primary" onClick={copyToClipboard} aria-label="Copy extracted text to clipboard">
+                                📋 Copy to Clipboard
+                            </Btn>
+                            <Btn variant="success" onClick={downloadTxt} aria-label="Download extracted text as TXT file">
+                                📥 Download .TXT
+                            </Btn>
                         </div>
                     </div>
                 </Panel>

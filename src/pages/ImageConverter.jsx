@@ -1,12 +1,13 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import SEO from '../components/SEO';
 import DropZone from '../components/DropZone';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
   ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn,
   DownloadBtn, ResetBtn, StatusBar, ProgressBar, PreviewBox,
-  InfoChips, AdBanner, FAQ,
+  InfoChips, AdBanner, FAQ, TargetSizeControl
 } from '../components/ToolShell';
+import imageCompression from 'browser-image-compression';
 import '../components/ToolShell.css';
 import './ImageConverter.css';
 
@@ -64,10 +65,7 @@ function dataUrlToBlob(dataUrl) {
   return new Blob([arr], { type: mime });
 }
 
-function estimateBytes(dataUrl) {
-  const b64 = dataUrl.split(',')[1] || '';
-  return Math.round((b64.length * 3) / 4) - (b64.endsWith('==') ? 2 : b64.endsWith('=') ? 1 : 0);
-}
+
 
 /* ─── main component ─────────────────────────────────────── */
 function ImageConverterInner() {
@@ -84,6 +82,8 @@ function ImageConverterInner() {
   const [quality, setQuality] = useState(92);     // 1-100
   const [scale, setScale] = useState(100);    // 10-200
   const [icoSize, setIcoSize] = useState(32);
+  const [targetSizeEnabled, setTargetSizeEnabled] = useState(false);
+  const [targetSizeKB, setTargetSizeKB] = useState(500);
 
   // output
   const [result, setResult] = useState(null);  // data-URL
@@ -206,27 +206,36 @@ function ImageConverterInner() {
       setProgress(70);
       setStatus({ type: 'processing', msg: 'Encoding output…' });
 
+      let finalBlob;
       // 4. Encode
-      // For ICO we output as PNG (browsers can't encode .ico natively)
-      const encodeMime = targetFmt === 'image/ico' ? 'image/png' : targetFmt;
-      const lossyFmts = ['image/jpeg', 'image/webp', 'image/avif'];
-      const qualityArg = lossyFmts.includes(encodeMime) ? quality / 100 : undefined;
-
-      let dataUrl;
-      try {
-        dataUrl = canvas.toDataURL(encodeMime, qualityArg);
-      } catch {
-        // AVIF might not be supported — fall back to WebP or JPEG
-        if (encodeMime === 'image/avif') {
-          dataUrl = canvas.toDataURL('image/webp', qualityArg);
-          toast('AVIF not supported in this browser — saved as WebP instead.', 'warning');
-        } else {
-          throw new Error(`Encoding to ${encodeMime} failed in this browser.`);
-        }
+      // Check if Smart Compression (Target Size) is enabled
+      if (targetSizeEnabled) {
+        setStatus({ type: 'processing', msg: 'Optimizing file size…' });
+        // Get initial blob from canvas
+        const initialBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+        const options = {
+          maxSizeMB: targetSizeKB / 1024,
+          maxWidthOrHeight: MAX_OUT_DIM,
+          useWebWorker: true,
+          fileType: targetFmt === 'image/ico' ? 'image/png' : targetFmt,
+          onProgress: (p) => setProgress(70 + (p * 0.25))
+        };
+        finalBlob = await imageCompression(initialBlob, options);
+      } else {
+        const encodeMime = targetFmt === 'image/ico' ? 'image/png' : targetFmt;
+        const lossyFmts = ['image/jpeg', 'image/webp', 'image/avif'];
+        const qualityArg = lossyFmts.includes(encodeMime) ? quality / 100 : undefined;
+        finalBlob = await new Promise(resolve => canvas.toBlob(resolve, encodeMime, qualityArg));
       }
 
+      const dataUrl = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(finalBlob);
+      });
+
       const fmtObj = FORMATS.find(f => f.value === targetFmt) || FORMATS[0];
-      const outBytes = estimateBytes(dataUrl);
+      const outBytes = finalBlob.size;
 
       setResult(dataUrl);
       setResultInfo({ w: outW, h: outH, size: outBytes, ext: fmtObj.ext });
@@ -240,13 +249,23 @@ function ImageConverterInner() {
       }, 150);
 
     } catch (err) {
+      console.error(err);
       setStatus({ type: 'error', msg: `✗ ${err.message}` });
       toast(err.message, 'error');
       setProgress(0);
     } finally {
       setRunning(false);
     }
-  }, [preview, origMime, running, targetFmt, quality, scale, icoSize, toast]);
+  }, [preview, origMime, running, targetFmt, quality, scale, icoSize, targetSizeEnabled, targetSizeKB, toast]);
+
+  /* ── auto-process ───────────────────────────────────────── */
+  useEffect(() => {
+    if (!preview) return;
+    const timer = setTimeout(() => {
+      convert();
+    }, 750);
+    return () => clearTimeout(timer);
+  }, [targetFmt, quality, scale, icoSize, targetSizeEnabled, targetSizeKB, preview, convert]);
 
   /* ── reset ───────────────────────────────────────────── */
   const reset = useCallback(() => {
@@ -359,8 +378,10 @@ function ImageConverterInner() {
         ) : (
           <Panel title="Step 2: Conversion Settings">
             <div className="settings-scroll">
-              <Control label="Output Format">
+              <Control label="Output Format" id="target-fmt">
                 <Select
+                  id="target-fmt"
+                  label="Select target image format"
                   value={targetFmt}
                   onChange={setTargetFmt}
                   options={FORMATS.map(f => ({ value: f.value, label: f.label }))}
@@ -369,27 +390,53 @@ function ImageConverterInner() {
 
               <div className="settings-row">
                 {lossyOutput && (
-                  <Control label="Quality" hint={`${Math.round(quality)}%`}>
-                    <Slider min={1} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${Math.round(v)}%`} />
+                  <Control label="Quality" hint={`${Math.round(quality)}%`} id="quality-slider">
+                    <Slider
+                      id="quality-slider"
+                      label="Output quality"
+                      min={1} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${Math.round(v)}%`}
+                    />
                   </Control>
                 )}
 
                 {targetFmt !== 'image/ico' ? (
-                  <Control label="Scale" hint={outW && outH ? `${outW}×${outH} px` : `${Math.round(scale)}%`}>
-                    <Slider min={10} max={200} step={1} value={scale} onChange={v => setScale(Math.round(v))} formatValue={v => `${Math.round(v)}%`} />
+                  <Control label="Scale" hint={outW && outH ? `${outW}×${outH} px` : `${Math.round(scale)}%`} id="scale-slider">
+                    <Slider
+                      id="scale-slider"
+                      label="Image scale percentage"
+                      min={10} max={200} step={1} value={scale} onChange={v => setScale(Math.round(v))} formatValue={v => `${Math.round(v)}%`}
+                    />
                   </Control>
                 ) : (
-                  <Control label="ICO Size">
-                    <Select value={String(icoSize)} onChange={v => setIcoSize(Number(v))} options={ICO_SIZES.map(s => ({ value: String(s), label: `${s}×${s} px` }))} />
+                  <Control label="ICO Size" id="ico-size">
+                    <Select
+                      id="ico-size"
+                      label="Select ICO dimension"
+                      value={String(icoSize)}
+                      onChange={v => setIcoSize(Number(v))}
+                      options={ICO_SIZES.map(s => ({ value: String(s), label: `${s}×${s} px` }))}
+                    />
                   </Control>
                 )}
               </div>
 
-              <Btn onClick={convert} loading={running} disabled={running}>
+              <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                <TargetSizeControl
+                  enabled={targetSizeEnabled}
+                  onToggle={setTargetSizeEnabled}
+                  value={targetSizeKB}
+                  onChange={setTargetSizeKB}
+                  min={Math.max(5, Math.round((origInfo?.size || 1024) / 1024 / 100))}
+                  max={Math.round((origInfo?.size || 0) / 1024) || 10240}
+                  step={5}
+                />
+              </div>
+
+              <Btn onClick={convert} loading={running} disabled={running} aria-label="Convert and save image">
                 🔄 Convert Image Now
               </Btn>
               <StatusBar status={status} />
-              {running && <ProgressBar value={progress} />}
+              {running && <ProgressBar value={progress} label="Converting image" />}
             </div>
           </Panel>
         )}

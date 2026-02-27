@@ -1,60 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, NavLink } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { AdBanner } from './ToolShell';
+import Fuse from 'fuse.js';
+import {
+  Home, RefreshCw, Shrink, Eraser, UserSquare, Maximize2,
+  Code2, FileText, ScanText, QrCode, ChevronDown,
+  Search, X, ArrowRight, Sun, Moon, Menu, Frown,
+  ShieldCheck, Scale, FileCode, Key,
+  Hash
+} from 'lucide-react';
 import './Layout.css';
 
 /* ── Nav items ──────────────────────────────────────────── */
 const NAV = [
-  { path: '/', label: 'Home', icon: <HomeIcon />, exact: true },
-  { path: '/image-converter', label: 'Image Converter', icon: <ConvertIcon />, badge: 'NEW' },
-  { path: '/background-remover', label: 'BG Remover', icon: <BgIcon />, badge: 'AI' },
-  { path: '/passport-photo', label: 'Passport Photo', icon: <PassportIcon /> },
-  { path: '/image-compressor', label: 'Image Compressor', icon: <CompressIcon /> },
-  { path: '/ocr', label: 'OCR Scanner', icon: <ScanIcon />, badge: 'HOT' },
-  /* Hidden in dropdown on desktop */
-  { path: '/image-to-pdf', label: 'Image to PDF', icon: <PdfIcon /> },
-  { path: '/image-resizer', label: 'Image Resizer', icon: <ResizeIcon /> },
-  { path: '/base64-converter', label: 'Base64 Converter', icon: <B64Icon /> },
-  { path: '/qr-generator', label: 'QR Generator', icon: <QRIcon />, badge: 'NEW' },
+  { path: '/', label: 'Home', icon: <Home size={18} />, exact: true },
+  { path: '/image-converter', label: 'Image Converter', icon: <RefreshCw size={18} />, badge: 'NEW', cat: 'image', color: '#63b3ed' },
+  { path: '/image-compressor', label: 'Image Compressor', icon: <Shrink size={18} />, cat: 'image', color: '#68d391' },
+  { path: '/background-remover', label: 'BG Remover', icon: <Eraser size={18} />, badge: 'AI', cat: 'image', color: '#f6ad55' },
+  { path: '/passport-photo', label: 'Passport Photo', icon: <UserSquare size={18} />, cat: 'image', color: '#b794f4' },
+  { path: '/image-resizer', label: 'Image Resizer', icon: <Maximize2 size={18} />, cat: 'image', color: '#4fd1c5' },
+  { path: '/base64-converter', label: 'Base64 Converter', icon: <Code2 size={18} />, cat: 'image', color: '#a0aec0' },
+  { path: '/image-to-pdf', label: 'Image to PDF', icon: <FileText size={18} />, cat: 'pdf', color: '#f687b3' },
+  { path: '/ocr', label: 'OCR Scanner', icon: <ScanText size={18} />, badge: 'HOT', cat: 'ocr', color: '#ed64a6' },
+  { path: '/qr-generator', label: 'QR Generator', icon: <QrCode size={18} />, badge: 'NEW', cat: 'utility', color: '#ed8936' },
+  { path: '/json-formatter', label: 'JSON Formatter', icon: <FileCode size={18} />, cat: 'utility', color: '#4299e1' },
+  { path: '/password-generator', label: 'Password Gen', icon: <ShieldCheck size={18} />, cat: 'utility', color: '#48bb78' },
+  { path: '/unit-converter', label: 'Unit Converter', icon: <Scale size={18} />, cat: 'utility', color: '#f6ad55' },
+  { path: '/secret-generator', label: 'Secret Key Gen', icon: <Key size={18} />, cat: 'utility', color: '#ed64a6' },
+  { path: '/hashtag-generator', label: 'Hashtag Gen', icon: <Hash size={18} />, cat: 'social', color: '#319795' },
 ];
 
-/* ── SVG Icons ──────────────────────────────────────────── */
-function HomeIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>;
-}
-function ConvertIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 014-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 01-4 4H3" /></svg>;
-}
-function PassportIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="10" r="3" /><path d="M6 21v-1a6 6 0 0112 0v1" /></svg>;
-}
-function PdfIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="9" y1="15" x2="15" y2="15" /></svg>;
-}
-function CompressIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 14 10 14 10 20" /><polyline points="20 10 14 10 14 4" /><line x1="10" y1="14" x2="21" y2="3" /><line x1="3" y1="21" x2="14" y2="10" /></svg>;
-}
-function BgIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M15 9l-6 6M9 9l6 6" /></svg>;
-}
-function ResizeIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 10l5-5 5 5" /><path d="M7 14l5 5 5-5" /><rect x="4" y="4" width="16" height="16" rx="2" /></svg>;
-}
-function B64Icon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" /></svg>;
-}
-function ScanIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7V5a2 2 0 012-2h2" /><path d="M17 3h2a2 2 0 012 2v2" /><path d="M21 17v2a2 2 0 01-2 2h-2" /><path d="M7 21H5a2 2 0 01-2-2v-2" /><line x1="7" y1="8" x2="17" y2="8" /><line x1="7" y1="12" x2="17" y2="12" /><line x1="7" y1="16" x2="13" y2="16" /></svg>;
-}
-function QRIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><path d="M14 14h3" /><path d="M21 14v3" /><path d="M14 17h3" /><path d="M14 21h7" /><path d="M17 14h4" /><path d="M21 17h-3" /><path d="M14 14v7" /></svg>;
-}
-function MenuIcon({ open }) {
-  return open
-    ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-    : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>;
-}
+const NAV_CATEGORIES = [
+  { id: 'image', label: 'Image Tools' },
+  { id: 'pdf', label: 'PDF Tools' },
+  { id: 'ocr', label: 'OCR Tools' },
+  { id: 'utility', label: 'Utilities' },
+  { id: 'social', label: 'Social Media' },
+];
+
 
 /* ── Animated theme toggle button ───────────────────────── */
 function ThemeToggle({ size = 'md' }) {
@@ -69,12 +53,7 @@ function ThemeToggle({ size = 'md' }) {
     >
       <span className="theme-toggle__track">
         <span className={`theme-toggle__thumb ${isDark ? 'thumb--dark' : 'thumb--light'}`}>
-          {isDark
-            ? /* Moon */
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" /></svg>
-            : /* Sun */
-            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-          }
+          {isDark ? <Moon size={12} fill="currentColor" /> : <Sun size={12} fill="currentColor" />}
         </span>
       </span>
       <span className="theme-toggle__label">
@@ -106,11 +85,142 @@ function Logo() {
   );
 }
 
+/* ── Search Component ───────────────────────────────────── */
+function GlobalSearch({ tools }) {
+  const [query, setQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const searchRef = useRef(null);
+  // navigate is available if needed for future click handlers
+  // const navigate = useNavigate();
+
+  // Initialize Fuse.js for fuzzy searching
+  const fuse = useRef(new Fuse(tools, {
+    keys: ['label', 'cat', 'desc'],
+    threshold: 0.35,
+    distance: 100,
+    ignoreLocation: true
+  }));
+
+  const results = query.trim().length > 0
+    ? fuse.current.search(query).map(r => r.item)
+    : [];
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        setQuery('');
+      }
+    };
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="search-container" ref={searchRef}>
+      <div className={`search-input-wrapper ${isOpen ? 'focused' : ''}`}>
+        <Search className="search-icon" size={18} />
+        <input
+          type="text"
+          placeholder="Search tools..."
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setIsOpen(true); }}
+          onFocus={() => setIsOpen(true)}
+        />
+        {query && (
+          <button className="search-clear" onClick={() => { setQuery(''); setIsOpen(false); }}>
+            <X size={14} />
+          </button>
+        )}
+      </div>
+
+      {isOpen && query.trim().length > 0 && (
+        <div className="search-dropdown">
+          {results.length > 0 ? (
+            <div className="search-dropdown-scroll">
+              {results.map(t => (
+                <Link
+                  key={t.path}
+                  to={t.path}
+                  className="search-list-item"
+                  onClick={() => { setQuery(''); setIsOpen(false); }}
+                  style={{ '--c': t.color || 'var(--accent)' }}
+                >
+                  <span className="search-list-icon">{t.icon}</span>
+                  <div className="search-list-info">
+                    <span className="search-list-label">{t.label}</span>
+                    <span className="search-list-cat-pill">{t.cat?.split('-')[0].toUpperCase()}</span>
+                  </div>
+                  <div className="search-list-arrow">
+                    <ArrowRight size={14} />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="search-no-results">
+              <Frown size={32} strokeWidth={1.5} />
+              <p>No tools found matching "<span>{query}</span>"</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Category Dropdown ─────────────────────────────────── */
+function CatDropdown({ category, tools }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div
+      className="cat-dropdown-container"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button className={`cat-dropdown-trigger ${open ? 'active' : ''}`}>
+        {category.label}
+        <ChevronDown size={14} className="dropdown-arrow" />
+      </button>
+
+      {open && (
+        <div className="cat-dropdown-menu">
+          <div className="cat-dropdown-grid">
+            {tools.map(tool => (
+              <Link
+                key={tool.path}
+                to={tool.path}
+                className="cat-dropdown-item"
+                onClick={() => setOpen(false)}
+                style={{ '--c': tool.color || 'var(--accent)' }}
+              >
+                <span className="cat-tool-icon">{tool.icon}</span>
+                <div className="cat-tool-info">
+                  <span className="cat-tool-label">{tool.label} {tool.badge && <span className="cat-tool-badge">{tool.badge}</span>}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── Layout ─────────────────────────────────────────────── */
 export default function Layout({ children }) {
   const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => { setSidebarOpen(false); }, [pathname]);
   useEffect(() => {
@@ -120,62 +230,41 @@ export default function Layout({ children }) {
 
   return (
     <div className="layout">
+      {/* Skip to Content for Screen Readers/Keyboard users */}
+      <a href="#main-content" className="skip-to-content">Skip to Main Content</a>
 
       {/* ── Header ── */}
-      <header className="header">
+      <header className="header" role="banner">
         <div className="header-left">
-          <button className="burger" onClick={() => setSidebarOpen(o => !o)} aria-label="Toggle menu">
-            <MenuIcon open={sidebarOpen} />
+          <button
+            className="burger"
+            onClick={() => setSidebarOpen(o => !o)}
+            aria-label={sidebarOpen ? "Close menu" : "Open menu"}
+            aria-expanded={sidebarOpen}
+          >
+            <Menu size={24} />
           </button>
           <Logo />
         </div>
 
-        <nav className="header-nav">
+        <nav className="header-nav" aria-label="Primary navigation">
+          <NavLink to="/" className={({ isActive }) => `header-nav-link ${isActive ? 'active' : ''}`} end>
+            Home
+          </NavLink>
+
           <div className="header-nav-main">
-            {NAV.slice(1, 6).map(item => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={({ isActive }) => `header-nav-link ${isActive ? 'active' : ''}`}
-              >
-                {item.label}
-                {item.badge && <span className="nav-badge">{item.badge}</span>}
-              </NavLink>
+            {NAV_CATEGORIES.map(cat => (
+              <CatDropdown
+                key={cat.id}
+                category={cat}
+                tools={NAV.filter(t => t.cat === cat.id)}
+              />
             ))}
-          </div>
-
-          <div
-            className="tools-dropdown-container"
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
-            <button className="tools-dropdown-trigger">
-              More Tools
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dropdown-arrow"><polyline points="6 9 12 15 18 9" /></svg>
-            </button>
-
-            {dropdownOpen && (
-              <div className="tools-dropdown-menu">
-                {NAV.slice(6).map(item => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className="dropdown-item"
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    <span className="dropdown-icon">{item.icon}</span>
-                    <div className="dropdown-info">
-                      <span className="dropdown-label">{item.label}</span>
-                      {item.badge && <span className="nav-badge">{item.badge}</span>}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
           </div>
         </nav>
 
         <div className="header-right">
+          <GlobalSearch tools={NAV.filter(n => n.cat)} />
           <ThemeToggle size="md" />
         </div>
       </header>
@@ -190,23 +279,35 @@ export default function Layout({ children }) {
         <div className="sidebar-header">
           <Logo />
           <button className="burger sidebar-close" onClick={() => setSidebarOpen(false)} aria-label="Close menu">
-            <MenuIcon open={true} />
+            <X size={20} />
           </button>
         </div>
 
         <nav className="sidebar-nav">
-          <p className="sidebar-section-label">Tools</p>
-          {NAV.map(item => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.exact}
-              className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            >
-              <span className="sidebar-icon">{item.icon}</span>
-              <span className="sidebar-label">{item.label}</span>
-              {item.badge && <span className="nav-badge">{item.badge}</span>}
-            </NavLink>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+          >
+            <span className="sidebar-icon"><Home size={18} /></span>
+            <span className="sidebar-label">Home</span>
+          </NavLink>
+
+          {NAV_CATEGORIES.map(category => (
+            <div key={category.id} className="sidebar-group">
+              <p className="sidebar-section-label">{category.label}</p>
+              {NAV.filter(item => item.cat === category.id).map(item => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+                >
+                  <span className="sidebar-icon">{item.icon}</span>
+                  <span className="sidebar-label">{item.label}</span>
+                  {item.badge && <span className="nav-badge">{item.badge}</span>}
+                </NavLink>
+              ))}
+            </div>
           ))}
         </nav>
 
@@ -228,7 +329,7 @@ export default function Layout({ children }) {
       </aside>
 
       {/* ── Main content ── */}
-      <main className="main-content">
+      <main className="main-content" id="main-content" tabIndex="-1">
         <div className="layout-horizontal">
           {/* ── Left Ad Sidebar (Desktop) ── */}
           <aside className="side-ad left-ad">

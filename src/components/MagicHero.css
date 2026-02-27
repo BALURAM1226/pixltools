@@ -186,6 +186,12 @@
     transform: translate(-50%, -50%);
 }
 
+.item-hash {
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+}
+
 .item-5 {
     top: 0;
     left: 50%;

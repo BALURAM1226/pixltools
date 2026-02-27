@@ -18,7 +18,9 @@ import {
     AdBanner,
     FAQ,
     SEOContent,
+    TargetSizeControl
 } from "../components/ToolShell";
+import imageCompression from 'browser-image-compression';
 import "../components/ToolShell.css";
 import "./ImageResizer.css";
 
@@ -44,8 +46,11 @@ function ImageResizerInner() {
     const [maintainRatio, setMaintainRatio] = useState(true);
     const [quality, setQuality] = useState(90);
     const [format, setFormat] = useState("image/jpeg");
+    const [targetSizeEnabled, setTargetSizeEnabled] = useState(false);
+    const [targetSizeKB, setTargetSizeKB] = useState(300);
 
     const [originalSize, setOriginalSize] = useState({ w: 0, h: 0 });
+    const [origByteSize, setOrigByteSize] = useState(0);
     const [resultInfo, setResultInfo] = useState({ w: 0, h: 0, size: "" });
 
     const resultRef = useRef(null);
@@ -60,6 +65,7 @@ function ImageResizerInner() {
             const img = new Image();
             img.onload = () => {
                 setOriginalSize({ w: img.width, h: img.height });
+                setOrigByteSize(f.size);
                 setPreview(e.target.result);
                 // Set initial values based on preset
                 const p = PRESETS.find(x => x.id === presetId);
@@ -101,7 +107,7 @@ function ImageResizerInner() {
         }
     };
 
-    const process = async () => {
+    const process = useCallback(async () => {
         if (!preview || running) return;
         setRunning(true);
         setStatus({ type: "processing", msg: "Resizing image..." });
@@ -121,11 +127,30 @@ function ImageResizerInner() {
 
             ctx.drawImage(img, 0, 0, width, height);
 
-            const dataUrl = canvas.toDataURL(format, quality / 100);
+            let finalBlob;
+            if (targetSizeEnabled) {
+                setStatus({ type: "processing", msg: "Optimizing file size..." });
+                const initialBlob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.9));
+                finalBlob = await imageCompression(initialBlob, {
+                    maxSizeMB: targetSizeKB / 1024,
+                    maxWidthOrHeight: Math.max(width, height),
+                    useWebWorker: true,
+                    fileType: format
+                });
+            } else {
+                finalBlob = await new Promise(r => canvas.toBlob(r, format, quality / 100));
+            }
+
+            const dataUrl = await new Promise(r => {
+                const reader = new FileReader();
+                reader.onloadend = () => r(reader.result);
+                reader.readAsDataURL(finalBlob);
+            });
+
             setResult(dataUrl);
 
-            // Estimate size
-            const size = Math.round((dataUrl.length * 3) / 4 / 1024);
+            // Real size
+            const size = Math.round(finalBlob.size / 1024);
             setResultInfo({ w: width, h: height, size: `${size} KB` });
 
             setStatus({ type: "success", msg: "✓ Image resized successfully" });
@@ -140,7 +165,16 @@ function ImageResizerInner() {
         } finally {
             setRunning(false);
         }
-    };
+    }, [preview, running, width, height, targetSizeEnabled, targetSizeKB, format, quality, toast]);
+
+    /* ── auto-process ───────────────────────────────────────── */
+    useEffect(() => {
+        if (!preview) return;
+        const timer = setTimeout(() => {
+            process();
+        }, 800);
+        return () => clearTimeout(timer);
+    }, [preview, process]);
 
     const reset = () => {
         setPreview(null);
@@ -189,8 +223,10 @@ function ImageResizerInner() {
                         </div>
                     ) : (
                         <div className="resizer-controls">
-                            <Control label="Choose Platform Preset">
+                            <Control label="Choose Platform Preset" id="resizer-preset">
                                 <Select
+                                    id="resizer-preset"
+                                    label="Select social media preset"
                                     value={presetId}
                                     onChange={setPresetId}
                                     options={PRESETS.map(p => ({ value: p.id, label: p.label }))}
@@ -198,24 +234,28 @@ function ImageResizerInner() {
                             </Control>
 
                             <div className="dim-grid">
-                                <Control label="Width (px)">
+                                <Control label="Width (px)" id="resizer-w">
                                     <div className="input-with-symbol">
                                         <input
+                                            id="resizer-w"
                                             type="number"
                                             value={width}
+                                            aria-label="Target width in pixels"
                                             onChange={(e) => handleWidthChange(e.target.value)}
                                         />
-                                        <span>W</span>
+                                        <span aria-hidden="true">W</span>
                                     </div>
                                 </Control>
-                                <Control label="Height (px)">
+                                <Control label="Height (px)" id="resizer-h">
                                     <div className="input-with-symbol">
                                         <input
+                                            id="resizer-h"
                                             type="number"
                                             value={height}
+                                            aria-label="Target height in pixels"
                                             onChange={(e) => handleHeightChange(e.target.value)}
                                         />
-                                        <span>H</span>
+                                        <span aria-hidden="true">H</span>
                                     </div>
                                 </Control>
                             </div>
@@ -226,13 +266,16 @@ function ImageResizerInner() {
                                         type="checkbox"
                                         checked={maintainRatio}
                                         onChange={(e) => setMaintainRatio(e.target.checked)}
+                                        aria-label="Lock aspect ratio"
                                     />
                                     <span>Maintain Aspect Ratio</span>
                                 </label>
                             </div>
 
-                            <Control label="Output Format">
+                            <Control label="Output Format" id="resizer-fmt">
                                 <Select
+                                    id="resizer-fmt"
+                                    label="Select output image format"
                                     value={format}
                                     onChange={setFormat}
                                     options={[
@@ -251,7 +294,19 @@ function ImageResizerInner() {
                                 />
                             </Control>
 
-                            <Btn onClick={process} loading={running}>
+                            <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                                <TargetSizeControl
+                                    enabled={targetSizeEnabled}
+                                    onToggle={setTargetSizeEnabled}
+                                    value={targetSizeKB}
+                                    onChange={setTargetSizeKB}
+                                    min={Math.max(5, Math.round(origByteSize / 1024 / 100))}
+                                    max={Math.round(origByteSize / 1024) || 10240}
+                                    step={5}
+                                />
+                            </div>
+
+                            <Btn onClick={process} loading={running} disabled={running} aria-label="Resize and Download Image">
                                 🚀 Resize & Process Image
                             </Btn>
                             <StatusBar status={status} />
@@ -286,16 +341,16 @@ function ImageResizerInner() {
 
             <SEOContent title="Professional Image Resizer for Global Requirements">
                 <p>Resizing images to specific dimensions is often the most time-consuming part of filling out official forms or preparing social media content. iLoveToolHub simplifies this with a professional-grade image resizer designed for global standards.</p>
-                
+
                 <h3>Ready-to-Use Presets for Any Platform</h3>
                 <p>Don't waste time checking dimension requirements. We've built in presets for <strong>Social Media (Instagram, LinkedIn)</strong>, and <strong>Official Documents</strong>. Whether you need a specific pixel count for a website or a centimeter measurement for a physical application, we have you covered.</p>
 
                 <h3>Advanced Resizing Features</h3>
                 <ul>
-                  <li><strong>Unit Flexibility:</strong> Switch between Pixels (px), Centimeters (cm), and Millimeters (mm) instantly.</li>
-                  <li><strong>Maintain Aspect Ratio:</strong> Ensure your image doesn't look stretched by locking the original proportions.</li>
-                  <li><strong>Integrated Compression:</strong> Adjust the output quality to meet file size limits directly while resizing.</li>
-                  <li><strong>Private Processing:</strong> Your identity documents and personal photos never leave your device.</li>
+                    <li><strong>Unit Flexibility:</strong> Switch between Pixels (px), Centimeters (cm), and Millimeters (mm) instantly.</li>
+                    <li><strong>Maintain Aspect Ratio:</strong> Ensure your image doesn't look stretched by locking the original proportions.</li>
+                    <li><strong>Integrated Compression:</strong> Adjust the output quality to meet file size limits directly while resizing.</li>
+                    <li><strong>Private Processing:</strong> Your identity documents and personal photos never leave your device.</li>
                 </ul>
 
                 <h3>Fastest Way to Meet Official Requirements</h3>

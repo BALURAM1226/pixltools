@@ -47,15 +47,18 @@ export default function DropZone({
     <div
       {...getRootProps()}
       className={`dropzone ${isDragActive && !isDragReject ? 'dz-active' : ''} ${isDragReject ? 'dz-reject' : ''}`}
+      aria-label={label}
+      role="button"
+      tabIndex="0"
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps()} aria-label={label} />
       <div className="dz-inner">
         <div className="dz-icon-wrap">
           {isDragReject
-            ? <svg className="dz-icon red" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            ? <svg className="dz-icon red" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10" /><line x1="4.93" y1="4.93" x2="19.07" y2="19.07" /></svg>
             : <svg className="dz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-              </svg>
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
           }
         </div>
         <div className="dz-text">
