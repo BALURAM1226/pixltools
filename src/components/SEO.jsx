@@ -1,10 +1,50 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
-export default function SEO({ title, description, keywords, canonicalPath }) {
+export default function SEO({ title, description, keywords, canonicalPath, customSchema }) {
     const siteUrl = "https://ilovetoolhub.com"; // Your official domain
     const fullCanonical = `${siteUrl}${canonicalPath || ""}`;
     const fullTitle = `${title} | iLoveToolHub`;
+
+    const jsonLd = customSchema || {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": fullTitle,
+        "url": fullCanonical,
+        "description": description,
+        "applicationCategory": "MultimediaApplication",
+        "browserRequirements": "Requires JavaScript",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "iLoveToolHub",
+            "url": siteUrl
+        }
+    };
+
+    const breadcrumbs = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": siteUrl
+            },
+            canonicalPath && {
+                "@type": "ListItem",
+                "position": 2,
+                "name": title,
+                "item": fullCanonical
+            }
+        ].filter(Boolean)
+    };
 
     return (
         <Helmet>
@@ -12,6 +52,10 @@ export default function SEO({ title, description, keywords, canonicalPath }) {
             <meta name="description" content={description} />
             {keywords && <meta name="keywords" content={keywords} />}
             <link rel="canonical" href={fullCanonical} />
+
+            {/* Schema.org JSON-LD */}
+            <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+            <script type="application/ld+json">{JSON.stringify(breadcrumbs)}</script>
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
@@ -26,24 +70,6 @@ export default function SEO({ title, description, keywords, canonicalPath }) {
             <meta name="twitter:title" content={fullTitle} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
-
-            {/* Schema.org JSON-LD for Search Engines */}
-            <script type="application/ld+json">
-                {JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "WebApplication",
-                    "name": title,
-                    "url": fullCanonical,
-                    "description": description,
-                    "applicationCategory": "MultimediaApplication",
-                    "operatingSystem": "Web Browser",
-                    "offers": {
-                        "@type": "Offer",
-                        "price": "0",
-                        "priceCurrency": "USD"
-                    }
-                })}
-            </script>
         </Helmet>
     );
 }

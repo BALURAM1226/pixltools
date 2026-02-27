@@ -97,9 +97,31 @@ export default function Home() {
     <>
       <SEO
         title="iLoveToolHub – Free Online Utility Toolkit | Compress & Convert Images Private"
-        description="The ultimate free online toolkit. Compress images to 50KB/100KB, convert JPG to PDF, remove background, and resize for all official forms. 100% private."
-        keywords="ilove tool hub, compress image online free, image to pdf converter, resize for official forms, passport photo maker, global image tools"
+        description="ilovetoolhub.com is a free online toolkit offering powerful image and PDF tools, including conversion, compression, background removal (BG Remover), editing, OCR scanner, and other utility features. No signup required, easy to use, and accessible from any device."
+        keywords="ilove tool hub, bg remover online, ocr scanner free, compress image online free, image to pdf converter, resize for official forms, passport photo maker, global image tools"
         canonicalPath="/"
+        customSchema={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "iLoveToolHub",
+          "url": "https://ilovetoolhub.com",
+          "description": "ilovetoolhub.com is a free online toolkit offering powerful image and PDF tools, including conversion, compression, background removal (BG Remover), editing, OCR scanner, and other utility features. No signup required, easy to use, and accessible from any device.",
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": TOOLS.map((t, i) => ({
+              "@type": "ListItem",
+              "position": i + 1,
+              "item": {
+                "@type": "WebApplication",
+                "name": t.title,
+                "url": `https://ilovetoolhub.com${t.path}`,
+                "description": t.desc,
+                "applicationCategory": "MultimediaApplication",
+                "operatingSystem": "All"
+              }
+            }))
+          }
+        }}
       />
       <div className="home">
 
