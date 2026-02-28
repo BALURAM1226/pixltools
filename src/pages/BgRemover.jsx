@@ -122,10 +122,12 @@ function BgRemoverInner() {
       // Apply Smart Compression if enabled
       if (targetSizeEnabled) {
         setStatus({ type: 'processing', msg: 'Optimizing file size…' });
+        const encodeMime = effectiveBg === 'transparent' ? 'image/png' : 'image/jpeg';
         const options = {
           maxSizeMB: targetSizeKB / 1024,
+          maxWidthOrHeight: 4000, // Hint for downscaling if quality reduction isn't enough
           useWebWorker: true,
-          fileType: effectiveBg === 'transparent' ? 'image/png' : 'image/jpeg'
+          fileType: encodeMime
         };
         workBlob = await imageCompression(workBlob, options);
       }
@@ -144,14 +146,6 @@ function BgRemoverInner() {
     }
   }, [rawResultBlob, bgChoice, customHex, targetSizeEnabled, targetSizeKB]);
 
-  /* ── auto-process ───────────────────────────────────────── */
-  useEffect(() => {
-    if (!rawResultBlob) return;
-    const timer = setTimeout(() => {
-      applyFinalSettings();
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [bgChoice, customHex, targetSizeEnabled, targetSizeKB, rawResultBlob, applyFinalSettings]);
 
   /* ── reset ───────────────────────────────────────────── */
   const reset = useCallback(() => {
@@ -169,7 +163,7 @@ function BgRemoverInner() {
       : bgChoice;
 
   return (
-    <>
+    <div className="remover-page">
       <SEO
         title="Remove Image BG Online Free – AI Background Remover"
         description="Automatically remove image backgrounds using AI for free. Get transparent PNGs instantly. No server uploads – 100% private and safe for official documents."
@@ -294,8 +288,8 @@ function BgRemoverInner() {
             </div>
 
             <div className="bg-action-wrap" style={{ marginTop: 24 }}>
-              <Btn onClick={removeBg} loading={running} disabled={running} aria-label="Start AI Background Removal">
-                🪄 Remove Background Now
+              <Btn onClick={rawResultBlob ? applyFinalSettings : removeBg} loading={running} disabled={running}>
+                {rawResultBlob ? '✨ Apply Background Settings' : '🪄 Remove Background Now'}
               </Btn>
               <StatusBar status={status} />
               {running && <ProgressBar value={progress} label="Removing background" />}
@@ -355,6 +349,7 @@ function BgRemoverInner() {
           <li><strong>High Precision:</strong> Our model handles hair, fur, and complex edges with surprising accuracy.</li>
           <li><strong>Custom Backgrounds:</strong> Once the background is removed, you can instantly add a solid color or a gradient to your subject.</li>
           <li><strong>Commercial Use:</strong> The output is yours to keep. No watermarks, no hidden fees—ever.</li>
+          <li><strong> Commercial Use: </strong> The output is yours to keep. No watermarks, no hidden fees—ever. </li>
         </ul>
 
         <h3>How to Remove Background from Image Online</h3>
@@ -368,7 +363,7 @@ function BgRemoverInner() {
         { q: 'What format is the output?', a: 'Always PNG, which supports transparency. If you choose a background colour, the PNG will have that colour as its background.' },
         { q: 'Can I use the result commercially?', a: 'Yes. The AI runs on open-source models in your browser. The output image is yours — you own it completely.' },
       ]} />
-    </>
+    </div >
   );
 }
 

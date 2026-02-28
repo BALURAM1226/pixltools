@@ -211,13 +211,13 @@ function ImageConverterInner() {
       // Check if Smart Compression (Target Size) is enabled
       if (targetSizeEnabled) {
         setStatus({ type: 'processing', msg: 'Optimizing file size…' });
-        // Get initial blob from canvas
-        const initialBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+        const encodeMime = targetFmt === 'image/ico' ? 'image/png' : targetFmt;
+        const initialBlob = await new Promise(resolve => canvas.toBlob(resolve, encodeMime, 0.95));
         const options = {
           maxSizeMB: targetSizeKB / 1024,
-          maxWidthOrHeight: MAX_OUT_DIM,
+          maxWidthOrHeight: Math.max(outW, outH),
           useWebWorker: true,
-          fileType: targetFmt === 'image/ico' ? 'image/png' : targetFmt,
+          fileType: encodeMime,
           onProgress: (p) => setProgress(70 + (p * 0.25))
         };
         finalBlob = await imageCompression(initialBlob, options);
@@ -258,14 +258,6 @@ function ImageConverterInner() {
     }
   }, [preview, origMime, running, targetFmt, quality, scale, icoSize, targetSizeEnabled, targetSizeKB, toast]);
 
-  /* ── auto-process ───────────────────────────────────────── */
-  useEffect(() => {
-    if (!preview) return;
-    const timer = setTimeout(() => {
-      convert();
-    }, 750);
-    return () => clearTimeout(timer);
-  }, [targetFmt, quality, scale, icoSize, targetSizeEnabled, targetSizeKB, preview, convert]);
 
   /* ── reset ───────────────────────────────────────────── */
   const reset = useCallback(() => {
@@ -283,7 +275,7 @@ function ImageConverterInner() {
 
   /* ── render ──────────────────────────────────────────── */
   return (
-    <>
+    <div className="converter-page">
       <SEO
         title="Convert PNG to JPG High Quality – Free Image Converter Online"
         description="Fast and free image converter to convert between JPG, PNG, WEBP, SVG and 20+ other formats in high quality. No server uploads, 100% private."
@@ -481,7 +473,7 @@ function ImageConverterInner() {
         { q: 'My AVIF output is blank — why?', a: 'AVIF encoding is not supported in all browsers yet (Safari and some Firefox versions). We fall back to WebP automatically when AVIF fails.' },
         { q: 'Is there a file size limit?', a: 'Yes, 50 MB per file. For very high-resolution images, lower the scale to reduce output dimensions and memory usage.' },
       ]} />
-    </>
+    </div>
   );
 }
 

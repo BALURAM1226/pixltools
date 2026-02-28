@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import SEO from '../components/SEO';
 import {
@@ -17,7 +17,7 @@ export default function QRCodeGenerator() {
     const [logoBase64, setLogoBase64] = useState(null);
     const [logoPercentage, setLogoPercentage] = useState(20);
 
-    // const canvasRef = useRef(null);
+    const logoInputRef = useRef(null);
 
     const handleLogoUpload = (e) => {
         const file = e.target.files[0];
@@ -125,12 +125,30 @@ export default function QRCodeGenerator() {
                     <div className="logo-section">
                         <Control label="Brand Logo Overlay" id="logo-file">
                             <div className="logo-group">
-                                <input type="file" id="logo-file" accept="image/*" onChange={handleLogoUpload} hidden />
-                                <label htmlFor="logo-file" className="logo-upload-trigger" role="button" tabIndex="0">
+                                <input
+                                    type="file"
+                                    id="logo-file"
+                                    ref={logoInputRef}
+                                    accept="image/*"
+                                    onChange={handleLogoUpload}
+                                    hidden
+                                />
+                                <button
+                                    type="button"
+                                    className="logo-upload-trigger"
+                                    onClick={() => logoInputRef.current?.click()}
+                                >
                                     {logoBase64 ? '✨ Change Logo' : '📁 Upload Logo'}
-                                </label>
+                                </button>
                                 {logoBase64 && (
-                                    <button className="logo-remove-btn" onClick={() => setLogoBase64(null)} title="Remove Logo" aria-label="Remove logo overlay">✕</button>
+                                    <button
+                                        className="logo-remove-btn"
+                                        onClick={() => setLogoBase64(null)}
+                                        title="Remove Logo"
+                                        aria-label="Remove logo overlay"
+                                    >
+                                        ✕
+                                    </button>
                                 )}
                             </div>
                         </Control>

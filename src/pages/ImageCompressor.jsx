@@ -38,6 +38,7 @@ function ImageCompressorInner() {
   const [origDim, setOrigDim] = useState(null);
 
   /* settings — all with explicit number types */
+  const [targetSizeEnabled, setTargetSizeEnabled] = useState(false);
   const [maxSizeMB, setMaxSizeMB] = useState(1.0);    // float MB
   const [maxDim, setMaxDim] = useState(1920);    // integer px
   const [quality, setQuality] = useState(85);      // integer 1-100
@@ -102,24 +103,90 @@ function ImageCompressorInner() {
       const safeDim = Math.max(32, Math.min(8000, Math.round(maxDim)));
       const safeQ = Math.max(1, Math.min(100, Math.round(quality)));
 
-      /* browser-image-compression options */
-      const opts = {
-        maxSizeMB: safeSizeMB,
-        maxWidthOrHeight: safeDim,
-        useWebWorker: true,
-        /* quality only applies to lossy formats */
-        initialQuality: safeQ / 100,
-        /* tell the lib what format to output */
-        fileType: outputFmt === 'image/png' ? 'image/png'
-          : outputFmt === 'image/webp' ? 'image/webp'
-            : 'image/jpeg',
-        onProgress: (pct) => {
-          setProgress(Math.max(2, Math.min(95, pct)));
-          setStatus({ type: 'processing', msg: `Compressing… ${pct}%` });
-        },
-      };
+      const outputMime = outputFmt === 'image/png' ? 'image/png' : outputFmt === 'image/webp' ? 'image/webp' : 'image/jpeg';
+      let compressed;
 
-      const compressed = await imageCompression(file, opts);
+      if (targetSizeEnabled && outputMime !== 'image/png') {
+        const targetBytes = safeSizeMB * 1024 * 1024;
+        setStatus({ type: 'processing', msg: 'Precise compression matching target size...' });
+
+        const img = new Image();
+        const tmpSrc = URL.createObjectURL(file);
+        await new Promise(r => { img.onload = r; img.src = tmpSrc; });
+        URL.revokeObjectURL(tmpSrc);
+
+        let w = img.width, h = img.height;
+        if (w > safeDim || h > safeDim) {
+          const ratio = Math.min(safeDim / w, safeDim / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, w, h);
+
+        const tryBlob = (q) => new Promise(r => canvas.toBlob(r, outputMime, q));
+        let maxBlob = await tryBlob(1.0);
+
+        if (maxBlob.size <= targetBytes) {
+          compressed = maxBlob;
+        } else {
+          // Binary search for exact KB target
+          let low = 0.00;
+          let high = 1.0;
+          let bestBlob = null;
+          for (let i = 0; i < 9; i++) {
+            let mid = (low + high) / 2;
+            let b = await tryBlob(mid);
+            setProgress(10 + i * 10);
+            if (b.size <= targetBytes) {
+              bestBlob = b;
+              low = mid;
+            } else {
+              high = mid;
+            }
+          }
+
+          let currentQ = low;
+          if (!bestBlob) bestBlob = await tryBlob(0.00);
+
+          while (bestBlob.size > targetBytes && w > 50) {
+            w = Math.round(w * 0.9); h = Math.round(h * 0.9);
+            canvas.width = w; canvas.height = h;
+            ctx.drawImage(img, 0, 0, w, h);
+            let b = await tryBlob(currentQ);
+            if (b.size <= targetBytes) {
+              bestBlob = b;
+              break;
+            } else {
+              bestBlob = b;
+            }
+          }
+          compressed = bestBlob;
+        }
+      } else {
+        const baseOpts = {
+          maxWidthOrHeight: safeDim,
+          useWebWorker: true,
+          fileType: outputMime,
+          onProgress: (pct) => {
+            setProgress(Math.max(2, Math.min(95, pct)));
+            setStatus({ type: 'processing', msg: `Compressing… ${pct}%` });
+          },
+        };
+        const opts = targetSizeEnabled ? {
+          ...baseOpts,
+          maxSizeMB: safeSizeMB
+        } : {
+          ...baseOpts,
+          initialQuality: safeQ / 100
+        };
+        compressed = await imageCompression(file, opts);
+      }
 
       /* Read result as data URL for preview & download */
       const dataUrl = await new Promise((resolve, reject) => {
@@ -157,15 +224,6 @@ function ImageCompressorInner() {
     }
   }, [file, isRunning, maxSizeMB, maxDim, quality, outputFmt, origSize, toast]);
 
-  /* ── auto-process ───────────────────────────────────────── */
-  useEffect(() => {
-    if (!file) return;
-    const timer = setTimeout(() => {
-      compress();
-    }, 600); // 600ms debounce
-    return () => clearTimeout(timer);
-  }, [maxSizeMB, maxDim, quality, outputFmt, file, compress]);
-
   /* ── reset ────────────────────────────────────────────── */
   const reset = useCallback(() => {
     setFile(null);
@@ -191,7 +249,7 @@ function ImageCompressorInner() {
 
   /* ── render ───────────────────────────────────────────── */
   return (
-    <>
+    <div className="compressor-page">
       <SEO
         title="Compress Image to 50KB or 100KB Online – Free Tool Hub"
         description="Reduce image size to 50KB, 100KB, or 200KB instantly. Perfect for official applications and document portals globally. 100% private and secure."
@@ -266,8 +324,8 @@ function ImageCompressorInner() {
             <div className="settings-scroll">
               <div style={{ marginBottom: 20 }}>
                 <TargetSizeControl
-                  enabled={true}
-                  onToggle={() => { }}
+                  enabled={targetSizeEnabled}
+                  onToggle={setTargetSizeEnabled}
                   value={maxSizeMB * 1024}
                   onChange={(kb) => setMaxSizeMB(kb / 1024)}
                   min={Math.max(5, Math.round(origSize / 1024 / 100))}
@@ -300,7 +358,7 @@ function ImageCompressorInner() {
                     <Slider
                       id="comp-quality"
                       label="Output image quality"
-                      min={1} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${v}%`}
+                      min={1} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${Math.round(v)}%`}
                     />
                   </Control>
                 )}
@@ -393,7 +451,7 @@ function ImageCompressorInner() {
           a: 'No. All compression runs locally in your browser using Web Workers. Your images never leave your device.',
         },
       ]} />
-    </>
+    </div>
   );
 }
 

@@ -230,6 +230,7 @@ function PassportPhotoInner() {
 				const initialBlob = await new Promise(r => finalCanvas.toBlob(r, exportFormat, 0.95));
 				finalBlob = await imageCompression(initialBlob, {
 					maxSizeMB: targetSizeKB / 1024,
+					maxWidthOrHeight: Math.max(finalCanvas.width, finalCanvas.height),
 					useWebWorker: true,
 					fileType: exportFormat
 				});
@@ -253,15 +254,6 @@ function PassportPhotoInner() {
 			setRunning(false);
 		}
 	}, [preview, running, sz, paper, bgColor, customColor, brightness, contrast, zoom, offset, showBorders, manualRemoveBg, aiCache, file, exportFormat, targetSizeEnabled, targetSizeKB, jpegQ]);
-
-	/* ── auto-process ───────────────────────────────────────── */
-	useEffect(() => {
-		if (!preview || running) return;
-		const timer = setTimeout(() => {
-			convert();
-		}, 800);
-		return () => clearTimeout(timer);
-	}, [preview, running, convert]);
 
 	const handleFile = useCallback((f) => {
 		if (!f.type.startsWith("image/")) {
@@ -291,197 +283,138 @@ function PassportPhotoInner() {
 
 	return (
 		<>
-			<SEO
-				title="Printable Passport Size Photo Maker – Global Official Standards"
-				description="Generate official passport photos for US, UK, India, EU, and 100+ countries. Choose background colors and print layouts (4x6, A4) for free. 100% private."
-				keywords="passport size photo maker online, printable passport photo, 2x2 inch photo, 35x45 mm photo maker, official visa photo generator, free passport photo tool"
-				canonicalPath="/passport-photo"
-			/>
+			<div className="passport-page">
+				<SEO
+					title="Printable Passport Size Photo Maker – Global Official Standards"
+					description="Generate official passport photos for US, UK, India, EU, and 100+ countries. Choose background colors and print layouts (4x6, A4) for free. 100% private."
+					keywords="passport size photo maker online, printable passport photo, 2x2 inch photo, 35x45 mm photo maker, official visa photo generator, free passport photo tool"
+					canonicalPath="/passport-photo"
+				/>
 
-			<ToolHeader
-				title="Passport"
-				highlight="Converter"
-				badge="🪪 Pro Formats"
-				desc="Professional passport & visa photo generator. Support for US, UK, India, EU and more with biometric precise alignment."
-			/>
+				<ToolHeader
+					title="Passport"
+					highlight="Converter"
+					badge="🪪 Pro Formats"
+					desc="Professional passport & visa photo generator. Support for US, UK, India, EU and more with biometric precise alignment."
+				/>
 
-			<ToolGrid>
-				<Panel title="Step 1: Upload & Position">
-					{!preview ? (
-						<DropZone onFile={handleFile} label="Upload Portrait Photo" />
-					) : (
-						<div className="preview-stack">
-							<div className={`crop-container ${running ? 'locked' : ''}`} ref={containerRef}
-								onMouseDown={(e) => {
-									if (running) return;
-									setIsDragging(true);
-									setDragStart({ x: e.clientX - offset.x, y: e.clientY - offset.y });
-								}}
-								onMouseMove={(e) => {
-									if (!isDragging || running) return;
-									setOffset({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
-								}}
-								onMouseUp={() => setIsDragging(false)}
-								onMouseLeave={() => setIsDragging(false)}
-								style={{ cursor: running ? 'not-allowed' : (isDragging ? 'grabbing' : 'grab') }}
-							>
-								<div className="crop-matted" style={{ aspectRatio: `${sz.w}/${sz.h}` }}>
-									<img src={preview} alt="Crop" style={{
-										position: 'absolute',
-										top: 0,
-										left: 0,
-										width: naturalAR > (sz.w / sz.h) ? 'auto' : '100%',
-										height: naturalAR > (sz.w / sz.h) ? '100%' : 'auto',
-										transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
-										transformOrigin: '0 0',
-										pointerEvents: 'none'
-									}} />
-								</div>
-
-								<div className="zoom-controls">
-									<button onClick={() => setZoom(Math.max(0.7, zoom - 0.1))}>−</button>
-									<input type="range" min="0.7" max="4" step="0.01" value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))} />
-									<button onClick={() => setZoom(Math.min(4, zoom + 0.1))}>+</button>
-								</div>
-
-								<div className="biometric-info">
-									Biometric Rule: <strong>{Math.round(sz.headMin * 100)}-{Math.round(sz.headMax * 100)}% Head</strong>
-								</div>
-							</div>
-
-							<div className="adjustment-tip">
-								↔ Drag photo to position • Use slider to zoom
-							</div>
-
-							<ResetBtn onClick={reset} />
-						</div>
-					)}
-				</Panel>
-
-				<Panel title="Step 2: Photo Settings">
-					{!preview ? (
-						<div className="tips-panel">
-							<div className="tip-item">
-								<span className="tip-icon">📐</span>
-								<div><strong>Official Standards:</strong> All country formats follow strict regulatory biometric standards.</div>
-							</div>
-							<div className="tip-item">
-								<span className="tip-icon">✨</span>
-								<div><strong>AI Background:</strong> Automatically swap to white or blue background with one click.</div>
-							</div>
-						</div>
-					) : (
-						<div className="settings-scroll">
-							<Control label="Country / Size Format" id="size-key">
-								<Select
-									id="size-key"
-									label="Select country or size format"
-									value={sizeKey}
-									onChange={setSizeKey}
-									options={SIZES.map((s, i) => ({ value: String(i), label: s.label }))}
-								/>
-							</Control>
-
-							<Control label="Print Layout" id="print-size">
-								<Select
-									id="print-size"
-									label="Select paper print size"
-									value={printSizeId}
-									onChange={setPrintSizeId}
-									options={PAPER_SIZES.map((p) => ({ value: p.id, label: p.label }))}
-								/>
-							</Control>
-
-							<div className="settings-row">
-								<Control label="Background Color" id="bg-color-group">
-									<div className="bg-row" role="radiogroup">
-										{BG_PRESETS.map((p) => (
-											<button
-												key={p.hex}
-												type="button"
-												className={`bg-swatch ${bgColor === p.hex ? "active" : ""}`}
-												style={{ background: p.hex === "original" ? "#333" : (p.hex === "custom" ? customColor : p.hex) }}
-												onClick={() => setBgColor(p.hex)}
-												title={p.label}
-											>
-												{p.icon}
-											</button>
-										))}
+				<ToolGrid>
+					<Panel title="Step 1: Upload & Position">
+						{!preview ? (
+							<DropZone onFile={handleFile} label="Upload Portrait Photo" />
+						) : (
+							<div className="preview-stack">
+								<div className={`crop-container ${running ? 'locked' : ''}`} ref={containerRef}
+									onMouseDown={(e) => {
+										if (running) return;
+										setIsDragging(true);
+										setDragStart({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+									}}
+									onMouseMove={(e) => {
+										if (!isDragging || running) return;
+										setOffset({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+									}}
+									onMouseUp={() => setIsDragging(false)}
+									onMouseLeave={() => setIsDragging(false)}
+									style={{ cursor: running ? 'not-allowed' : (isDragging ? 'grabbing' : 'grab') }}
+								>
+									<div className="crop-matted" style={{ aspectRatio: `${sz.w}/${sz.h}` }}>
+										<img src={preview} alt="Crop" style={{
+											position: 'absolute',
+											top: 0,
+											left: 0,
+											width: naturalAR > (sz.w / sz.h) ? 'auto' : '100%',
+											height: naturalAR > (sz.w / sz.h) ? '100%' : 'auto',
+											transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+											transformOrigin: '0 0',
+											pointerEvents: 'none'
+										}} />
 									</div>
+
+									<div className="zoom-controls">
+										<button onClick={() => setZoom(Math.max(0.7, zoom - 0.1))}>−</button>
+										<input type="range" min="0.7" max="4" step="0.01" value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))} />
+										<button onClick={() => setZoom(Math.min(4, zoom + 0.1))}>+</button>
+									</div>
+
+									<div className="biometric-info">
+										Biometric Rule: <strong>{Math.round(sz.headMin * 100)}-{Math.round(sz.headMax * 100)}% Head</strong>
+									</div>
+								</div>
+
+								<div className="adjustment-tip">
+									↔ Drag photo to position • Use slider to zoom
+								</div>
+
+								<ResetBtn onClick={reset} />
+							</div>
+						)}
+					</Panel>
+
+					<Panel title="Step 2: Photo Settings">
+						{!preview ? (
+							<div className="tips-panel">
+								<div className="tip-item">
+									<span className="tip-icon">📐</span>
+									<div><strong>Official Standards:</strong> All country formats follow strict regulatory biometric standards.</div>
+								</div>
+								<div className="tip-item">
+									<span className="tip-icon">✨</span>
+									<div><strong>AI Background:</strong> Automatically swap to white or blue background with one click.</div>
+								</div>
+							</div>
+						) : (
+							<div className="settings-scroll">
+								<Control label="Country / Size Format" id="size-key">
+									<Select
+										id="size-key"
+										label="Select country or size format"
+										value={sizeKey}
+										onChange={setSizeKey}
+										options={SIZES.map((s, i) => ({ value: String(i), label: s.label }))}
+									/>
 								</Control>
 
-								<div className="check-row">
-									<label className="checkbox-wrap">
-										<input type="checkbox" checked={showBorders} onChange={(e) => setShowBorders(e.target.checked)} />
-										<span>Add Border?</span>
-									</label>
-									<label className="checkbox-wrap">
-										<input type="checkbox" checked={manualRemoveBg} onChange={(e) => setManualRemoveBg(e.target.checked)} />
-										<span>Force AI BG</span>
-									</label>
-								</div>
-
-								<div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
-									<TargetSizeControl
-										enabled={targetSizeEnabled}
-										onToggle={setTargetSizeEnabled}
-										value={targetSizeKB}
-										onChange={setTargetSizeKB}
-										min={5}
-										max={Math.round((file?.size || 0) / 1024) || 2048}
-										step={1}
+								<Control label="Print Layout" id="print-size">
+									<Select
+										id="print-size"
+										label="Select paper print size"
+										value={printSizeId}
+										onChange={setPrintSizeId}
+										options={PAPER_SIZES.map((p) => ({ value: p.id, label: p.label }))}
 									/>
-								</div>
-							</div>
+								</Control>
 
-							{bgColor === "custom" && (
-								<div className="custom-picker-box">
-									<input type="color" value={customColor} onChange={(e) => setCustomColor(e.target.value)} />
-									<span>{customColor}</span>
-								</div>
-							)}
-
-							<Control label="Brightness">
-								<Slider min={60} max={160} value={brightness} onChange={v => setBrightness(Math.round(v))} formatValue={v => `${v}%`} />
-							</Control>
-
-							<Control label="Contrast">
-								<Slider min={60} max={160} value={contrast} onChange={v => setContrast(Math.round(v))} formatValue={v => `${v}%`} />
-							</Control>
-
-							<Control label="JPEG Quality">
-								<Slider min={50} max={100} value={jpegQ} onChange={v => setJpegQ(Math.round(v))} formatValue={v => `${v}%`} />
-							</Control>
-
-							<Btn onClick={convert} loading={running}>🪪 Regenerate Manually</Btn>
-							<StatusBar status={status} />
-						</div>
-					)}
-				</Panel>
-			</ToolGrid>
-
-			{result && (
-				<Panel title="Step 3: Download Passport Result">
-					<div ref={resultRef} className="result-layout">
-						<PreviewBox checkerboard={bgColor === "transparent"}>
-							<img src={result} alt="Passport result" className="result-img" />
-						</PreviewBox>
-
-						<div className="result-actions">
-							<div className="download-controls">
-								<div className="download-settings">
-									<Control label="Download Format">
-										<Select
-											value={exportFormat}
-											onChange={setExportFormat}
-											options={[
-												{ value: "image/jpeg", label: "JPEG (Default)" },
-												{ value: "image/webp", label: "WebP (Ultra Small)" },
-												{ value: "image/png", label: "PNG (High Quality)" }
-											]}
-										/>
+								<div className="settings-row">
+									<Control label="Background Color" id="bg-color-group">
+										<div className="bg-row" role="radiogroup">
+											{BG_PRESETS.map((p) => (
+												<button
+													key={p.hex}
+													type="button"
+													className={`bg-swatch ${bgColor === p.hex ? "active" : ""}`}
+													style={{ background: p.hex === "original" ? "#333" : (p.hex === "custom" ? customColor : p.hex) }}
+													onClick={() => setBgColor(p.hex)}
+													title={p.label}
+												>
+													{p.icon}
+												</button>
+											))}
+										</div>
 									</Control>
-									<div style={{ marginTop: 12 }}>
+
+									<div className="check-row">
+										<label className="checkbox-wrap">
+											<input type="checkbox" checked={showBorders} onChange={(e) => setShowBorders(e.target.checked)} />
+											<span>Add Border?</span>
+										</label>
+										<label className="checkbox-wrap">
+											<input type="checkbox" checked={manualRemoveBg} onChange={(e) => setManualRemoveBg(e.target.checked)} />
+											<span>Force AI BG</span>
+										</label>
+									</div>
+
+									<div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
 										<TargetSizeControl
 											enabled={targetSizeEnabled}
 											onToggle={setTargetSizeEnabled}
@@ -494,20 +427,81 @@ function PassportPhotoInner() {
 									</div>
 								</div>
 
-								<InfoChips items={[
-									{ label: "Format", value: exportFormat.split('/')[1].toUpperCase() },
-									{ label: "Final Size", value: `${fileSizeInKB} KB` },
-									{ label: "Target", value: targetSizeEnabled ? `${targetSizeKB} KB` : "Max" }
-								]} />
-							</div>
+								{bgColor === "custom" && (
+									<div className="custom-picker-box">
+										<input type="color" value={customColor} onChange={(e) => setCustomColor(e.target.value)} />
+										<span>{customColor}</span>
+									</div>
+								)}
 
-							<DownloadBtn href={result} filename={`passport-${sz.unit.replace(/\s/g, "")}.${exportFormat.split('/')[1] === 'jpeg' ? 'jpg' : exportFormat.split('/')[1]}`}>
-								Download {exportFormat.split('/')[1].toUpperCase()}
-							</DownloadBtn>
+								<Control label="Brightness">
+									<Slider min={60} max={160} value={brightness} onChange={v => setBrightness(Math.round(v))} formatValue={v => `${v}%`} />
+								</Control>
+
+								<Control label="Contrast">
+									<Slider min={60} max={160} value={contrast} onChange={v => setContrast(Math.round(v))} formatValue={v => `${v}%`} />
+								</Control>
+
+								<Control label="JPEG Quality">
+									<Slider min={50} max={100} value={jpegQ} onChange={v => setJpegQ(Math.round(v))} formatValue={v => `${v}%`} />
+								</Control>
+
+								<Btn onClick={convert} loading={running}>🪪 Create Passport Photo</Btn>
+								<StatusBar status={status} />
+							</div>
+						)}
+					</Panel>
+				</ToolGrid>
+
+				{result && (
+					<Panel title="Step 3: Download Passport Result" className="grid-full result-panel">
+						<div ref={resultRef} className="result-layout">
+							<PreviewBox checkerboard={bgColor === "transparent"}>
+								<img src={result} alt="Passport result" className="result-img" />
+							</PreviewBox>
+
+							<div className="result-actions">
+								<div className="download-controls">
+									<div className="download-settings">
+										<Control label="Download Format">
+											<Select
+												value={exportFormat}
+												onChange={setExportFormat}
+												options={[
+													{ value: "image/jpeg", label: "JPEG (Default)" },
+													{ value: "image/webp", label: "WebP (Ultra Small)" },
+													{ value: "image/png", label: "PNG (High Quality)" }
+												]}
+											/>
+										</Control>
+										<div style={{ marginTop: 12 }}>
+											<TargetSizeControl
+												enabled={targetSizeEnabled}
+												onToggle={setTargetSizeEnabled}
+												value={targetSizeKB}
+												onChange={setTargetSizeKB}
+												min={5}
+												max={Math.round((file?.size || 0) / 1024) || 2048}
+												step={1}
+											/>
+										</div>
+									</div>
+
+									<InfoChips items={[
+										{ label: "Format", value: exportFormat.split('/')[1].toUpperCase() },
+										{ label: "Final Size", value: `${fileSizeInKB} KB` },
+										{ label: "Target", value: targetSizeEnabled ? `${targetSizeKB} KB` : "Max" }
+									]} />
+								</div>
+
+								<DownloadBtn href={result} filename={`passport-${sz.unit.replace(/\s/g, "")}.${exportFormat.split('/')[1] === 'jpeg' ? 'jpg' : exportFormat.split('/')[1]}`}>
+									Download Passport Photo
+								</DownloadBtn>
+							</div>
 						</div>
-					</div>
-				</Panel>
-			)}
+					</Panel>
+				)}
+			</div>
 
 			<AdBanner slot="12345678" />
 

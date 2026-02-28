@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import ScrollToTop from './components/ScrollToTop';
 
 const ImageConverter = lazy(() => import('./pages/ImageConverter'));
 const PassportPhoto = lazy(() => import('./pages/PassportPhoto'));
@@ -47,6 +48,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <ErrorBoundary>
+        <ScrollToTop />
         <Layout>
           <Suspense fallback={<PageLoader />}>
             <Routes>

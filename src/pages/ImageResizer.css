@@ -119,8 +119,31 @@
 }
 
 @media (max-width: 992px) {
+    .resizer-page .tool-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 24px;
+        width: 100%;
+    }
+
     .result-actions {
         grid-template-columns: 1fr;
         gap: 24px;
+    }
+}
+
+@media (max-width: 640px) {
+    .resizer-page .tool-grid {
+        width: 100%;
+        margin: 0;
+    }
+
+    .panel-body {
+        padding: 20px 14px !important;
+    }
+
+    .dim-grid {
+        gap: 12px;
     }
 }

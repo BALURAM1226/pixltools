@@ -9,6 +9,7 @@
   left: 0;
   right: 0;
   height: var(--header-height);
+  min-height: var(--header-height);
   z-index: 200;
   display: flex;
   align-items: center;
@@ -120,21 +121,18 @@
   top: calc(100% + 12px);
   right: 0;
   width: 340px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 20px;
-  box-shadow:
-    0 10px 30px -10px rgba(0, 0, 0, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-lg);
   z-index: 1000;
   overflow: hidden;
   animation: premiumReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(20px) saturate(180%);
 }
 
 [data-theme="dark"] .search-dropdown {
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
@@ -447,7 +445,7 @@
   /* When SEARCH IS ACTIVE: Center it perfectly using viewport units */
   .search-input-wrapper.focused {
     position: fixed;
-    top: 8px;
+    top: max(8px, env(safe-area-inset-top));
     left: 50%;
     transform: translateX(-50%) !important;
     width: 92vw;
@@ -466,7 +464,7 @@
   @keyframes searchPop {
     from {
       opacity: 0;
-      transform: translateX(-50%) translateY(-20px) scale(0.95);
+      transform: translateX(-50%) translateY(max(-20px, calc(-1 * env(safe-area-inset-top)))) scale(0.95);
     }
 
     to {
@@ -480,7 +478,8 @@
     flex: 1;
     width: 100%;
     margin-left: 12px;
-    font-size: 1.1rem;
+    font-size: 16px !important;
+    /* iOS specific font-size to prevent zoom-shift */
     font-weight: 500;
   }
 
@@ -501,10 +500,10 @@
     pointer-events: auto;
   }
 
-  /* Dropdown Alignment: Centered perfectly under the bar */
+  /* Dropdown Alignment: Centered perfectly under the bar with Safe Area support */
   .search-dropdown {
     position: fixed !important;
-    top: 72px !important;
+    top: calc(72px + env(safe-area-inset-top)) !important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
@@ -1126,6 +1125,24 @@
   max-width: var(--max-width);
   padding: 24px 32px 40px;
   animation: fadeIn 0.25s ease;
+  box-sizing: border-box;
+}
+
+@media (max-width: 800px) {
+  .layout-horizontal {
+    display: block;
+  }
+
+  .page-container {
+    padding: 20px 14px 40px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .side-ad,
+  .side-ad-spacer {
+    display: none !important;
+  }
 }
 
 /* ── Side Ads ── */

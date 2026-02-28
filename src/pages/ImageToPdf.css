@@ -154,3 +154,33 @@
 [data-theme="light"] .pdf-ctrl {
   background: var(--bg-surface);
 }
+
+@media (max-width: 992px) {
+  .image-to-pdf-page .tool-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .result-actions {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .image-to-pdf-page .tool-grid {
+    width: 100%;
+    margin: 0;
+  }
+
+  .panel-body {
+    padding: 20px 14px !important;
+  }
+
+  .pdf-preview-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+}

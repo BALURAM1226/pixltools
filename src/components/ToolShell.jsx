@@ -244,32 +244,41 @@ export function InfoChips({ items }) {
 
 /* ─── Target Size Control ────────────────────────────────── */
 export function TargetSizeControl({ enabled, onToggle, value, onChange, id = "target-size-opt", min = 20, max = 10240, step = 10 }) {
+  const safeMin = parseFloat(min) || 5;
+  let safeMax = parseFloat(max) || 10240;
+  if (safeMax < safeMin) safeMax = safeMin;
+
+  const validValue = Math.max(safeMin, Math.min(safeMax, parseFloat(value) || safeMin));
   const formatKB = (v) => v < 1000 ? `${v} KB` : `${(v / 1024).toFixed(1)} MB`;
 
   return (
     <div className="target-size-control">
-      <label className="checkbox-wrap" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="checkbox-wrap" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }} onClick={() => onToggle(!enabled)}>
         <input
+          id={`${id}-checkbox`}
           type="checkbox"
           checked={enabled}
-          onChange={(e) => onToggle(e.target.checked)}
+          onChange={(e) => { e.stopPropagation(); onToggle(e.target.checked); }}
           aria-label="Enable target file size"
+          style={{ cursor: 'pointer' }}
         />
-        <span className="control-label" style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700 }}>Target File Size? (Smart Compression)</span>
-      </label>
+        <label htmlFor={`${id}-checkbox`} style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer' }} onClick={(e) => e.stopPropagation()}>
+          Target File Size? (Smart Compression)
+        </label>
+      </div>
 
       {enabled && (
         <div className="target-size-inputs" style={{ marginTop: 20, paddingLeft: 8 }}>
           <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            <span>Min: {formatKB(min)}</span>
-            <span>Max: {formatKB(max)}</span>
+            <span>Min: {formatKB(safeMin)}</span>
+            <span>Max: {formatKB(safeMax)}</span>
           </div>
           <Slider
             id={id}
-            min={min}
-            max={max}
+            min={safeMin}
+            max={safeMax}
             step={step}
-            value={value}
+            value={validValue}
             onChange={onChange}
             formatValue={formatKB}
             label="Adjust target file size limit"
@@ -286,6 +295,9 @@ export function TargetSizeControl({ enabled, onToggle, value, onChange, id = "ta
                 {formatKB(bp)}
               </button>
             ))}
+          </div>
+          <div style={{ marginTop: 16, padding: '10px 14px', background: 'rgba(59, 130, 246, 0.08)', borderRadius: '8px', borderLeft: '3px solid var(--accent)', fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+            <strong>Note:</strong> We prioritize maximum visual quality. If your result is much smaller than your target (e.g. 5KB when asking for 15KB), it means the image is already at 100% quality and cannot naturally be larger without adding fake bloat data.
           </div>
         </div>
       )}

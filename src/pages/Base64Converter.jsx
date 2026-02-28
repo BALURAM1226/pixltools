@@ -90,7 +90,7 @@ function Base64ConverterInner() {
     };
 
     return (
-        <>
+        <div className="base64-page">
             <SEO
                 title="Image to Base64 Converter – Encode & Decode Images"
                 description="Free online tool to convert images to Base64 strings or decode Base64 back to images. Perfect for developers and web designers."
@@ -141,8 +141,7 @@ function Base64ConverterInner() {
                     )}
                 </Panel>
 
-                {/* Step 2: Output */}
-                <Panel title={mode === "encode" ? "Step 2: Base64 String" : "Step 2: Decoded Image"}>
+                <Panel title={mode === "encode" ? "Step 2: Base64 String" : "Step 2: Decoded Image"} className="grid-full result-panel">
                     {mode === "encode" ? (
                         !base64String ? (
                             <div className="empty-state-msg">Upload an image to see the Base64 encoding.</div>
@@ -199,7 +198,7 @@ function Base64ConverterInner() {
                     { q: "Is this tool secure?", a: "Yes, all encoding and decoding happens completely within your browser. Your image data never leaves your computer." }
                 ]}
             />
-        </>
+        </div>
     );
 }
 

@@ -75,24 +75,27 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px;
+    padding: 14px;
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     cursor: pointer;
     font-weight: 600;
     transition: all 0.2s;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-primary);
+    font-family: inherit;
+    outline: none;
 }
 
 .logo-upload-trigger:hover {
     border-color: var(--accent);
     background: var(--accent-dim);
+    transform: translateY(-1px);
 }
 
 .logo-remove-btn {
-    width: 46px;
+    width: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -101,7 +104,7 @@
     color: var(--red);
     border-radius: var(--radius-md);
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     transition: all 0.2s;
 }
 
@@ -185,28 +188,74 @@
 @media (max-width: 992px) {
     .qr-page .tool-grid {
         display: flex;
-        flex-direction: column-reverse;
-        /* Preview above controls */
+        flex-direction: column;
+        align-items: stretch !important;
+        /* Force children to take full width */
         gap: 24px;
+        width: 100%;
+    }
+
+    .grid-left,
+    .grid-right {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .preview-sticky {
         position: static !important;
-        margin-bottom: 0;
+        margin-bottom: 24px;
     }
 
     .qr-preview-container {
         padding: 24px;
         min-height: auto;
     }
+
+    .color-input-wrap {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .logo-upload-trigger {
+        width: 100%;
+    }
 }
 
 @media (max-width: 640px) {
+    .qr-page .tool-grid {
+        width: 100%;
+        margin: 0;
+    }
+
+    .panel-body {
+        padding: 20px 14px !important;
+    }
+
     .qr-preview-container {
-        padding: 16px;
+        padding: 30px 12px;
+        border-radius: var(--radius-lg);
     }
 
     .qr-canvas-wrapper {
-        max-width: 260px;
+        max-width: 100%;
+        width: 280px;
+        margin: 0 auto;
+        padding: 12px !important;
+    }
+
+    .logo-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .logo-remove-btn {
+        width: 100%;
+        height: 44px;
+    }
+
+    /* Make color input more robust */
+    .color-input-wrap {
+        width: 100% !important;
+        box-sizing: border-box;
     }
 }

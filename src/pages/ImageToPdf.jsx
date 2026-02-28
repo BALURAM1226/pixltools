@@ -187,7 +187,7 @@ function ImageToPdfInner() {
   const isAuto = PAGE_SIZES[psIdx].w === null;
 
   return (
-    <>
+    <div className="image-to-pdf-page">
       <SEO
         title="Combine Images to PDF Online – Fast, Free & Private"
         description="Convert JPG, PNG, and WebP images to high-quality PDF. Merge multiple pages, reorder them, and choose page sizes for all official and professional documents globally."
@@ -242,18 +242,6 @@ function ImageToPdfInner() {
                     </div>
                   </div>
                 ))}
-              </div>
-
-              <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
-                <TargetSizeControl
-                  enabled={targetSizeEnabled}
-                  onToggle={setTargetSizeEnabled}
-                  value={targetSizeKB}
-                  onChange={setTargetSizeKB}
-                  min={Math.max(20, Math.round(images.reduce((s, img) => s + img.size, 0) / 1024 / 100))}
-                  max={Math.round(images.reduce((s, img) => s + img.size, 0) / 1024) || 20480}
-                  step={50}
-                />
               </div>
 
               <InfoChips items={[
@@ -322,6 +310,19 @@ function ImageToPdfInner() {
                 <Slider min={30} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${Math.round(v)}%`} />
               </Control>
 
+              <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                <TargetSizeControl
+                  enabled={targetSizeEnabled}
+                  onToggle={setTargetSizeEnabled}
+                  value={targetSizeKB}
+                  onChange={setTargetSizeKB}
+                  min={100}
+                  max={Math.max(500, Math.round(images.reduce((a, img) => a + img.size, 0) / 1024))}
+                  step={50}
+                />
+              </div>
+
+
               <Btn onClick={convert} loading={running} disabled={images.length === 0 || running}>
                 📄 Create & Download PDF
               </Btn>
@@ -375,7 +376,7 @@ function ImageToPdfInner() {
         { q: 'What is Auto page size?', a: 'Auto creates a PDF page that exactly matches each images dimensions. Useful when you want no cropping or scaling.' },
         { q: 'What does the Quality slider do?', a: 'It controls JPEG compression when embedding images. Lower values create smaller PDF files but with more compression artefacts.' },
       ]} />
-    </>
+    </div>
   );
 }
 

@@ -130,7 +130,7 @@ function ImageResizerInner() {
             let finalBlob;
             if (targetSizeEnabled) {
                 setStatus({ type: "processing", msg: "Optimizing file size..." });
-                const initialBlob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.9));
+                const initialBlob = await new Promise(r => canvas.toBlob(r, format, 0.95));
                 finalBlob = await imageCompression(initialBlob, {
                     maxSizeMB: targetSizeKB / 1024,
                     maxWidthOrHeight: Math.max(width, height),
@@ -167,14 +167,6 @@ function ImageResizerInner() {
         }
     }, [preview, running, width, height, targetSizeEnabled, targetSizeKB, format, quality, toast]);
 
-    /* ── auto-process ───────────────────────────────────────── */
-    useEffect(() => {
-        if (!preview) return;
-        const timer = setTimeout(() => {
-            process();
-        }, 800);
-        return () => clearTimeout(timer);
-    }, [preview, process]);
 
     const reset = () => {
         setPreview(null);
@@ -183,7 +175,7 @@ function ImageResizerInner() {
     };
 
     return (
-        <>
+        <div className="resizer-page">
             <SEO
                 title="Online Image Resizer – Resize for Exams, Apps & Social Media"
                 description="Resize images to any dimension (px, cm, mm) for official applications, LinkedIn, or Instagram. Perfect for global document standards and high-quality photo resizing."
@@ -315,7 +307,7 @@ function ImageResizerInner() {
                 </Panel>
 
                 {result && (
-                    <Panel title="Step 3: Download Result">
+                    <Panel title="Step 3: Download Result" className="grid-full result-panel">
                         <div ref={resultRef} className="result-layout">
                             <PreviewBox>
                                 <img src={result} alt="Resized" className="result-img" />
@@ -365,7 +357,7 @@ function ImageResizerInner() {
                     { q: "Is WebP better than JPG?", a: "WebP generally provides better quality at smaller file sizes compared to JPG, and is supported by most modern browsers and platforms." }
                 ]}
             />
-        </>
+        </div>
     );
 }
 

@@ -183,7 +183,7 @@ function OCRInner() {
     };
 
     return (
-        <>
+        <div className="ocr-page">
             <SEO
                 title="Image to Text Converter Online Free – OCR Hub"
                 description="Extract text from images (JPG, PNG) and PDF documents online for free. Highly accurate OCR supporting English and Hindi. 100% private and secure scan."
@@ -267,7 +267,7 @@ function OCRInner() {
             </ToolGrid>
 
             {resultText && (
-                <Panel title="Step 3: Extracted Text">
+                <Panel title="Step 3: Extracted Text" className="grid-full result-panel">
                     <div ref={resultRef} className="ocr-result-layout">
                         <div className="ocr-text-area-wrap">
                             <label htmlFor="ocr-output" className="sr-only">Extracted Text Result</label>
@@ -301,7 +301,7 @@ function OCRInner() {
                     { q: "Is this safe for scanning official receipts?", a: "Yes. All processing is 100% client-side. Your sensitive images and extracted data never reach any server, making iLoveToolHub the safest hub for document scanning." }
                 ]}
             />
-        </>
+        </div>
     );
 }
 
