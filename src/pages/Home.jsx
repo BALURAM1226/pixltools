@@ -95,7 +95,7 @@ const CATEGORIES = [
   },
   {
     id: 'other-tools',
-    title: 'Essential Utilities',
+    title: 'Utilities',
     icon: '🛠️',
     tools: [
       {
@@ -143,7 +143,7 @@ const CATEGORIES = [
   },
   {
     id: 'social-tools',
-    title: 'Social Media Tools',
+    title: 'Social Media',
     icon: '💬',
     tools: [
       {

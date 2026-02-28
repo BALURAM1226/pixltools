@@ -90,6 +90,7 @@ function GlobalSearch({ tools }) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const searchRef = useRef(null);
+  const inputRef = useRef(null);
   // navigate is available if needed for future click handlers
   // const navigate = useNavigate();
 
@@ -127,9 +128,16 @@ function GlobalSearch({ tools }) {
 
   return (
     <div className="search-container" ref={searchRef}>
-      <div className={`search-input-wrapper ${isOpen ? 'focused' : ''}`}>
+      <div
+        className={`search-input-wrapper ${isOpen ? 'focused' : ''}`}
+        onClick={() => {
+          setIsOpen(true);
+          setTimeout(() => inputRef.current?.focus(), 50);
+        }}
+      >
         <Search className="search-icon" size={18} />
         <input
+          ref={inputRef}
           type="text"
           placeholder="Search tools..."
           value={query}
@@ -137,7 +145,14 @@ function GlobalSearch({ tools }) {
           onFocus={() => setIsOpen(true)}
         />
         {query && (
-          <button className="search-clear" onClick={() => { setQuery(''); setIsOpen(false); }}>
+          <button
+            className="search-clear"
+            onClick={(e) => {
+              e.stopPropagation();
+              setQuery('');
+              setIsOpen(false);
+            }}
+          >
             <X size={14} />
           </button>
         )}
