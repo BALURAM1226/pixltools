@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import SEO from '../components/SEO';
 import imageCompression from 'browser-image-compression';
 import DropZone from '../components/DropZone';
@@ -222,7 +222,7 @@ function ImageCompressorInner() {
     } finally {
       setIsRunning(false);
     }
-  }, [file, isRunning, maxSizeMB, maxDim, quality, outputFmt, origSize, toast]);
+  }, [file, isRunning, maxSizeMB, maxDim, quality, outputFmt, origSize, toast, targetSizeEnabled]);
 
   /* ── reset ────────────────────────────────────────────── */
   const reset = useCallback(() => {

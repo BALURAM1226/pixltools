@@ -642,6 +642,10 @@
   background: rgba(22, 163, 74, 0.14);
 }
 
+[data-theme="light"] .btn-success.btn-premium-download:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+
 /* Status bars in light */
 [data-theme="light"] .status-processing {
   border-color: rgba(217, 119, 6, 0.25);
