@@ -47,6 +47,7 @@ export default function JSONFormatter() {
             <SEO
                 title="Premium JSON Formatter & Validator – Beautify Code"
                 description="Fast, private JSON beautifier and validator. Clean up messy JSON code instantly in your browser."
+                keywords="json formatter, beautify json online, validate json, minify json, json editor, pretty print json, json viewer, developer data tools, verify json syntax"
                 canonicalPath="/json-formatter"
             />
 

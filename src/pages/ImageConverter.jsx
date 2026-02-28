@@ -279,7 +279,7 @@ function ImageConverterInner() {
       <SEO
         title="Convert PNG to JPG High Quality – Free Image Converter Online"
         description="Fast and free image converter to convert between JPG, PNG, WEBP, SVG and 20+ other formats in high quality. No server uploads, 100% private."
-        keywords="convert png to jpg high quality, online image converter, svg to png converter, webp to jpg online, best free image converter hub"
+        keywords="convert png to jpg high quality, online image converter, svg to png converter, webp to jpg online, best free image converter hub, image format changer, avif to jpg converter, heic to jpg online, ico maker, batch image converter"
         canonicalPath="/image-converter"
       />
 

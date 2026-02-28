@@ -167,7 +167,7 @@ function BgRemoverInner() {
       <SEO
         title="Remove Image BG Online Free – AI Background Remover"
         description="Automatically remove image backgrounds using AI for free. Get transparent PNGs instantly. No server uploads – 100% private and safe for official documents."
-        keywords="remove image bg online free, transparent png maker, background remover online, ai background removal, remove background from photo free"
+        keywords="remove image bg online free, transparent png maker, background remover online, ai background removal, remove background from photo free, erase background, background eraser online, white background for passport, transparent background for logo, ai bg removal"
         canonicalPath="/background-remover"
       />
 

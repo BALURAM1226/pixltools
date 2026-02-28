@@ -187,7 +187,7 @@ function OCRInner() {
             <SEO
                 title="Image to Text Converter Online Free – OCR Hub"
                 description="Extract text from images (JPG, PNG) and PDF documents online for free. Highly accurate OCR supporting English and Hindi. 100% private and secure scan."
-                keywords="image to text converter online free, ocr hub, extract text from image, scan image to text hindi, free photo to text converter"
+                keywords="image to text converter online free, ocr hub, extract text from image, scan image to text hindi, free photo to text converter, online ocr, scanner online, image to word free, scan receipt online, tesseract ocr browser"
                 canonicalPath="/ocr"
             />
 

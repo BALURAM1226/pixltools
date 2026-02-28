@@ -1,0 +1,342 @@
+.validator-page .tool-grid {
+    align-items: flex-start;
+}
+
+.validator-input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+}
+
+.validator-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.clear-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.clear-btn:hover:not(:disabled) {
+    background: var(--bg-elevated);
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.clear-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Base Textarea styling to look like code block */
+.code-textarea {
+    width: 100%;
+    min-height: 350px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    resize: vertical;
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+.code-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Results Area */
+.empty-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    min-height: 350px;
+    color: var(--text-muted);
+}
+
+.empty-icon {
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.empty-results h3 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.success-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    min-height: 350px;
+    color: var(--text-primary);
+}
+
+.success-icon {
+    color: var(--green);
+    margin-bottom: 24px;
+}
+
+.success-results h3 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+/* Issues Display */
+.issues-header h3 {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+
+.issues-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.issues-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.issues-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.issues-grid::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+/* Card Styling */
+.issue-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left-width: 4px;
+}
+
+.issue-error {
+    border-left-color: var(--red);
+}
+
+.issue-warning {
+    border-left-color: var(--amber);
+}
+
+.issue-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.issue-icon {
+    display: flex;
+    align-items: center;
+}
+
+.issue-error .issue-icon {
+    color: var(--red);
+}
+
+.issue-warning .issue-icon {
+    color: var(--amber);
+}
+
+.issue-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    flex: 1;
+}
+
+.issue-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge-error {
+    background: var(--red-dim);
+    color: var(--red);
+}
+
+.badge-warning {
+    background: var(--amber-dim);
+    color: var(--amber);
+}
+
+.issue-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.issue-help {
+    font-size: 0.9rem;
+    background: var(--bg-surface);
+    border: 1px dashed var(--border);
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    color: var(--text-primary);
+}
+
+.issue-snippet {
+    background: #1e1e1e;
+    /* Dark theme looking code block */
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #d4d4d4;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-left: 4px solid var(--accent);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.issue-snippet code {
+    background: transparent;
+    padding: 0;
+}
+
+.issue-help strong {
+    color: var(--accent);
+}
+
+.issue-meta-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.meta-pill {
+    background: var(--bg-base);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.dom-path {
+    background: var(--bg-surface);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    word-break: break-all;
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.dom-path strong {
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.dev-explanation {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-style: italic;
+}
+
+.export-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-elevated);
+    border: 2px dashed var(--border-hover);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin-top: 32px;
+    box-shadow: var(--shadow-sm);
+    gap: 24px;
+    transition: border-color var(--transition) ease;
+}
+
+.export-panel:hover {
+    border-color: var(--accent);
+}
+
+.export-info {
+    flex: 1;
+}
+
+.export-info h3 {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.export-info p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .export-panel {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    .validator-page .tool-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+}

@@ -20,6 +20,12 @@ const PasswordGenerator = lazy(() => import('./pages/PasswordGenerator'));
 const UnitConverter = lazy(() => import('./pages/UnitConverter'));
 const SecretKeyGenerator = lazy(() => import('./pages/SecretKeyGenerator'));
 const HashtagGenerator = lazy(() => import('./pages/HashtagGenerator'));
+const ColorContrastChecker = lazy(() => import('./pages/ColorContrastChecker'));
+const HtmlWcagValidator = lazy(() => import('./pages/HtmlWcagValidator'));
+const UrlEncoderDecoder = lazy(() => import('./pages/UrlEncoderDecoder'));
+const CssUnitConverter = lazy(() => import('./pages/CssUnitConverter'));
+const JwtDebugger = lazy(() => import('./pages/JwtDebugger'));
+const DiffChecker = lazy(() => import('./pages/DiffChecker'));
 
 /* Legal & Info Pages */
 const About = lazy(() => import('./pages/About'));
@@ -67,6 +73,12 @@ export default function App() {
               <Route path="/unit-converter" element={<UnitConverter />} />
               <Route path="/secret-generator" element={<SecretKeyGenerator />} />
               <Route path="/hashtag-generator" element={<HashtagGenerator />} />
+              <Route path="/color-contrast-checker" element={<ColorContrastChecker />} />
+              <Route path="/html-wcag-validator" element={<HtmlWcagValidator />} />
+              <Route path="/url-encoder-decoder" element={<UrlEncoderDecoder />} />
+              <Route path="/css-unit-converter" element={<CssUnitConverter />} />
+              <Route path="/jwt-debugger" element={<JwtDebugger />} />
+              <Route path="/diff-checker" element={<DiffChecker />} />
 
               {/* Legal & Info Routes */}
               <Route path="/about" element={<About />} />

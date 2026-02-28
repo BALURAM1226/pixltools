@@ -8,7 +8,7 @@ import {
   Code2, FileText, ScanText, QrCode, ChevronDown,
   Search, X, ArrowRight, Sun, Moon, Menu, Frown,
   ShieldCheck, Scale, FileCode, Key,
-  Hash
+  Hash, Eye, Activity, Link2, Ruler, Lock
 } from 'lucide-react';
 import './Layout.css';
 
@@ -20,21 +20,27 @@ const NAV = [
   { path: '/background-remover', label: 'BG Remover', icon: <Eraser size={18} />, badge: 'AI', cat: 'image', color: '#f6ad55' },
   { path: '/passport-photo', label: 'Passport Photo', icon: <UserSquare size={18} />, cat: 'image', color: '#b794f4' },
   { path: '/image-resizer', label: 'Image Resizer', icon: <Maximize2 size={18} />, cat: 'image', color: '#4fd1c5' },
-  { path: '/base64-converter', label: 'Base64 Converter', icon: <Code2 size={18} />, cat: 'image', color: '#a0aec0' },
   { path: '/image-to-pdf', label: 'Image to PDF', icon: <FileText size={18} />, cat: 'pdf', color: '#f687b3' },
-  { path: '/ocr', label: 'OCR Scanner', icon: <ScanText size={18} />, badge: 'HOT', cat: 'ocr', color: '#ed64a6' },
+  { path: '/ocr', label: 'OCR Scanner', icon: <ScanText size={18} />, badge: 'HOT', cat: 'dev', color: '#ed64a6' },
+  { path: '/base64-converter', label: 'Base64 Converter', icon: <Code2 size={18} />, cat: 'dev', color: '#a0aec0' },
+  { path: '/json-formatter', label: 'JSON Formatter', icon: <FileCode size={18} />, cat: 'dev', color: '#4299e1' },
+  { path: '/html-wcag-validator', label: 'HTML WCAG Scanner', icon: <Activity size={18} />, badge: 'NEW', cat: 'dev', color: '#f56565' },
+  { path: '/color-contrast-checker', label: 'Color Contrast', icon: <Eye size={18} />, badge: 'NEW', cat: 'dev', color: '#9f7aea' },
+  { path: '/secret-generator', label: 'Secret Key Gen', icon: <Key size={18} />, cat: 'dev', color: '#ed64a6' },
+  { path: '/url-encoder-decoder', label: 'URL Encoder', icon: <Link2 size={18} />, badge: 'NEW', cat: 'dev', color: '#b794f4' },
+  { path: '/css-unit-converter', label: 'Global CSS Units', icon: <Ruler size={18} />, badge: 'NEW', cat: 'dev', color: '#4fd1c5' },
+  { path: '/jwt-debugger', label: 'JWT Debugger', icon: <Lock size={18} />, badge: 'NEW', cat: 'dev', color: '#63b3ed' },
+  { path: '/diff-checker', label: 'Diff Checker', icon: <FileCode size={18} />, badge: 'NEW', cat: 'dev', color: '#f6ad55' },
   { path: '/qr-generator', label: 'QR Generator', icon: <QrCode size={18} />, badge: 'NEW', cat: 'utility', color: '#ed8936' },
-  { path: '/json-formatter', label: 'JSON Formatter', icon: <FileCode size={18} />, cat: 'utility', color: '#4299e1' },
   { path: '/password-generator', label: 'Password Gen', icon: <ShieldCheck size={18} />, cat: 'utility', color: '#48bb78' },
   { path: '/unit-converter', label: 'Unit Converter', icon: <Scale size={18} />, cat: 'utility', color: '#f6ad55' },
-  { path: '/secret-generator', label: 'Secret Key Gen', icon: <Key size={18} />, cat: 'utility', color: '#ed64a6' },
   { path: '/hashtag-generator', label: 'Hashtag Gen', icon: <Hash size={18} />, cat: 'social', color: '#319795' },
 ];
 
 const NAV_CATEGORIES = [
   { id: 'image', label: 'Image Tools' },
   { id: 'pdf', label: 'PDF Tools' },
-  { id: 'ocr', label: 'OCR Tools' },
+  { id: 'dev', label: 'Dev Tools' },
   { id: 'utility', label: 'Utilities' },
   { id: 'social', label: 'Social Media' },
 ];
@@ -196,12 +202,24 @@ function GlobalSearch({ tools }) {
 /* ── Category Dropdown ─────────────────────────────────── */
 function CatDropdown({ category, tools }) {
   const [open, setOpen] = useState(false);
+  const timeoutRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setOpen(false);
+    }, 150); // 150ms "stickiness"
+  };
 
   return (
     <div
       className="cat-dropdown-container"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <button className={`cat-dropdown-trigger ${open ? 'active' : ''}`}>
         {category.label}
@@ -209,7 +227,11 @@ function CatDropdown({ category, tools }) {
       </button>
 
       {open && (
-        <div className="cat-dropdown-menu">
+        <div
+          className="cat-dropdown-menu"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <div className="cat-dropdown-grid">
             {tools.map(tool => (
               <Link

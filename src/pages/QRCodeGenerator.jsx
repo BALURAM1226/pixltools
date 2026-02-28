@@ -54,7 +54,7 @@ export default function QRCodeGenerator() {
             <SEO
                 title="Custom QR Code Generator – Create Free High-Quality QR Codes"
                 description="Generate professional QR codes for URLs, text, and business cards. Customize colors, add your logo, and download in high resolution. 100% private and free."
-                keywords="qr code generator online, create qr code with logo, custom qr code maker, high resolution qr code, free qr code generator"
+                keywords="qr code generator online, create qr code with logo, custom qr code maker, high resolution qr code, free qr code generator, qr code for business, printable qr code for marketing, dynamic qr generator, safe qr code maker"
                 canonicalPath="/qr-generator"
             />
 

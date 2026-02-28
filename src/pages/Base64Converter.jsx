@@ -94,6 +94,7 @@ function Base64ConverterInner() {
             <SEO
                 title="Image to Base64 Converter – Encode & Decode Images"
                 description="Free online tool to convert images to Base64 strings or decode Base64 back to images. Perfect for developers and web designers."
+                keywords="image to base64 converter, encode image to string, decode base64 to image, data uri maker, base64 to png, base64 to jpg, web developer tools, img src base64 converter"
                 canonicalPath="/base64-converter"
             />
 

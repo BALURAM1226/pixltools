@@ -287,7 +287,7 @@ function PassportPhotoInner() {
 				<SEO
 					title="Printable Passport Size Photo Maker – Global Official Standards"
 					description="Generate official passport photos for US, UK, India, EU, and 100+ countries. Choose background colors and print layouts (4x6, A4) for free. 100% private."
-					keywords="passport size photo maker online, printable passport photo, 2x2 inch photo, 35x45 mm photo maker, official visa photo generator, free passport photo tool"
+					keywords="passport size photo maker online, printable passport photo, 2x2 inch photo, 35x45 mm photo maker, official visa photo generator, free passport photo tool, print passport photos at home, cv photo maker, LinkedIn profile photo editor, biometric photo online"
 					canonicalPath="/passport-photo"
 				/>
 

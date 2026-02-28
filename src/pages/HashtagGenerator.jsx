@@ -62,6 +62,7 @@ export default function HashtagGenerator() {
             <SEO
                 title="Viral Hashtag Generator – Grow Your Social Reach"
                 description="Generate trending hashtags for Instagram, TikTok, and Twitter. Boost your engagement with viral hashtag suggestions."
+                keywords="viral hashtag generator, trending hashtags, instagram hashtags, tiktok hashtags, twitter hashtags, boost social reach, social media marketing tools, viral tags creator, hashtag finder"
                 canonicalPath="/hashtag-generator"
             />
 
