@@ -131,11 +131,11 @@ export function Select({ value, onChange, options, placeholder, id, label }) {
 }
 
 /* ─── Primary button ─────────────────────────────────────── */
-export function Btn({ onClick, disabled, loading, children, variant = 'primary', full = true, ...props }) {
+export function Btn({ onClick, disabled, loading, children, variant = 'primary', full = true, className = '', ...props }) {
   return (
     <button
       type="button"
-      className={`btn btn-${variant} ${full ? 'btn-full' : ''}`}
+      className={`btn btn-${variant} ${full ? 'btn-full' : ''} ${className}`}
       onClick={onClick}
       disabled={disabled || loading}
       {...props}
