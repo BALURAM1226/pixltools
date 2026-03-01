@@ -6,11 +6,21 @@ import './ToolShell.css';
 export function AdBanner({ slot }) {
   const ref = useRef(null);
   const fired = useRef(false);
+
+  // HIDE ADS while site is new / during placeholder phase
+  const isPlaceholder = "ca-pub-XXXXXXXXXXXXXXXX" === "ca-pub-XXXXXXXXXXXXXXXX";
+
   useEffect(() => {
-    if (fired.current || !ref.current) return;
+    if (fired.current || !ref.current || isPlaceholder) return;
     fired.current = true;
     try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch { }
-  }, []);
+  }, [isPlaceholder]);
+
+  // Don't render anything in production while we have a placeholder ID
+  if (isPlaceholder && process.env.NODE_ENV !== 'development') {
+    return null;
+  }
+
   return (
     <div className="ad-wrap">
       <ins ref={ref} className="adsbygoogle" style={{ display: 'block' }}
@@ -20,8 +30,8 @@ export function AdBanner({ slot }) {
         data-full-width-responsive="true" />
       {process.env.NODE_ENV === 'development' && (
         <div className="ad-placeholder">
-          <span>📢 Google AdSense · Slot: {slot}</span>
-          <span>Replace ca-pub-XXXXXXXXXXXXXXXX with your Publisher ID</span>
+          <span>📢 Google AdSense Slot (Hidden) · Slot: {slot}</span>
+          <span>Update ID in ToolShell.jsx to enable.</span>
         </div>
       )}
     </div>
