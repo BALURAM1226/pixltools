@@ -8,6 +8,7 @@ export function AdBanner({ slot }) {
   const fired = useRef(false);
 
   // HIDE ADS while site is new / during placeholder phase
+  // eslint-disable-next-line no-self-compare
   const isPlaceholder = "ca-pub-XXXXXXXXXXXXXXXX" === "ca-pub-XXXXXXXXXXXXXXXX";
 
   useEffect(() => {
