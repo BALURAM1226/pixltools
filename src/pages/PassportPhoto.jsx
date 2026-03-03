@@ -505,14 +505,63 @@ function PassportPhotoInner() {
 
 			<AdBanner slot="12345678" />
 
-			<SEOContent title="Printable Passport & Visa Photo Maker for Any Country">
-				<p>Generate professional passport photos meeting global official standards instantly in your browser.</p>
+			<SEOContent title="Professional Passport & Visa Photo Maker Online">
+				<p>Creating an official passport photo at home doesn't have to be complicated. Our <strong>Passport Photo Maker</strong> is engineered to meet the strict biometric standards required by government agencies worldwide. Whether you need a 2x2 inch photo for a US Passport or a 35x45mm photo for the UK, India, or Europe, our tool ensures your final result is perfectly aligned and correctly sized.</p>
+
+				<div className="related-tool-cta">
+					<div className="cta-content">
+						<h4>📉 Need to hit a specific file size?</h4>
+						<p>Many government portals require passport photos to be under <strong>50KB or 100KB</strong>. Use our <strong>Image Compressor</strong> to reach the perfect size without losing facial detail.</p>
+					</div>
+					<a href="/image-compressor" className="cta-link-btn">
+						Open Image Compressor
+					</a>
+				</div>
+
+				<h3>Global Official Standards Supported</h3>
+				<p>We provide pre-calibrated templates for over 100+ countries, ensuring you never have to worry about pixels or millimeters:</p>
+				<ul>
+					<li><strong>United States:</strong> 2x2 inches (600x600 px at 300 DPI) with a white background.</li>
+					<li><strong>United Kingdom & Europe:</strong> 35x45 mm with a light grey or cream background.</li>
+					<li><strong>India:</strong> 35x45 mm or 2x2 inches depending on the specific visa or passport type.</li>
+					<li><strong>China:</strong> 33x48 mm with specific head height requirements.</li>
+				</ul>
+
+				<h3>Biometric Rules: The "Head Size" Formula</h3>
+				<p>Most rejections happen because the head is too small or too large within the frame. Our tool includes a <strong>Biometric Guide</strong> overlay based on official ICAO standards. The general rule is that your head should occupy between <strong>50% to 70%</strong> of the total image height. Use our zoom and drag controls to match these proportions perfectly.</p>
+
+				<h3>Professional Photography Checklist</h3>
+				<div className="best-practices-grid">
+					<div className="practice-card">
+						<h5>Even Lighting</h5>
+						<p>Stand facing a window to get natural, even light on your face. Avoid overhead lights that create deep shadows under the eyes or nose.</p>
+					</div>
+					<div className="practice-card">
+						<h5>Neutral Expression</h5>
+						<p>Keep your mouth closed and eyes wide open. Most countries require a "neutral expression"—avoiding forced smiles or frowning.</p>
+					</div>
+					<div className="practice-card">
+						<h5>Background Contrast</h5>
+						<p>Wear dark clothing if you are using a white background. This ensures a clear "separation" between you and the wall for the computer to read.</p>
+					</div>
+					<div className="practice-card">
+						<h5>Camera Alignment</h5>
+						<p>Keep your phone or camera at eye level. Looking up or down at the lens can distort your facial features and lead to rejection.</p>
+					</div>
+				</div>
+
+				<h3>Save Money Printing at Home</h3>
+				<p>Instead of paying $15+ at a pharmacy, use our <strong>Print Layout</strong> feature. Select the "4x6 in" or "A4 Sheet" option. This will create a collage of 6-8 passport photos on a single sheet. You can then print this sheet for cents at any local photo kiosk or home printer and cut them out manually.</p>
 			</SEOContent>
 
 			<FAQ
 				items={[
-					{ q: "What is the official passport photo size for India?", a: "The standard size is 35x45 mm." },
-					{ q: "How can I print my passport photo?", a: "Select the '4x6 in' or 'A4 Sheet' print layout." }
+					{ q: "What is the official passport photo size for the US?", a: "The official US passport photo size is 2x2 inches (51x51 mm). The head must be between 1 and 1 3/8 inches from the bottom of the chin to the top of the head." },
+					{ q: "Can I take a passport photo with my phone?", a: "Yes! Modern phone cameras are more than capable. Just ensure someone else takes the photo (don't use the front selfie camera) and stand against a plain wall in good lighting." },
+					{ q: "What background color should I use?", a: "Most countries (like the US and India) require a plain white background. The UK and some EU countries prefer light grey or cream. Use our 'AI Background' tool to swap colors instantly." },
+					{ q: "How many photos fit on a 4x6 inch print?", a: "With 35x45mm photos, you can comfortably fit 6-8 photos on a 4x6 (10x15cm) sheet. Our tool handles this layout automatically." },
+					{ q: "Is my photo sent to a server?", a: "No. Your privacy is our priority. All image processing, AI background removal, and cropping happen locally in your browser. Your face never leaves your device." },
+					{ q: "Why is the target size (KB) important?", a: "Online visa applications (like the Indian e-Visa) often have a strict upload limit, such as 'minimum 10KB, maximum 300KB'. Use our 'Target Size' slider to hit these exact limits." }
 				]}
 			/>
 		</>

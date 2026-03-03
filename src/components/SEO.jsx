@@ -12,7 +12,8 @@ export default function SEO({ title, description, keywords, canonicalPath, custo
         "name": fullTitle,
         "url": fullCanonical,
         "description": description,
-        "applicationCategory": "MultimediaApplication",
+        "image": "https://www.ilovetoolhub.com/web-app-manifest-512x512.png",
+        "applicationCategory": "UtilitiesApplication",
         "browserRequirements": "Requires JavaScript",
         "operatingSystem": "All",
         "offers": {
@@ -20,10 +21,14 @@ export default function SEO({ title, description, keywords, canonicalPath, custo
             "price": "0",
             "priceCurrency": "USD"
         },
-        "author": {
+        "publisher": {
             "@type": "Organization",
             "name": "iLoveToolHub",
-            "url": siteUrl
+            "url": "https://www.ilovetoolhub.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.ilovetoolhub.com/web-app-manifest-512x512.png"
+            }
         }
     };
 

@@ -441,6 +441,36 @@ export default function HtmlWcagValidator() {
                     <li><strong>Strict Relational ARIA (Level A | WCAG 4.1.2):</strong> Optionally analyzes complex multi-element arrays to verify that any ID referenced within an aria relationship (e.g. <code>aria-controls="..."</code>, <code>aria-labelledby="..."</code>) actually resolves to an existing element in the DOM tree, preventing fatal screen reader crashes.</li>
                 </ul>
 
+                <h3>The Professional ARIA Best Practices</h3>
+                <div className="best-practices-grid">
+                    <div className="practice-card">
+                        <h5>1. The First Rule of ARIA</h5>
+                        <p>If you can use a native HTML element (like <code>&lt;button&gt;</code>) instead of a custom role (like <code>role="button"</code>), always use the native one. It is more robust and accessible by default.</p>
+                    </div>
+                    <div className="practice-card">
+                        <h5>2. Accurate ARIA Labels</h5>
+                        <p>Only use <code>aria-label</code> when there is no visible text. If there is visible text that labels an element, use <code>aria-labelledby</code> to link them instead of repeating the text.</p>
+                    </div>
+                    <div className="practice-card">
+                        <h5>3. Manage Focus & States</h5>
+                        <p>Dynamic UI elements must update their ARIA states (like <code>aria-expanded</code> or <code>aria-selected</code>) instantly via JavaScript to inform screen reader users of layout changes.</p>
+                    </div>
+                    <div className="practice-card">
+                        <h5>4. Handle Relationships</h5>
+                        <p>Use <code>aria-describedby</code> to link form inputs to their specific error messages or helper instructions. This ensures the reader announces the context for the specific field.</p>
+                    </div>
+                </div>
+
+                <div className="related-tool-cta">
+                    <div className="cta-content">
+                        <h4>🎨 Check your color accessibility!</h4>
+                        <p>Accessibility isn't just about code structure. Ensure your color palette meets WCAG 2.1 AA & AAA standards with our <strong>Color Contrast Checker</strong>.</p>
+                    </div>
+                    <a href="/color-contrast-checker" className="cta-link-btn">
+                        Open Contrast Checker
+                    </a>
+                </div>
+
                 <p>Accessibility directly impacts your SEO ranking and audience retention. Running your final React DOM output through a static WCAG analyzer ensures you don't miss structural elements that generic component linters might overlook.</p>
             </SEOContent>
 
