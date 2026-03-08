@@ -46,8 +46,14 @@ export default function JwtDebugger() {
             <SEO
                 title="JWT Debugger – Decode JSON Web Tokens Locally"
                 description="Easily decode and inspect JWT headers and payloads in your browser. 100% private, no server-side logging."
-                keywords="jwt debugger, decode jwt, json web token, jwt inspector, auth debugger, bearer token decoder, jwt claims viewer, security tools"
+                keywords="jwt debugger, decode jwt, json web token, jwt inspector, auth debugger, bearer token decoder, jwt claims viewer, security tools, jwt decoder online"
                 canonicalPath="/jwt-debugger"
+                ogImage="/og/jwt-debugger.png"
+                faqItems={[
+                    { q: 'What is a JWT?', a: 'JSON Web Token (JWT) is an open standard that defines a compact way for securely transmitting information between parties as a JSON object.' },
+                    { q: 'Can this steal my login token?', a: 'No. Unlike other online debuggers, we perform no network requests when you click Decode. You can even use this tool offline.' },
+                    { q: 'What parts are in a JWT?', a: 'A JWT typically consists of three parts: Header, Payload, and Signature, separated by dots.' }
+                ]}
             />
 
             <ToolHeader

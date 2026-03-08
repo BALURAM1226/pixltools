@@ -253,8 +253,17 @@ function ImageCompressorInner() {
       <SEO
         title="Compress Image to 50KB or 100KB Online – Free Tool Hub"
         description="Reduce image size to 50KB, 100KB, or 200KB instantly. Perfect for official applications and document portals globally. 100% private and secure."
-        keywords="compress image to 50kb online, reduce image size to 100kb, photo size reducer, official document compressor, free online image compressor"
+        keywords="compress image to 50kb online, reduce image size to 100kb, photo size reducer, official document compressor, free online image compressor, compress photo for government form, image kb reducer"
         canonicalPath="/image-compressor"
+        ogImage="/og/image-compressor.png"
+        faqItems={[
+          { q: 'How can I compress my image to exactly 50KB or 100KB?', a: 'For government forms or exam uploads, use the Target Max Size slider. Set it to 0.05MB for a 50KB file or 0.1MB for a 100KB file. iLoveToolHub will automatically adjust the quality to stay under your limit.' },
+          { q: 'Is this tool safe for government document uploads?', a: 'Yes. iLoveToolHub processes everything locally in your browser. Your official images or documents are never uploaded to our servers, making it 100% safe for sensitive document preparation.' },
+          { q: 'What does Max Width and Height do?', a: 'It limits the largest dimension (width or height) of the output image. The image is scaled down proportionally if either dimension exceeds this value. Very useful for reducing resolution alongside file size.' },
+          { q: 'Which format gives the best compression?', a: 'WebP is typically 25-35% smaller than JPEG at the same quality. JPEG offers the widest compatibility. PNG is lossless and usually produces larger files — use it only when you need pixel-perfect output.' },
+          { q: 'Why is quality greyed out for PNG?', a: 'PNG uses lossless compression, so quality settings do not apply. File size is reduced by lowering resolution (Max Dimension) or by switching to a lossy format like JPEG or WebP.' },
+          { q: 'Are my images uploaded anywhere?', a: 'No. All compression runs locally in your browser using Web Workers. Your images never leave your device.' }
+        ]}
       />
 
       <ToolHeader

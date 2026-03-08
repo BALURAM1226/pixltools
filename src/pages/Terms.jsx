@@ -11,6 +11,7 @@ export default function Terms() {
                 title="Terms of Service – Rules & Regulations"
                 description="Read the official Terms of Service for iLoveToolHub. Professional and fair guidelines for using our digital utility platform."
                 canonicalPath="/terms"
+                ogImage="/og/terms.png"
             />
 
             <header className="legal-header">

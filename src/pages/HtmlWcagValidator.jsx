@@ -293,8 +293,16 @@ export default function HtmlWcagValidator() {
             <SEO
                 title="HTML WCAG Validator – Accessibility Checker for React, NextJS & HTML"
                 description="Paste raw HTML, React templates, or Next.js DOM outputs to instantly check for WCAG accessibility violations. Free, private, running in your browser."
-                keywords="wcag validator, html accessibility checker, react accessibility, nextjs wcag test, missing alt tags, aria-label checker, a11y scanner, web accessibility audit, 508 compliance test"
+                keywords="wcag validator, html accessibility checker, react accessibility, nextjs wcag test, missing alt tags, aria-label checker, a11y scanner, web accessibility audit, 508 compliance test, aria validator online"
                 canonicalPath="/html-wcag-validator"
+                ogImage="/og/html-wcag-validator.png"
+                faqItems={[
+                    { q: 'Is this process private? Can I paste confidential code?', a: 'Completely private. The analysis engine uses your browser native local DOMParser to process the nodes in memory locally. Your code is never serialized, never sent over a network, and never stored on a server. It is perfectly safe for proprietary pre-released apps.' },
+                    { q: 'Can I paste raw JSX directly into the checker?', a: 'Yes! While JSX uses camelCase properties (like className) instead of standard lowercase attributes, this parser is forgiving and will successfully test the structure. However, for maximum 100% accuracy, we recommend inspecting your browser and copying the finalized rendered outerHTML.' },
+                    { q: 'Why are empty buttons a WCAG error?', a: 'Modern web design uses a lot of icon-only elements (e.g. a Hamburger menu using an SVG). A screen reader cannot see the icon. If the button lacks an internal span or an aria-label, blind users simply hear Button read aloud without any context on what it does when clicked.' },
+                    { q: 'What does Strict ARIA Validation do?', a: 'ARIA allows you to link complex elements together (e.g. an input field to a distant error message) using attributes like aria-describedby. The Strict Validation toggle crawls your code to guarantee that every single ID referenced by an ARIA tag actually exists in the DOM snippet.' },
+                    { q: 'Why is testing React and NextJS apps for accessibility so difficult?', a: 'Because they are Single Page Applications (SPAs). If you try to run a standard URL accessibility scanner, it will usually only see an empty div element because the JavaScript has not painted the application yet. By copying the DOM directly into this tool, you bypass that completely.' }
+                ]}
             />
 
             <ToolHeader

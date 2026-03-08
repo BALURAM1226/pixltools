@@ -31,6 +31,12 @@ export default function UrlEncoderDecoder() {
                 description="Encode or decode URL parameters and special characters instantly. Perfect for debugging API calls and web addresses."
                 keywords="url encoder, url decoder, encodeURIComponent, decodeURIComponent, web developer tools, percent encoding, uri encoder, link sanitizer, url debugger"
                 canonicalPath="/url-encoder-decoder"
+                ogImage="/og/url-encoder-decoder.png"
+                faqItems={[
+                    { q: 'Is this tool safe for sensitive data?', a: 'Yes. All encoding and decoding happens locally in your browser JavaScript engine. No data is sent to our servers.' },
+                    { q: 'Which standard does this follow?', a: 'We use the standard ECMAScript encodeURIComponent and decodeURIComponent specifications used across the web.' },
+                    { q: 'Can it handle Emojis?', a: 'Absolutely! Modern UTF-8 characters and emojis are fully supported.' }
+                ]}
             />
 
             <ToolHeader

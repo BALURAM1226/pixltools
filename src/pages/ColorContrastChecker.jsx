@@ -85,8 +85,15 @@ export default function ColorContrastChecker() {
             <SEO
                 title="WCAG Color Contrast Checker Online – Free Accessibility Tool"
                 description="Verify color contrast instantly for WCAG AA and AAA compliance. Ensure your website text, logos, and UI are accessible to everyone. 100% Free."
-                keywords="color contrast checker, wcag checker, wcag aa aaa compliance, text contrast ratio, accessible colors, ui accessibility tool"
+                keywords="color contrast checker, wcag checker, wcag aa aaa compliance, text contrast ratio, accessible colors, ui accessibility tool, color contrast ratio calculator, web accessibility tool, ada color checker"
                 canonicalPath="/color-contrast-checker"
+                ogImage="/og/color-contrast-checker.png"
+                faqItems={[
+                    { q: 'Is this checker fully WCAG 2.1 compliant?', a: 'Yes. Our algorithm uses the precise relative luminance mathematical formula specified by the W3C Web Content Accessibility Guidelines (WCAG 2.1) to compute scores.' },
+                    { q: 'What is considered Large Text in WCAG?', a: 'According to WCAG, large text is defined as text that is 18pt (usually 24px) or larger, OR text that is 14pt (usually 18.66px) and bold.' },
+                    { q: 'What about buttons and icons?', a: 'User interface components, input boundaries, icons, and non-text graphics must meet a minimum contrast ratio of 3.0:1 against their adjacent colors to pass the WCAG AA standard.' },
+                    { q: 'Can I check Hex, RGB, and HSL colors?', a: 'Currently, the text input accepts Hexadecimal codes (e.g., #FFFFFF), but clicking the circular color swatch will open your system native color picker, which natively supports RGB and HSL inputs on most devices.' }
+                ]}
             />
 
             <ToolHeader

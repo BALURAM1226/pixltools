@@ -9,6 +9,7 @@ export default function Contact() {
                 title="Contact Us – We'd Love to Hear From You"
                 description="Have a question, feedback, or a partnership inquiry? Get in touch with the iLoveToolHub team today for support and guidance."
                 canonicalPath="/contact"
+                ogImage="/og/contact.png"
             />
 
             <header className="legal-header">

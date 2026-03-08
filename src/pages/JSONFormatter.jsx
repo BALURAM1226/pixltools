@@ -73,6 +73,12 @@ export default function JSONFormatter() {
                 description="Professional-grade JSON tool to beautify, minify, and explore nested data with a high-fidelity Graph Visualizer. 100% private, browser-only processing."
                 keywords="json formatter with graph, json crack alternative, interactive json visualizer, private json beautifier, json tree explorer online, pretty print json, minify json tool, rest api debugger, developer tools for json mapping, json to graph export"
                 canonicalPath="/json-formatter"
+                ogImage="/og/json-formatter.png"
+                faqItems={[
+                    { q: 'What is a JSON formatter?', a: 'A JSON formatter takes raw, minified JSON data and reformats it with proper indentation and line breaks, making it easier for developers to read and debug API responses or configuration files.' },
+                    { q: 'Is my JSON data private?', a: 'Yes. All formatting, minification, and graph visualization happens entirely in your browser. Your data is never sent to any server.' },
+                    { q: 'What does the Graph Visualizer do?', a: 'It converts your JSON structure into an interactive node-based diagram, making it easy to understand deeply nested objects and arrays at a glance.' }
+                ]}
             />
 
             <ToolHeader

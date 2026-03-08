@@ -96,8 +96,14 @@ export default function DiffChecker() {
             <SEO
                 title="Online Diff Checker – Compare Text & Code Side-by-Side"
                 description="Compare two texts or code snippets to find differences instantly. Highlights additions and deletions with a clean, professional UI. 100% private."
-                keywords="diff checker, compare text online, code difference, text comparison tool, find differences in text, online diff tool, side by side diff, MIT licensed diff"
+                keywords="diff checker, compare text online, code difference, text comparison tool, find differences in text, online diff tool, side by side diff, code diff online free"
                 canonicalPath="/diff-checker"
+                ogImage="/og/diff-checker.png"
+                faqItems={[
+                    { q: 'Is my code secure?', a: 'Yes. We use client-side JavaScript to perform the comparison. Nothing is uploaded to our cloud servers.' },
+                    { q: 'What do the colors mean?', a: 'Green highlights text that was added, while red represents text that was deleted from the original version.' },
+                    { q: 'Can I compare large files?', a: 'The tool handles up to several thousand lines comfortably. For extremely large files (multi-megabyte), performance depends on your browser memory.' }
+                ]}
             />
 
             <ToolHeader

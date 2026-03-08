@@ -1,0 +1,17 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "ilovetoolhub.com"
+        }
+      ],
+      "destination": "https://www.ilovetoolhub.com/$1",
+      "permanent": true
+    }
+  ]
+}

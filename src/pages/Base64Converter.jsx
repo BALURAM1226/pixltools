@@ -96,6 +96,12 @@ function Base64ConverterInner() {
                 description="Free online tool to convert images to Base64 strings or decode Base64 back to images. Perfect for developers and web designers."
                 keywords="image to base64 converter, encode image to string, decode base64 to image, data uri maker, base64 to png, base64 to jpg, web developer tools, img src base64 converter"
                 canonicalPath="/base64-converter"
+                ogImage="/og/base64-converter.png"
+                faqItems={[
+                    { q: 'What is Base64 encoding?', a: 'Base64 is a way to encode binary data (like images) into a text string using 64 safe characters. This allows you to embed images directly into HTML or CSS without external files.' },
+                    { q: 'Why should I use Base64 for images?', a: 'It reduces HTTP requests for small icons or images, improving initial load speed. However, for large images, it increases the total file size by about 33%.' },
+                    { q: 'Is this tool secure?', a: 'Yes, all encoding and decoding happens completely within your browser. Your image data never leaves your computer.' }
+                ]}
             />
 
             <ToolHeader

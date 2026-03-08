@@ -64,6 +64,12 @@ export default function HashtagGenerator() {
                 description="Generate trending hashtags for Instagram, TikTok, and Twitter. Boost your engagement with viral hashtag suggestions."
                 keywords="viral hashtag generator, trending hashtags, instagram hashtags, tiktok hashtags, twitter hashtags, boost social reach, social media marketing tools, viral tags creator, hashtag finder"
                 canonicalPath="/hashtag-generator"
+                ogImage="/og/hashtag-generator.png"
+                faqItems={[
+                    { q: 'How many hashtags should I use on Instagram?', a: 'Instagram allows up to 30 hashtags per post. Studies suggest using 20-25 relevant hashtags provides the best reach. Mix popular, niche, and branded tags.' },
+                    { q: 'Do hashtags work on TikTok?', a: 'Yes! TikTok uses hashtags for content discovery. Use 3-5 highly relevant hashtags plus 1-2 trending ones for maximum visibility in the For You feed.' },
+                    { q: 'Are these hashtags free to use?', a: 'Absolutely. All generated hashtags are free for personal and commercial use with no restrictions.' }
+                ]}
             />
 
             <ToolHeader

@@ -281,6 +281,14 @@ function ImageConverterInner() {
         description="Fast and free image converter to convert between JPG, PNG, WEBP, SVG and 20+ other formats in high quality. No server uploads, 100% private."
         keywords="convert png to jpg high quality, online image converter, svg to png converter, webp to jpg online, best free image converter hub, image format changer, avif to jpg converter, heic to jpg online, ico maker, batch image converter"
         canonicalPath="/image-converter"
+                ogImage="/og/image-converter.png"
+        faqItems={[
+          { q: 'How do I convert SVG to PNG?', a: 'Upload your SVG, select PNG as output, adjust scale if needed, then click Convert. The SVG is rendered at its natural viewport size.' },
+          { q: 'What is WebP and why use it?', a: 'WebP is a modern image format by Google that is 25-35% smaller than JPEG at the same visual quality. Most modern browsers support it.' },
+          { q: 'Does JPEG conversion lose quality?', a: 'Yes - JPEG uses lossy compression. At 90%+ quality the difference is barely visible. Use PNG for lossless output.' },
+          { q: 'How do I make a favicon ICO file?', a: 'Upload your logo, select ICO format, choose 32x32 or 48x48 (standard favicon sizes), and convert. The ICO file saves as a PNG internally which browsers support.' },
+          { q: 'Is there a file size limit?', a: 'Yes, 50 MB per file. For very high-resolution images, lower the scale to reduce output dimensions and memory usage.' }
+        ]}
       />
 
       <ToolHeader

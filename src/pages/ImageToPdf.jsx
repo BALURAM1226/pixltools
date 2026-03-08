@@ -191,8 +191,15 @@ function ImageToPdfInner() {
       <SEO
         title="Combine Images to PDF Online – Fast, Free & Private"
         description="Convert JPG, PNG, and WebP images to high-quality PDF. Merge multiple pages, reorder them, and choose page sizes for all official and professional documents globally."
-        keywords="image to pdf converter, combine jpg to pdf, merge png to pdf, photo to pdf maker, official document pdf builder, free online pdf tool"
+        keywords="image to pdf converter, combine jpg to pdf, merge png to pdf, photo to pdf maker, official document pdf builder, free online pdf tool, jpg to pdf converter online free"
         canonicalPath="/image-to-pdf"
+                ogImage="/og/image-to-pdf.png"
+        faqItems={[
+          { q: 'Is this JPG to PDF converter free for all?', a: 'Yes. iLoveToolHub provides a 100% free JPG to PDF service. There are no limits on the number of pages or file size for your PDF documents.' },
+          { q: 'Can I use this for document upload in admissions?', a: 'Definitely. Most admission portals require a single PDF. You can upload all your certificates as images and our tool will merge them into a high-quality PDF ready for upload.' },
+          { q: 'What is Auto page size?', a: 'Auto creates a PDF page that exactly matches each image dimensions. Useful when you want no cropping or scaling.' },
+          { q: 'What does the Quality slider do?', a: 'It controls JPEG compression when embedding images. Lower values create smaller PDF files but with more compression artefacts.' }
+        ]}
       />
 
       <ToolHeader

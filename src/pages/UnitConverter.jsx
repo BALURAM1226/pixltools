@@ -90,8 +90,15 @@ export default function UnitConverter() {
         <div className="unit-converter">
             <SEO
                 title="Smart Unit Converter – Accurate Metrics Conversion"
-                description="Convert Length, Weight, Temperature, Area, Volume, Speed, and Digital Storage units instantly."
+                description="Convert Length, Weight, Temperature, Area, Volume, Speed, and Digital Storage units instantly. Free, fast, and accurate."
+                keywords="unit converter, kg to lbs, cm to inches, fahrenheit to celsius, km to miles, gb to mb, area converter, speed converter, online unit calculator"
                 canonicalPath="/unit-converter"
+                ogImage="/og/unit-converter.png"
+                faqItems={[
+                    { q: 'How accurate are the conversions?', a: 'All conversions use standard mathematical ratios with up to 6 decimal places of precision. This is more than sufficient for everyday, scientific, and engineering use.' },
+                    { q: 'Can I convert temperature?', a: 'Yes! Switch to the Temperature tab to convert between Celsius, Fahrenheit, and Kelvin instantly.' },
+                    { q: 'Is this tool free to use?', a: 'Yes, completely free with no limits. All calculations happen in your browser — no server calls needed.' }
+                ]}
             />
 
             <ToolHeader

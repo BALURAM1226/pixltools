@@ -289,6 +289,15 @@ function PassportPhotoInner() {
 					description="Generate official passport photos for US, UK, India, EU, and 100+ countries. Choose background colors and print layouts (4x6, A4) for free. 100% private."
 					keywords="passport size photo maker online, printable passport photo, 2x2 inch photo, 35x45 mm photo maker, official visa photo generator, free passport photo tool, print passport photos at home, cv photo maker, LinkedIn profile photo editor, biometric photo online"
 					canonicalPath="/passport-photo"
+					ogImage="/og/passport-photo.png"
+					faqItems={[
+						{ q: 'What is the official passport photo size for the US?', a: 'The official US passport photo size is 2x2 inches (51x51 mm). The head must be between 1 and 1 3/8 inches from the bottom of the chin to the top of the head.' },
+						{ q: 'Can I take a passport photo with my phone?', a: 'Yes! Modern phone cameras are more than capable. Just ensure someone else takes the photo (do not use the front selfie camera) and stand against a plain wall in good lighting.' },
+						{ q: 'What background color should I use?', a: 'Most countries (like the US and India) require a plain white background. The UK and some EU countries prefer light grey or cream. Use our AI Background tool to swap colors instantly.' },
+						{ q: 'How many photos fit on a 4x6 inch print?', a: 'With 35x45mm photos, you can comfortably fit 6-8 photos on a 4x6 (10x15cm) sheet. Our tool handles this layout automatically.' },
+						{ q: 'Is my photo sent to a server?', a: 'No. Your privacy is our priority. All image processing, AI background removal, and cropping happen locally in your browser. Your face never leaves your device.' },
+						{ q: 'Why is the target file size important?', a: 'Online visa applications (like the Indian e-Visa) often have a strict upload limit, such as minimum 10KB, maximum 300KB. Use our Target Size slider to hit these exact limits.' }
+					]}
 				/>
 
 				<ToolHeader

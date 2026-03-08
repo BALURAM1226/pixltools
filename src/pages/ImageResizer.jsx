@@ -179,8 +179,15 @@ function ImageResizerInner() {
             <SEO
                 title="Online Image Resizer – Resize for Exams, Apps & Social Media"
                 description="Resize images to any dimension (px, cm, mm) for official applications, LinkedIn, or Instagram. Perfect for global document standards and high-quality photo resizing."
-                keywords="online image resizer, resize image for official forms, image dimensions converter, resize photo for applications, crop image online free"
+                keywords="online image resizer, resize image for official forms, image dimensions converter, resize photo for applications, crop image online free, resize image for ssc upsc"
                 canonicalPath="/image-resizer"
+                ogImage="/og/image-resizer.png"
+                faqItems={[
+                    { q: 'How do I resize an image for SSC or UPSC exams?', a: 'Select the SSC Photo or UPSC Signature preset from our presets menu. These are pre-configured to meet the official pixel requirements for Indian government portals.' },
+                    { q: 'Can I resize an image to 50KB using this tool?', a: 'Yes. After resizing to the correct dimensions, use our Quality slider or use our dedicated Image Compressor tool to hit the exact 50KB or 20KB limit.' },
+                    { q: 'What is the best size for Instagram?', a: 'For posts, 1080x1080 is standard. For stories, 1080x1920 (9:16 ratio) is recommended.' },
+                    { q: 'Is WebP better than JPG?', a: 'WebP generally provides better quality at smaller file sizes compared to JPG, and is supported by most modern browsers and platforms.' }
+                ]}
             />
 
             <ToolHeader

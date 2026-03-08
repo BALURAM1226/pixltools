@@ -56,6 +56,12 @@ export default function QRCodeGenerator() {
                 description="Generate professional QR codes for URLs, text, and business cards. Customize colors, add your logo, and download in high resolution. 100% private and free."
                 keywords="qr code generator online, create qr code with logo, custom qr code maker, high resolution qr code, free qr code generator, qr code for business, printable qr code for marketing, dynamic qr generator, safe qr code maker"
                 canonicalPath="/qr-generator"
+                ogImage="/og/qr-generator.png"
+                faqItems={[
+                    { q: 'Can I use these QR codes for commercial work?', a: 'Yes. All QR codes generated here are 100% free and carry no license restrictions. You can use them for products, menus, or marketing campaigns.' },
+                    { q: 'Will the logo break the QR code?', a: 'We use high-level (30%) error correction when a logo is added. This ensures the data is still readable by most smartphones despite the visual overlay.' },
+                    { q: 'What is the best format for printing?', a: 'For large posters or banners, use the highest size (2048px) and download as PNG. We are working on SVG support for vector enthusiasts.' }
+                ]}
             />
 
             <ToolHeader
