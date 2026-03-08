@@ -48,11 +48,6 @@ export default function Contact() {
                     <h2>Average Response Time</h2>
                     <p>We take every message seriously. Please allow <strong>24 to 48 hours</strong> for our small but dedicated team to review your inquiry and get back to you with a personal response.</p>
                 </section>
-
-                <section>
-                    <h2>Open Source & Community</h2>
-                    <p>iLoveToolHub is a community-driven project. If you're a developer and want to contribute or report a technical issue, you can also reach us through our official project channels.</p>
-                </section>
             </div>
         </div>
     );
