@@ -3,14 +3,14 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "has": [
         {
           "type": "host",
           "value": "ilovetoolhub.com"
         }
       ],
-      "destination": "https://www.ilovetoolhub.com/$1",
+      "destination": "https://www.ilovetoolhub.com/:path*",
       "permanent": true
     }
   ],
