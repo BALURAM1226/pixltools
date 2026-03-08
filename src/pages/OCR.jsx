@@ -16,6 +16,7 @@ import {
     PreviewBox,
     AdBanner,
     FAQ,
+    SEOContent,
 } from "../components/ToolShell";
 import * as pdfjs from "pdfjs-dist";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
@@ -299,6 +300,29 @@ function OCRInner() {
             )}
 
             <AdBanner slot="12345678" />
+
+            <SEOContent title="Free Image to Text Converter Online - OCR Scanner">
+                <p>Welcome to iLoveToolHub's cutting-edge <strong>Image to Text Converter</strong>. Using advanced Optical Character Recognition (OCR), this free online tool allows you to instantly extract readable and editable text from images, scanned documents, and PDFs. Whether you are a student digitizing notes or a professional organizing receipts, our <strong>online OCR</strong> handles the heavy lifting directly in your browser.</p>
+
+                <h3>How To Extract Text From an Image (JPG/PNG to Text)</h3>
+                <p>Converting photos to digital text has never been easier. Just follow these simple steps:</p>
+                <ol>
+                    <li><strong>Upload your file:</strong> Drag and drop a JPG, PNG, WEBP, or a PDF document into the scanner.</li>
+                    <li><strong>Select your language:</strong> We support over 30 languages, including English and highly accurate <strong>Hindi</strong> OCR.</li>
+                    <li><strong>Scan and Extract:</strong> Click the "Extract Text" button. The engine will instantly read the image to text free of charge.</li>
+                    <li><strong>Download or Copy:</strong> Once extracted, copy your new text directly to your clipboard or download it as a raw `.txt` file, which is perfect as a lightweight <strong>image to word free</strong> alternative.</li>
+                </ol>
+
+                <h3>Why Use iLoveToolHub's Image to Text Converter?</h3>
+                <ul>
+                    <li><strong>100% Client-Side Privacy:</strong> Unlike other online OCR tools that upload your sensitive documents to a server, iLoveToolHub processes your images entirely inside your own browser window. Your private receipts, business cards, and screenshots are never saved or seen by us.</li>
+                    <li><strong>Multilingual Support:</strong> Our scanner is optimized globally. Do you need to <strong>scan image to text Hindi</strong>? Spanish? German? Just select your language for pinpoint accuracy.</li>
+                    <li><strong>Lighting Fast & Free:</strong> There are no paywalls, hidden fees, or limits. Enjoy unlimited image-to-text extractions completely online, completely free.</li>
+                </ul>
+
+                <h3>Common Use Cases</h3>
+                <p>The flexibility of a robust OCR scanner opens endless possibilities. Use our tool to copy un-selectable text from web screenshots, digitize printed invoices and legal paperwork, convert scanned PDF pages back into editable documents, or rapidly translate foreign text signs by digitizing them first.</p>
+            </SEOContent>
 
             <FAQ
                 items={[
