@@ -362,9 +362,10 @@
 }
 
 .tc-desc {
-  font-size: 0.825rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-weight: 450;
   flex: 1;
 }
 
@@ -375,13 +376,13 @@
 }
 
 .tc-tag {
-  font-size: 0.68rem;
-  font-weight: 500;
-  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
 }
 
 .tc-arrow {
@@ -437,9 +438,10 @@
 }
 
 .why-desc {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.55;
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-weight: 450;
 }
 
 /* ============================
@@ -541,4 +543,18 @@
 
 [data-theme="light"] .seo-block {
   background: var(--bg-surface);
+}
+
+[data-theme="light"] .tc-tag {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .tool-card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] .tool-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }

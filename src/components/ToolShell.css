@@ -568,9 +568,10 @@
 }
 
 .faq-a {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.65;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 450;
 }
 
 /* ============================
@@ -702,7 +703,7 @@
 .scb-body p {
   font-size: 0.95rem;
   line-height: 1.7;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: 16px;
 }
 
@@ -714,7 +715,7 @@
 .scb-body li {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: 8px;
 }
 
