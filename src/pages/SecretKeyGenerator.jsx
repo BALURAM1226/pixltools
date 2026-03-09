@@ -78,7 +78,7 @@ export default function SecretKeyGenerator() {
                 description="Generate cryptographically secure random keys for JWT authentication, API signing, and encryption. Supports HEX, Base64, Base64URL, and Alphanumeric formats up to 1024-bit. 100% private, processed in your browser."
                 keywords="jwt secret key generator, hs256 secret key, hs512 key generator, generate secret key online, auth secret generator, encryption key generator, 256 bit key generator, base64 secret key, api key generator, random key generator"
                 canonicalPath="/secret-generator"
-                ogImage="/og/secret-generator.png"
+                ogImage="/og/secret-generator.jpg"
                 faqItems={[
                     { q: 'What is a JWT secret key?', a: 'A JWT secret key is a cryptographic string used to digitally sign JSON Web Tokens. When a server creates a JWT, it signs the payload with this secret. When the token is later presented, the server uses the same secret to verify the signature has not been tampered with.' },
                     { q: 'How long should my JWT secret key be?', a: 'For HS256, the minimum recommended length is 256 bits (32 bytes). For HS512, use 512 bits (64 bytes). Using a key shorter than the hash output weakens the security guarantee of the HMAC algorithm.' },

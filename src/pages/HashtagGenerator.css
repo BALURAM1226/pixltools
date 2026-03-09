@@ -76,7 +76,7 @@
 .hg-input-zone {
     display: flex;
     gap: 16px;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 .hg-search-box {
@@ -132,7 +132,7 @@
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 30px;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 .hg-result-header {

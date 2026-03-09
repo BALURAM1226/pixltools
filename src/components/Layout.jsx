@@ -8,7 +8,7 @@ import {
   Code2, FileText, ScanText, QrCode, ChevronDown,
   Search, X, ArrowRight, Sun, Moon, Menu, Frown,
   ShieldCheck, Scale, FileCode, Key,
-  Hash, Eye, Activity, Link2, Ruler, Lock
+  Hash, Eye, Activity, Link2, Ruler, Lock, LayoutGrid, Trash2, Droplet, Edit3
 } from 'lucide-react';
 import './Layout.css';
 
@@ -21,6 +21,18 @@ const NAV = [
   { path: '/passport-photo', label: 'Passport Photo', icon: <UserSquare size={18} />, cat: 'image', color: '#b794f4' },
   { path: '/image-resizer', label: 'Image Resizer', icon: <Maximize2 size={18} />, cat: 'image', color: '#4fd1c5' },
   { path: '/image-to-pdf', label: 'Image to PDF', icon: <FileText size={18} />, cat: 'pdf', color: '#f687b3' },
+  { path: '/pdf-merge', label: 'PDF Merge', icon: <FileText size={18} />, badge: 'NEW', cat: 'pdf', color: '#f56565' },
+  { path: '/pdf-splitter', label: 'PDF Splitter', icon: <FileText size={18} />, badge: 'NEW', cat: 'pdf', color: '#48bb78' },
+  { path: '/pdf-to-image', label: 'PDF to Image', icon: <FileText size={18} />, badge: 'NEW', cat: 'pdf', color: '#805ad5' },
+  { path: '/pdf-compress', label: 'PDF Compress', icon: <FileText size={18} />, badge: 'NEW', cat: 'pdf', color: '#38b2ac' },
+  { path: '/pdf-organize', label: 'PDF Organizer', icon: <LayoutGrid size={18} />, badge: 'NEW', cat: 'pdf', color: '#4fd1c5' },
+  { path: '/html-to-pdf', label: 'HTML to PDF', icon: <Code2 size={18} />, badge: 'NEW', cat: 'pdf', color: '#ff7043' },
+  { path: '/pdf-remove-pages', label: 'Remove PDF Pages', icon: <Trash2 size={18} />, badge: 'NEW', cat: 'pdf', color: '#f56565' },
+  { path: '/pdf-protect', label: 'Protect PDF', icon: <Lock size={18} />, badge: 'NEW', cat: 'pdf', color: '#48bb78' },
+  { path: '/pdf-page-numbers', label: 'Add Page Numbers', icon: <Hash size={18} />, badge: 'NEW', cat: 'pdf', color: '#805ad5' },
+  { path: '/pdf-watermark', label: 'Watermark PDF', icon: <Droplet size={18} />, badge: 'NEW', cat: 'pdf', color: '#38b2ac' },
+  { path: '/pdf-sign', label: 'Sign PDF', icon: <Edit3 size={18} />, badge: 'NEW', cat: 'pdf', color: '#e53e3e' },
+
   { path: '/ocr', label: 'OCR Scanner', icon: <ScanText size={18} />, badge: 'HOT', cat: 'dev', color: '#ed64a6' },
   { path: '/base64-converter', label: 'Base64 Converter', icon: <Code2 size={18} />, cat: 'dev', color: '#a0aec0' },
   { path: '/json-formatter', label: 'JSON Formatter', icon: <FileCode size={18} />, cat: 'dev', color: '#4299e1' },
@@ -215,6 +227,8 @@ function CatDropdown({ category, tools }) {
     }, 150); // 150ms "stickiness"
   };
 
+  const isBigLayout = tools.length > 6;
+
   return (
     <div
       className="cat-dropdown-container"
@@ -228,11 +242,11 @@ function CatDropdown({ category, tools }) {
 
       {open && (
         <div
-          className="cat-dropdown-menu"
+          className={`cat-dropdown-menu ${isBigLayout ? 'cat-dropdown-menu--big' : ''}`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="cat-dropdown-grid">
+          <div className={`cat-dropdown-grid ${isBigLayout ? 'cat-dropdown-grid--big' : ''}`}>
             {tools.map(tool => (
               <Link
                 key={tool.path}

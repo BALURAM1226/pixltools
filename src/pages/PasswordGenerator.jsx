@@ -72,7 +72,7 @@ export default function PasswordGenerator() {
                 description="Generate ultra-secure, random passwords instantly. Fully customizable length and character sets for maximum security. 100% private, processed in your browser."
                 keywords="password generator, strong password generator, random password generator, secure password maker, custom password creator, free password tool"
                 canonicalPath="/password-generator"
-                ogImage="/og/password-generator.png"
+                ogImage="/og/password-generator.jpg"
                 faqItems={[
                     { q: 'How long should a strong password be?', a: 'Security experts recommend at least 12-16 characters. Our tool supports up to 50 characters for maximum protection against brute-force attacks.' },
                     { q: 'Is this password generator safe?', a: 'Yes. Passwords are generated entirely in your browser using JavaScript random number generation. No password is ever sent to or stored on any server.' },

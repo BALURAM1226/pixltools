@@ -78,7 +78,7 @@ export default function CssUnitConverter() {
                 description="The ultimate CSS unit calculator. Convert between Pixels, REM, EM, Percentages, Points, Viewport Width and Height instantly with custom root sizes."
                 keywords="px to rem converter, css units calculator, em to px, percentage to px, pt to px, vw to px, vh to px, responsive web design tools, fluid typography"
                 canonicalPath="/css-unit-converter"
-                ogImage="/og/css-unit-converter.png"
+                ogImage="/og/css-unit-converter.jpg"
                 faqItems={[
                     { q: 'What is the difference between REM and EM?', a: 'REM is relative to the root (html) element font size. EM is relative to the parent element font size. REM is generally safer for global consistency.' },
                     { q: 'Why use VW instead of Percent?', a: 'Percent is relative to the parent container, while VW (Viewport Width) is always relative to the full browser window width.' },

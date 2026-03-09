@@ -1,0 +1,165 @@
+.pdf-compressor-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* Compression Levels */
+.comp-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.comp-preset-card {
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comp-preset-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-surface);
+  transform: translateY(-2px);
+}
+
+.comp-preset-card.active {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 4px 12px var(--accent-dim);
+}
+
+.comp-preset-card.active .preset-icon {
+  color: var(--accent);
+}
+
+.preset-icon {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+}
+
+.preset-label {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.preset-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Quality Indicator */
+.quality-meter {
+  padding: 20px;
+  background: var(--bg-surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.meter-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.meter-value {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* Comparison View */
+.comparison-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.comp-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.comp-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; width: 60px; height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.03) 50%);
+}
+
+.comp-card.result {
+  border-color: var(--green);
+  background: rgba(34, 197, 94, 0.05);
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.05);
+}
+
+.comp-card-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.comp-card-size {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.savings-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--green);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-top: 4px;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.2);
+}
+
+
+
+
+
+
+@media (max-width: 768px) {
+  .comp-presets {
+    grid-template-columns: 1fr;
+  }
+  
+  .comparison-wrap {
+    grid-template-columns: 1fr;
+  }
+}

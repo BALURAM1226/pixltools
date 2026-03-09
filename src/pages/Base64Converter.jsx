@@ -96,7 +96,7 @@ function Base64ConverterInner() {
                 description="Free online tool to convert images to Base64 strings or decode Base64 back to images. Perfect for developers and web designers."
                 keywords="image to base64 converter, encode image to string, decode base64 to image, data uri maker, base64 to png, base64 to jpg, web developer tools, img src base64 converter"
                 canonicalPath="/base64-converter"
-                ogImage="/og/base64-converter.png"
+                ogImage="/og/base64-converter.jpg"
                 faqItems={[
                     { q: 'What is Base64 encoding?', a: 'Base64 is a way to encode binary data (like images) into a text string using 64 safe characters. This allows you to embed images directly into HTML or CSS without external files.' },
                     { q: 'Why should I use Base64 for images?', a: 'It reduces HTTP requests for small icons or images, improving initial load speed. However, for large images, it increases the total file size by about 33%.' },
@@ -129,11 +129,15 @@ function Base64ConverterInner() {
                                 <PreviewBox>
                                     <img src={base64String} alt="Original" />
                                 </PreviewBox>
-                                <ResetBtn onClick={reset} />
+                                <div className="meta-footer">
+                                    <div className="reset-wrap">
+                                        <ResetBtn onClick={reset} />
+                                    </div>
+                                </div>
                             </div>
                         )
                     ) : (
-                        <div className="decode-input-wrap">
+                        <div className="decode-input-wrap settings-stack">
                             <Control label="Base64 Content">
                                 <textarea
                                     className="b64-textarea"
@@ -143,7 +147,11 @@ function Base64ConverterInner() {
                                 />
                             </Control>
                             <Btn onClick={handleDecode}>Decode to Image</Btn>
-                            {base64String && <ResetBtn onClick={reset} />}
+                            {base64String && (
+                                <div className="reset-wrap">
+                                    <ResetBtn onClick={reset} />
+                                </div>
+                            )}
                         </div>
                     )}
                 </Panel>
@@ -153,7 +161,7 @@ function Base64ConverterInner() {
                         !base64String ? (
                             <div className="empty-state-msg">Upload an image to see the Base64 encoding.</div>
                         ) : (
-                            <div className="encode-output-wrap">
+                            <div className="encode-output-wrap settings-stack">
                                 <div className="b64-actions">
                                     <label className="checkbox-wrap">
                                         <input type="checkbox" checked={includePrefix} onChange={(e) => setIncludePrefix(e.target.checked)} />
@@ -166,11 +174,13 @@ function Base64ConverterInner() {
                                     readOnly
                                     value={includePrefix ? base64String : (base64String.includes(',') ? base64String.split(',')[1] : base64String)}
                                 />
-                                <InfoChips items={[
-                                    { label: "Original Format", value: info.type },
-                                    { label: "File Size", value: info.size },
-                                    { label: "Length", value: `${Math.round(base64String.length / 1024)}k chars` },
-                                ]} />
+                                <div className="meta-footer" style={{ marginTop: 0 }}>
+                                    <InfoChips items={[
+                                        { label: "Original Format", value: info.type },
+                                        { label: "File Size", value: info.size },
+                                        { label: "Length", value: `${Math.round(base64String.length / 1024)}k chars` },
+                                    ]} />
+                                </div>
                             </div>
                         )
                     ) : (
@@ -181,14 +191,16 @@ function Base64ConverterInner() {
                                 <PreviewBox>
                                     <img src={decodedPreview} alt="Decoded" className="result-img" />
                                 </PreviewBox>
-                                <div className="result-actions-grid">
+                                <div className="meta-footer">
                                     <InfoChips items={[
                                         { label: "Est. Size", value: info.size },
                                         { label: "Type", value: info.type },
                                     ]} />
-                                    <DownloadBtn href={decodedPreview} filename="decoded-image.png">
-                                        Download Image
-                                    </DownloadBtn>
+                                    <div className="download-wrap">
+                                        <DownloadBtn href={decodedPreview} filename="decoded-image.png">
+                                            Download Image
+                                        </DownloadBtn>
+                                    </div>
                                 </div>
                             </div>
                         )

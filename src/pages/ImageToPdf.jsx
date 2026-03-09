@@ -5,8 +5,9 @@ import jsPDF from 'jspdf';
 import { ToastProvider, useToast } from '../components/Toast';
 import {
   ToolHeader, ToolGrid, Panel, Control, Select, Slider, Btn,
-  ResetBtn, StatusBar, ProgressBar, InfoChips, PreviewBox, AdBanner, FAQ, SEOContent, TargetSizeControl
+  ResetBtn, StatusBar, ProgressBar, InfoChips, AdBanner, FAQ, SEOContent, TargetSizeControl, DownloadBtn
 } from '../components/ToolShell';
+import { FileImage } from 'lucide-react';
 import '../components/ToolShell.css';
 import './ImageToPdf.css';
 
@@ -38,6 +39,7 @@ function ImageToPdfInner() {
   const [status, setStatus] = useState(null);
   const [progress, setProgress] = useState(0);
   const [running, setRunning] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const resultRef = useRef(null);
 
@@ -62,6 +64,7 @@ function ImageToPdfInner() {
       setImages(prev => [...prev, ...newImgs]);
       toast(`${newImgs.length} image${newImgs.length > 1 ? 's' : ''} added`, 'success');
       setStatus(null);
+      setPreviewUrl(null);
     }
   }, [toast]);
 
@@ -74,19 +77,21 @@ function ImageToPdfInner() {
 
   const removeImg = i => setImages(prev => {
     URL.revokeObjectURL(prev[i].url);
+    setPreviewUrl(null);
     return prev.filter((_, idx) => idx !== i);
   });
-  const moveUp = i => { if (i === 0) return; setImages(a => { const b = [...a];[b[i - 1], b[i]] = [b[i], b[i - 1]]; return b; }); };
-  const moveDown = i => { if (i === images.length - 1) return; setImages(a => { const b = [...a];[b[i], b[i + 1]] = [b[i + 1], b[i]]; return b; }); };
+  
+  const moveUp = i => { if (i === 0) return; setImages(a => { const b = [...a];[b[i - 1], b[i]] = [b[i], b[i - 1]]; setPreviewUrl(null); return b; }); };
+  const moveDown = i => { if (i === images.length - 1) return; setImages(a => { const b = [...a];[b[i], b[i + 1]] = [b[i + 1], b[i]]; setPreviewUrl(null); return b; }); };
 
-  /* ── convert ──────────────────────────────────────────── */
-  const convert = async () => {
+  /* ── convert & preview ────────────────────────────────── */
+  const generatePreview = async () => {
     if (images.length === 0) { toast('Please add at least one image.', 'warning'); return; }
     if (running) return;
 
     setRunning(true);
     setProgress(3);
-    setStatus({ type: 'processing', msg: `Creating PDF from ${images.length} page${images.length > 1 ? 's' : ''}…` });
+    setStatus({ type: 'processing', msg: `Generating PDF preview...` });
 
     try {
       const psIdx = Number(pageSizeKey);
@@ -101,7 +106,7 @@ function ImageToPdfInner() {
       });
 
       const firstImg = await loadImg(images[0].url);
-      setProgress(10);
+      setProgress(15);
 
       /* Determine page size */
       let pageW, pageH;
@@ -130,7 +135,7 @@ function ImageToPdfInner() {
       }
 
       for (let i = 0; i < images.length; i++) {
-        setProgress(10 + Math.round((i / images.length) * 82));
+        setProgress(15 + Math.round((i / images.length) * 75));
         setStatus({ type: 'processing', msg: `Processing page ${i + 1} of ${images.length}…` });
 
         if (i > 0) pdf.addPage();
@@ -148,7 +153,7 @@ function ImageToPdfInner() {
         const maxH = docH - m * 2;
         const imgWmm = img.naturalWidth * 0.264583;
         const imgHmm = img.naturalHeight * 0.264583;
-        const ratio = Math.min(maxW / imgWmm, maxH / imgHmm, 1); // don't upscale
+        const ratio = Math.min(maxW / imgWmm, maxH / imgHmm, 1);
         const w = imgWmm * ratio;
         const h = imgHmm * ratio;
         const x = m + (maxW - w) / 2;
@@ -157,13 +162,16 @@ function ImageToPdfInner() {
         pdf.addImage(dataUrl, 'JPEG', x, y, w, h, undefined, 'FAST');
       }
 
-      setProgress(97);
-      pdf.save(`ilovetoolhub-pdf-${Date.now()}.pdf`);
       setProgress(100);
-      setStatus({ type: 'success', msg: `✓ PDF with ${images.length} page${images.length > 1 ? 's' : ''} downloaded!` });
-      toast('PDF created and downloaded!', 'success');
+      const pdfBlob = pdf.output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+      
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(url);
+      
+      setStatus({ type: 'success', msg: `✓ PDF preview ready!` });
+      toast('PDF generated successfully!', 'success');
 
-      // Auto-scroll to preview
       setTimeout(() => {
         resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 150);
@@ -177,9 +185,12 @@ function ImageToPdfInner() {
     }
   };
 
+
+
   const reset = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
     images.forEach(i => URL.revokeObjectURL(i.url));
-    setImages([]); setStatus(null); setProgress(0); setRunning(false);
+    setImages([]); setStatus(null); setProgress(0); setRunning(false); setPreviewUrl(null);
   };
 
   const totalBytes = images.reduce((a, i) => a + i.size, 0);
@@ -189,30 +200,22 @@ function ImageToPdfInner() {
   return (
     <div className="image-to-pdf-page">
       <SEO
-        title="Combine Images to PDF Online – Fast, Free & Private"
-        description="Convert JPG, PNG, and WebP images to high-quality PDF. Merge multiple pages, reorder them, and choose page sizes for all official and professional documents globally."
-        keywords="image to pdf converter, combine jpg to pdf, merge png to pdf, photo to pdf maker, official document pdf builder, free online pdf tool, jpg to pdf converter online free"
+        title="Best Image to PDF Converter – Combine Photos to PDF Free"
+        description="Convert JPG, PNG, and WebP images into high-quality PDF documents easily. Merge multiple photos, reorder pages, and professional layout controls. 100% Private & Fast."
+        keywords="image to pdf converter, best photo to pdf, combine jpg to pdf free, merge png to pdf, photo to pdf maker, official document pdf builder"
         canonicalPath="/image-to-pdf"
-                ogImage="/og/image-to-pdf.png"
-        faqItems={[
-          { q: 'Is this JPG to PDF converter free for all?', a: 'Yes. iLoveToolHub provides a 100% free JPG to PDF service. There are no limits on the number of pages or file size for your PDF documents.' },
-          { q: 'Can I use this for document upload in admissions?', a: 'Definitely. Most admission portals require a single PDF. You can upload all your certificates as images and our tool will merge them into a high-quality PDF ready for upload.' },
-          { q: 'What is Auto page size?', a: 'Auto creates a PDF page that exactly matches each image dimensions. Useful when you want no cropping or scaling.' },
-          { q: 'What does the Quality slider do?', a: 'It controls JPEG compression when embedding images. Lower values create smaller PDF files but with more compression artefacts.' }
-        ]}
+        ogImage="/og/image-to-pdf.jpg"
       />
 
       <ToolHeader
         title="Image to"
         highlight="PDF"
-        badge="📄 Multi-Page"
+        badge="🖼️ Quality Verified"
         desc="Combine multiple images into a single professional PDF. Drag to reorder pages and fully customise layout."
       />
 
       <ToolGrid>
-        {/* ── Top Left: Add Images ── */}
         <Panel title="Step 1: Add Images">
-          {/* Drop zone */}
           <div {...getRootProps()} className={`dropzone ${isDragActive ? 'dz-active' : ''}`}>
             <input {...getInputProps()} />
             <div className="dz-inner">
@@ -231,7 +234,6 @@ function ImageToPdfInner() {
             </div>
           </div>
 
-          {/* Image list */}
           {images.length > 0 && (
             <div className="preview-stack" style={{ marginTop: 16 }}>
               <div className="pdf-img-list">
@@ -251,16 +253,19 @@ function ImageToPdfInner() {
                 ))}
               </div>
 
-              <InfoChips items={[
-                { label: 'Total Pages', value: images.length },
-                { label: 'Total Size', value: fmtBytes(totalBytes) },
-              ]} />
-              <ResetBtn onClick={reset} />
+              <div className="meta-footer">
+                <InfoChips items={[
+                  { label: 'Total Pages', value: images.length },
+                  { label: 'Total Size', value: fmtBytes(totalBytes) },
+                ]} />
+                <div className="reset-wrap">
+                  <ResetBtn onClick={reset} />
+                </div>
+              </div>
             </div>
           )}
         </Panel>
 
-        {/* ── Top Right: Settings or Features ── */}
         {images.length === 0 ? (
           <Panel title="PDF Features">
             <div className="tips-panel">
@@ -292,11 +297,11 @@ function ImageToPdfInner() {
           </Panel>
         ) : (
           <Panel title="Step 2: PDF Settings">
-            <div className="settings-scroll">
+            <div className="settings-scroll settings-stack">
               <Control label="Page Size">
                 <Select
                   value={pageSizeKey}
-                  onChange={setPageSizeKey}
+                  onChange={(v) => { setPageSizeKey(v); setPreviewUrl(null); }}
                   options={PAGE_SIZES.map((s, i) => ({ value: String(i), label: s.label }))}
                 />
               </Control>
@@ -304,57 +309,81 @@ function ImageToPdfInner() {
               <div className="settings-row">
                 {!isAuto && (
                   <Control label="Orientation">
-                    <Select value={orientation} onChange={setOrientation} options={[{ value: 'portrait', label: 'Portrait' }, { value: 'landscape', label: 'Landscape' }]} />
+                    <Select value={orientation} onChange={(v) => { setOrientation(v); setPreviewUrl(null); }} options={[{ value: 'portrait', label: 'Portrait' }, { value: 'landscape', label: 'Landscape' }]} />
                   </Control>
                 )}
 
                 <Control label="Margin" hint={`${Math.round(margin)} mm`}>
-                  <Slider min={0} max={40} step={1} value={margin} onChange={v => setMargin(Math.round(v))} formatValue={v => `${Math.round(v)} mm`} />
+                  <Slider min={0} max={40} step={1} value={margin} onChange={v => { setMargin(Math.round(v)); setPreviewUrl(null); }} formatValue={v => `${Math.round(v)} mm`} />
                 </Control>
               </div>
 
               <Control label="Image Quality" hint={`${quality}%`}>
-                <Slider min={30} max={100} step={1} value={quality} onChange={v => setQuality(Math.round(v))} formatValue={v => `${Math.round(v)}%`} />
+                <Slider min={30} max={100} step={1} value={quality} onChange={v => { setQuality(Math.round(v)); setPreviewUrl(null); }} formatValue={v => `${Math.round(v)}%`} />
               </Control>
 
-              <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+              <div className="meta-footer" style={{ marginTop: 0, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
                 <TargetSizeControl
                   enabled={targetSizeEnabled}
-                  onToggle={setTargetSizeEnabled}
+                  onToggle={(v) => { setTargetSizeEnabled(v); setPreviewUrl(null); }}
                   value={targetSizeKB}
-                  onChange={setTargetSizeKB}
+                  onChange={(v) => { setTargetSizeKB(v); setPreviewUrl(null); }}
                   min={100}
                   max={Math.max(500, Math.round(images.reduce((a, img) => a + img.size, 0) / 1024))}
                   step={50}
                 />
               </div>
 
-
-              <Btn onClick={convert} loading={running} disabled={images.length === 0 || running}>
-                📄 Create & Download PDF
-              </Btn>
-              <StatusBar status={status} />
-              {running && <ProgressBar value={progress} />}
+              <div className="action-stack">
+                <Btn onClick={generatePreview} loading={running} disabled={images.length === 0 || running}>
+                  🔍 Generate & Preview PDF
+                </Btn>
+                <StatusBar status={status} />
+                {running && <ProgressBar value={progress} />}
+              </div>
             </div>
           </Panel>
         )}
 
-        {/* ── Bottom: Preview ── */}
-        <Panel title="Step 3: Page Preview" className="grid-full result-panel">
+        <Panel title="Step 3: Preview & Download" className="grid-full result-panel-refined">
           <div ref={resultRef} />
-          <PreviewBox minHeight={300} label="Add images to see a preview of your PDF pages">
-            {images.length > 0 && (
-              <div className="pdf-preview-grid">
-                {images.map((img, i) => (
-                  <div key={img.url} className="pdf-preview-page">
-                    <img src={img.url} alt={`Page ${i + 1}`} className="result-img" />
-                    <span className="pdf-page-label">Page {i + 1}</span>
+          
+          <div className="result-preview-container">
+             {!previewUrl ? (
+                <div className="result-placeholder">
+                  <div className="placeholder-icon">
+                    <FileImage size={40} />
                   </div>
-                ))}
+                  <p>Convert your images in Step 2 to generate the PDF preview.</p>
+                </div>
+             ) : (
+                <div style={{ padding: '0 32px' }}>
+                  <iframe 
+                    src={`${previewUrl}#view=FitH&toolbar=0`} 
+                    className="pdf-preview-frame-modern"
+                    title="PDF Preview"
+                  />
+                </div>
+             )}
+          </div>
+
+
+          {previewUrl && (
+            <div className="modern-result-footer">
+              <div className="result-status-pill">
+                  <div className="pill-icon-wrap">✓</div>
+                  <div className="pill-content">
+                      <span className="pill-title">PDF Optimized</span>
+                      <span className="pill-subtitle">Document generated successfully</span>
+                  </div>
               </div>
-            )}
-          </PreviewBox>
+              <DownloadBtn href={previewUrl} filename={`images_${Date.now()}.pdf`} full={false} style={{ padding: '12px 28px' }}>
+                Download Final PDF
+              </DownloadBtn>
+            </div>
+          )}
         </Panel>
+
       </ToolGrid>
 
       <AdBanner slot="7777777777" />
@@ -380,8 +409,8 @@ function ImageToPdfInner() {
       <FAQ items={[
         { q: 'Is this JPG to PDF converter free for all?', a: 'Yes. iLoveToolHub provides a 100% free JPG to PDF service. There are no limits on the number of pages or file size for your PDF documents.' },
         { q: 'Can I use this for document upload in admissions?', a: 'Definitely. Most admission portals require a single PDF. You can upload all your certificates as images and our tool will merge them into a high-quality PDF ready for upload.' },
-        { q: 'What is Auto page size?', a: 'Auto creates a PDF page that exactly matches each images dimensions. Useful when you want no cropping or scaling.' },
-        { q: 'What does the Quality slider do?', a: 'It controls JPEG compression when embedding images. Lower values create smaller PDF files but with more compression artefacts.' },
+        { q: 'What is Auto page size?', a: 'Auto creates a PDF page that exactly matches each image dimensions. Useful when you want no cropping or scaling.' },
+        { q: 'What does the Quality slider do?', a: 'It controls JPEG compression when embedding images. Lower values create smaller PDF files but with more compression artefacts.' }
       ]} />
     </div>
   );

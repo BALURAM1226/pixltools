@@ -9,6 +9,8 @@ import ScrollToTop from './components/ScrollToTop';
 const ImageConverter = lazy(() => import('./pages/ImageConverter'));
 const PassportPhoto = lazy(() => import('./pages/PassportPhoto'));
 const ImageToPdf = lazy(() => import('./pages/ImageToPdf'));
+const PdfMerge = lazy(() => import('./pages/PdfMerge'));
+const PdfSplitter = lazy(() => import('./pages/PdfSplitter'));
 const ImageCompressor = lazy(() => import('./pages/ImageCompressor'));
 const BgRemover = lazy(() => import('./pages/BgRemover'));
 const ImageResizer = lazy(() => import('./pages/ImageResizer'));
@@ -26,6 +28,17 @@ const UrlEncoderDecoder = lazy(() => import('./pages/UrlEncoderDecoder'));
 const CssUnitConverter = lazy(() => import('./pages/CssUnitConverter'));
 const JwtDebugger = lazy(() => import('./pages/JwtDebugger'));
 const DiffChecker = lazy(() => import('./pages/DiffChecker'));
+const PdfToImage = lazy(() => import('./pages/PdfToImage'));
+const PdfCompressor = lazy(() => import('./pages/PdfCompressor'));
+const PdfOrganizer = lazy(() => import('./pages/PdfOrganizer'));
+const HtmlToPdf = lazy(() => import('./pages/HtmlToPdf'));
+const PdfRemovePages = lazy(() => import('./pages/PdfRemovePages'));
+const PdfProtect = lazy(() => import('./pages/PdfProtect'));
+const PdfPageNumbers = lazy(() => import('./pages/PdfPageNumbers'));
+const PdfWatermark = lazy(() => import('./pages/PdfWatermark'));
+const PdfSign = lazy(() => import('./pages/PdfSign'));
+
+
 
 /* Legal & Info Pages */
 const About = lazy(() => import('./pages/About'));
@@ -62,6 +75,8 @@ export default function App() {
               <Route path="/image-converter" element={<ImageConverter />} />
               <Route path="/passport-photo" element={<PassportPhoto />} />
               <Route path="/image-to-pdf" element={<ImageToPdf />} />
+              <Route path="/pdf-merge" element={<PdfMerge />} />
+              <Route path="/pdf-splitter" element={<PdfSplitter />} />
               <Route path="/image-compressor" element={<ImageCompressor />} />
               <Route path="/background-remover" element={<BgRemover />} />
               <Route path="/image-resizer" element={<ImageResizer />} />
@@ -79,6 +94,16 @@ export default function App() {
               <Route path="/css-unit-converter" element={<CssUnitConverter />} />
               <Route path="/jwt-debugger" element={<JwtDebugger />} />
               <Route path="/diff-checker" element={<DiffChecker />} />
+              <Route path="/pdf-to-image" element={<PdfToImage />} />
+              <Route path="/pdf-compress" element={<PdfCompressor />} />
+              <Route path="/pdf-organize" element={<PdfOrganizer />} />
+              <Route path="/html-to-pdf" element={<HtmlToPdf />} />
+              <Route path="/pdf-remove-pages" element={<PdfRemovePages />} />
+              <Route path="/pdf-protect" element={<PdfProtect />} />
+              <Route path="/pdf-page-numbers" element={<PdfPageNumbers />} />
+              <Route path="/pdf-watermark" element={<PdfWatermark />} />
+              <Route path="/pdf-sign" element={<PdfSign />} />
+
 
               {/* Legal & Info Routes */}
               <Route path="/about" element={<About />} />

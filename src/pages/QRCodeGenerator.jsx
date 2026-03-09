@@ -56,7 +56,7 @@ export default function QRCodeGenerator() {
                 description="Generate professional QR codes for URLs, text, and business cards. Customize colors, add your logo, and download in high resolution. 100% private and free."
                 keywords="qr code generator online, create qr code with logo, custom qr code maker, high resolution qr code, free qr code generator, qr code for business, printable qr code for marketing, dynamic qr generator, safe qr code maker"
                 canonicalPath="/qr-generator"
-                ogImage="/og/qr-generator.png"
+                ogImage="/og/qr-generator.jpg"
                 faqItems={[
                     { q: 'Can I use these QR codes for commercial work?', a: 'Yes. All QR codes generated here are 100% free and carry no license restrictions. You can use them for products, menus, or marketing campaigns.' },
                     { q: 'Will the logo break the QR code?', a: 'We use high-level (30%) error correction when a logo is added. This ensures the data is still readable by most smartphones despite the visual overlay.' },
@@ -192,12 +192,16 @@ export default function QRCodeGenerator() {
                                 style={{ width: '100%', height: 'auto', display: 'block' }}
                             />
                         </div>
-                        <p className="qr-hint">Preview is scaled for display. Download for full resolution.</p>
+                        <p className="qr-hint" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', marginTop: '12px' }}>
+                            Preview is scaled for display. Download for full resolution.
+                        </p>
                     </div>
 
-                    <div className="preview-actions-outer">
+                    <div className="meta-footer">
                         <Btn onClick={downloadPNG} variant="success">Download QR Code (PNG)</Btn>
-                        <ResetBtn onClick={reset} />
+                        <div className="reset-wrap">
+                            <ResetBtn onClick={reset} />
+                        </div>
                     </div>
                 </Panel>
             </ToolGrid>

@@ -295,7 +295,7 @@ export default function HtmlWcagValidator() {
                 description="Paste raw HTML, React templates, or Next.js DOM outputs to instantly check for WCAG accessibility violations. Free, private, running in your browser."
                 keywords="wcag validator, html accessibility checker, react accessibility, nextjs wcag test, missing alt tags, aria-label checker, a11y scanner, web accessibility audit, 508 compliance test, aria validator online"
                 canonicalPath="/html-wcag-validator"
-                ogImage="/og/html-wcag-validator.png"
+                ogImage="/og/html-wcag-validator.jpg"
                 faqItems={[
                     { q: 'Is this process private? Can I paste confidential code?', a: 'Completely private. The analysis engine uses your browser native local DOMParser to process the nodes in memory locally. Your code is never serialized, never sent over a network, and never stored on a server. It is perfectly safe for proprietary pre-released apps.' },
                     { q: 'Can I paste raw JSX directly into the checker?', a: 'Yes! While JSX uses camelCase properties (like className) instead of standard lowercase attributes, this parser is forgiving and will successfully test the structure. However, for maximum 100% accuracy, we recommend inspecting your browser and copying the finalized rendered outerHTML.' },

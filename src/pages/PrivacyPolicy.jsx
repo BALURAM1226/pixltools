@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
                 title="Privacy Policy – Secure & Local Data Processing"
                 description="Read the iLoveToolHub Privacy Policy. Your files never leave your device. Learn how we protect your privacy through local, in-browser processing."
                 canonicalPath="/privacy-policy"
-                ogImage="/og/privacy-policy.png"
+                ogImage="/og/og.jpg"
             />
 
             <header className="legal-header">

@@ -135,10 +135,43 @@
 }
 
 .panel-body {
-  padding: 16px 20px 20px;
+  padding: 16px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increased from 16px */
+}
+
+/* ============================
+   SPACING UTILITIES
+   ============================ */
+.meta-footer {
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.reset-wrap {
+  margin-top: 8px;
+}
+
+.action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.settings-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.preview-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 /* ============================
@@ -147,7 +180,8 @@
 .control {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
 /* Text Input */
@@ -181,6 +215,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 2px;
 }
 
 .control-label {
@@ -394,11 +430,12 @@
 .status-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 12px 16px;
   border-radius: var(--radius-md);
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-top: 8px;
 }
 
 .status-bar span:first-child {
@@ -764,4 +801,252 @@
 
 [data-theme="light"] .preset-chip:hover {
   background: rgba(37, 99, 235, 0.07);
+}
+
+/* ============================
+   RESULT FOOTER & STATUS
+   ============================ */
+.modern-result-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid var(--border);
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  flex-wrap: wrap;
+}
+
+[data-theme="light"] .modern-result-footer {
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.result-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: var(--radius-full);
+  transition: all 0.3s ease;
+}
+
+.pill-icon-wrap {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 900;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.pill-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.pill-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.pill-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Common Result Classes */
+.result-panel-refined {
+  border: 1px solid var(--accent-dim) !important;
+  background: var(--bg-card) !important;
+}
+
+.result-preview-container {
+  padding: 32px;
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 2px dashed var(--border);
+  margin: 0 24px 24px;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition);
+}
+
+.result-preview-container:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-elevated);
+}
+
+.result-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  gap: 16px;
+}
+
+.pdf-preview-frame-modern {
+  width: 100%;
+  height: 450px;
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  background: white;
+}
+
+@media (max-width: 640px) {
+  .modern-result-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 16px;
+    padding: 20px 16px;
+  }
+  
+  .result-status-pill {
+    justify-content: center;
+  }
+  
+  .result-preview-container {
+    padding: 20px 12px;
+  }
+}
+
+/* ============================
+   REFINED DROPZONE & FILE META
+   ============================ */
+.dropzone-refined {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-card);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.dropzone-refined:hover, .dropzone-refined.active {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 8px 24px -12px var(--accent);
+}
+
+.dropzone-refined.active {
+  transform: scale(0.995);
+}
+
+.dz-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dz-icon-wrap {
+  width: 56px;
+  height: 56px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  transition: all 0.3s;
+  margin-bottom: 8px;
+}
+
+.dropzone-refined:hover .dz-icon-wrap {
+  transform: translateY(-4px);
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px var(--accent-dim);
+}
+
+.dz-content h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dz-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.file-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 100px;
+  margin-top: 16px;
+  max-width: 100%;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  animation: slideUp 0.3s ease-out;
+}
+
+.file-meta-pill svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.file-meta-pill span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Compact mode for already uploaded files */
+.panel.compact .dropzone-refined {
+  padding: 20px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.panel.compact .dz-content {
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+}
+
+.panel.compact .dz-icon-wrap {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0;
+}
+
+.panel.compact .dz-icon-wrap svg {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

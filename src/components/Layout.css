@@ -659,10 +659,11 @@
 .cat-dropdown-menu::before {
   content: '';
   position: absolute;
-  top: -30px;
-  left: 0;
-  right: 0;
-  height: 30px;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 20px;
   background: transparent;
 }
 
@@ -673,6 +674,21 @@
   max-height: 400px;
   overflow-y: auto;
   padding-right: 4px;
+}
+
+@media (min-width: 1025px) {
+  .cat-dropdown-menu--big {
+    min-width: 480px;
+  }
+  
+  .cat-dropdown-grid--big {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+  }
 }
 
 .cat-dropdown-item {

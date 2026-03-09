@@ -1,0 +1,229 @@
+.pdf-sign-page {
+  width: 100%;
+}
+
+.signature-flex-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.draw-area-container {
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.canvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.canvas-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.color-picker-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-swatch.active {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.color-swatch.black { background: #1a202c; }
+.color-swatch.blue { background: #2b6cb0; }
+.color-swatch.red { background: #c53030; }
+
+
+.sig-canvas-wrapper {
+  position: relative;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: center;
+  border: 2px solid transparent; /* controlled by JS for highlight */
+  transition: border-color 0.3s ease;
+}
+
+.sig-canvas {
+  cursor: crosshair;
+  background-color: transparent;
+}
+
+.sig-baseline {
+  position: absolute;
+  bottom: 25%;
+  left: 10%;
+  right: 10%;
+  border-bottom: 2px dashed rgba(0,0,0,0.1);
+  pointer-events: none;
+}
+
+.canvas-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clear-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 6px 12px;
+}
+
+.clear-btn:hover {
+  color: var(--red);
+  background: var(--bg-surface);
+}
+
+.sign-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding-top: 10px;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: -10px;
+}
+
+.mode-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-tab:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.mode-tab.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.type-canvas-wrapper {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid var(--border);
+}
+
+.type-sign-input {
+  width: 100%;
+  border: none;
+  border-bottom: 2px dashed #ccc;
+  font-size: 2.5rem;
+  font-family: inherit; /* Ideally Oblique or Handwritten if added later */
+  font-style: italic;
+  font-weight: 600;
+  text-align: center;
+  background: transparent;
+  outline: none;
+  padding-bottom: 8px;
+}
+
+.type-sign-input::placeholder {
+  color: #a0aec0;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.upload-canvas-wrapper {
+  background: var(--bg-card);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.stamp-dropzone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg-surface);
+  gap: 12px;
+}
+
+.stamp-dropzone.active, .stamp-dropzone:hover {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.05);
+  color: var(--accent);
+}
+
+.stamp-preview-cont {
+  width: 100%;
+  height: 200px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stamp-preview-cont img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .sig-canvas {
+    width: 300px !important;
+  }
+}

@@ -67,6 +67,105 @@ const CATEGORIES = [
         tags: ['Multi-page', 'A4/Letter', 'Reorder', 'JPG to PDF', 'PDF Creator'],
         color: '#f687b3',
       },
+      {
+        path: '/pdf-merge',
+        icon: '📚',
+        title: 'PDF Merge',
+        desc: 'Join two or more PDF files into a single document. Reorder pages instantly.',
+        tags: ['Combine PDF', 'Join Documents', 'No Data Loss', 'Fast Merge', 'Secure'],
+        color: '#f56565',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-splitter',
+        icon: '✂️',
+        title: 'PDF Splitter',
+        desc: 'Extract specific pages or ranges from your PDF into a brand new document instantly.',
+        tags: ['Extract Pages', 'Cut PDF', 'Page Range', 'Professional', 'Secure'],
+        color: '#48bb78',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-to-image',
+        icon: '🖼️',
+        title: 'PDF to Image',
+        desc: 'Convert PDF pages into high-quality JPG or PNG images. DPI adjustment supported.',
+        tags: ['PDF to JPG', 'PDF to PNG', 'High Res Rendering', 'Batch Export', 'SECURE'],
+        color: '#63b3ed',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-compress',
+        icon: '🗜️',
+        title: 'PDF Compressor',
+        desc: 'Reduce PDF file size without losing text quality. Optimized for web and email sharing.',
+        tags: ['Shrink PDF', 'Reduce Size', 'Optimization', 'No Re-Upload', 'Secure'],
+        color: '#38b2ac',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-organize',
+        icon: '🗂️',
+        title: 'PDF Organizer',
+        desc: 'Visually rearrange, extract, and rotate pages with full drag-and-drop support.',
+        tags: ['Rearrange PDF', 'Move Pages', 'Drag and Drop', 'Rotate PDF', 'Extract'],
+        color: '#4fd1c5',
+        badge: 'NEW',
+      },
+      {
+        path: '/html-to-pdf',
+        icon: '🌐',
+        title: 'HTML to PDF',
+        desc: 'Convert any raw HTML and CSS code instantly into a perfectly rendered PDF document.',
+        tags: ['Save as PDF', 'Code to Document', 'Print HTML', 'Web Snapshot'],
+        color: '#ff7043',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-remove-pages',
+        icon: '🗑️',
+        title: 'Remove PDF Pages',
+        desc: 'Delete unwanted pages from your document visually. Secure and completely local.',
+        tags: ['Delete Pages', 'Clean PDF', 'Remove Sections', 'Extract'],
+        color: '#f56565',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-protect',
+        icon: '🔒',
+        title: 'Protect PDF',
+        desc: 'Lock your sensitive PDFs with an AES encrypted password. 100% locally in your browser.',
+        tags: ['Add Password', 'Encrypt PDF', 'Secure Document', 'Lock PDF'],
+        color: '#48bb78',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-page-numbers',
+        icon: '🔢',
+        title: 'Add Page Numbers',
+        desc: 'Insert page numbers into PDFs locally. Choose positions and formats like "Page 1 of 5".',
+        tags: ['Pagination', 'Stamp Numbers', 'Format PDF', '100% Local'],
+        color: '#805ad5',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-watermark',
+        icon: '💧',
+        title: 'Watermark PDF',
+        desc: 'Stamp text watermarks across all PDF pages. Choose position, rotation, and opacity.',
+        tags: ['Stamp PDF', 'Brand Document', 'Add Text', '100% Local'],
+        color: '#38b2ac',
+        badge: 'NEW',
+      },
+      {
+        path: '/pdf-sign',
+        icon: '✍️',
+        title: 'Sign PDF',
+        desc: 'Draw your signature and stamp it on PDF documents purely in your browser. 100% Secure.',
+        tags: ['E-Sign', 'Draw Signature', 'Digital Sign', 'No Upload'],
+        color: '#e53e3e',
+        badge: 'NEW',
+      },
     ]
   },
   {
@@ -278,7 +377,8 @@ export default function Home() {
                 <Link to="/background-remover" className="cta-secondary">Remove Background →</Link>
               </div>
               <div className="hero-stats">
-                {[['100%', 'Free'], ['0', 'Uploads'], ['19+', 'Tools'], ['Private', 'Processing']].map(([val, label]) => (
+                {[['100%', 'Free'], ['0', 'Uploads'], ['24+', 'Tools'], ['Private', 'Processing']].map(([val, label]) => (
+
                   <div key={label} className="hero-stat">
                     <span className="hs-val">{val}</span>
                     <span className="hs-label">{label}</span>

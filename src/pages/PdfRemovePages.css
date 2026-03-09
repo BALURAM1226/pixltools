@@ -1,0 +1,170 @@
+.pdf-remove-page {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.uploader-flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+
+.selection-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 24px;
+  gap: 20px;
+}
+
+.toolbar-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.remove-count {
+  color: #f56565;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.remove-pages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.remove-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.remove-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.remove-card.tagged-for-removal {
+  border-color: #f56565;
+  background: rgba(245, 101, 101, 0.05);
+}
+
+.remove-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.tagged-for-removal .remove-badge {
+  color: #f56565;
+  transform: scale(1.2);
+}
+
+.remove-thumbnail {
+  aspect-ratio: 1 / 1.414;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.remove-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.removal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(245, 101, 101, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s;
+}
+
+.remove-info {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.tagged-for-removal .remove-info {
+  color: #f56565;
+}
+
+.btn-remove-final {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  width: max-content !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.btn-remove-final:not(:disabled) {
+  background: #f56565 !important;
+  border-color: #f56565 !important;
+  color: white !important;
+}
+
+.btn-remove-final:hover:not(:disabled) {
+  background: #e53e3e !important;
+  transform: scale(1.02);
+}
+
+.btn-remove-final:disabled {
+  background: var(--bg-surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+  opacity: 0.6;
+}
+
+
+@media (max-width: 640px) {
+  .selection-toolbar {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+  }
+  .toolbar-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

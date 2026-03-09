@@ -11,7 +11,7 @@ export default function Disclaimer() {
                 title="Disclaimer – Use of Service & Liability"
                 description="Official disclaimer for iLoveToolHub. Understanding the limitations, accuracy guarantees, and liabilities when using our online utility tools."
                 canonicalPath="/disclaimer"
-                ogImage="/og/disclaimer.png"
+                ogImage="/og/og.jpg"
             />
 
             <header className="legal-header">

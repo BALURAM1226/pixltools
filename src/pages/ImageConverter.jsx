@@ -281,7 +281,7 @@ function ImageConverterInner() {
         description="Fast and free image converter to convert between JPG, PNG, WEBP, SVG and 20+ other formats in high quality. No server uploads, 100% private."
         keywords="convert png to jpg high quality, online image converter, svg to png converter, webp to jpg online, best free image converter hub, image format changer, avif to jpg converter, heic to jpg online, ico maker, batch image converter"
         canonicalPath="/image-converter"
-                ogImage="/og/image-converter.png"
+                ogImage="/og/image-converter.jpg"
         faqItems={[
           { q: 'How do I convert SVG to PNG?', a: 'Upload your SVG, select PNG as output, adjust scale if needed, then click Convert. The SVG is rendered at its natural viewport size.' },
           { q: 'What is WebP and why use it?', a: 'WebP is a modern image format by Google that is 25-35% smaller than JPEG at the same visual quality. Most modern browsers support it.' },
@@ -333,14 +333,18 @@ function ImageConverterInner() {
               <PreviewBox minHeight={200}>
                 <img src={preview} alt="Original" />
               </PreviewBox>
-              {origInfo && (
-                <InfoChips items={[
-                  { label: 'Dimensions', value: origInfo.w === '?' ? '?' : `${origInfo.w}×${origInfo.h} px` },
-                  { label: 'File Size', value: fmtBytes(origInfo.size) },
-                  { label: 'Original Type', value: (file?.name.split('.').pop() || '?').toUpperCase() },
-                ]} />
-              )}
-              <ResetBtn onClick={reset} />
+              <div className="meta-footer">
+                {origInfo && (
+                  <InfoChips items={[
+                    { label: 'Dimensions', value: origInfo.w === '?' ? '?' : `${origInfo.w}×${origInfo.h} px` },
+                    { label: 'File Size', value: fmtBytes(origInfo.size) },
+                    { label: 'Original Type', value: (file?.name.split('.').pop() || '?').toUpperCase() },
+                  ]} />
+                )}
+                <div className="reset-wrap">
+                  <ResetBtn onClick={reset} />
+                </div>
+              </div>
             </div>
           )}
         </Panel>
@@ -377,7 +381,7 @@ function ImageConverterInner() {
           </Panel>
         ) : (
           <Panel title="Step 2: Conversion Settings">
-            <div className="settings-scroll">
+            <div className="settings-scroll settings-stack">
               <Control label="Output Format" id="target-fmt">
                 <Select
                   id="target-fmt"
@@ -420,7 +424,7 @@ function ImageConverterInner() {
                 )}
               </div>
 
-              <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+              <div className="meta-footer" style={{ marginTop: 0 }}>
                 <TargetSizeControl
                   enabled={targetSizeEnabled}
                   onToggle={setTargetSizeEnabled}
@@ -432,11 +436,13 @@ function ImageConverterInner() {
                 />
               </div>
 
-              <Btn onClick={convert} loading={running} disabled={running} aria-label="Convert and save image">
-                🔄 Convert Image Now
-              </Btn>
-              <StatusBar status={status} />
-              {running && <ProgressBar value={progress} label="Converting image" />}
+              <div className="action-stack">
+                <Btn onClick={convert} loading={running} disabled={running} aria-label="Convert and save image">
+                  🔄 Convert Image Now
+                </Btn>
+                <StatusBar status={status} />
+                {running && <ProgressBar value={progress} label="Converting image" />}
+              </div>
             </div>
           </Panel>
         )}
@@ -454,7 +460,7 @@ function ImageConverterInner() {
             </PreviewBox>
 
             {resultInfo && (
-              <div className="result-actions">
+              <div className="meta-footer">
                 <InfoChips items={[
                   { label: 'Output Size', value: `${resultInfo.w}×${resultInfo.h}` },
                   { label: 'File Size', value: fmtBytes(resultInfo.size) },

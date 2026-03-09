@@ -186,11 +186,11 @@ function OCRInner() {
     return (
         <div className="ocr-page">
             <SEO
-                title="Image to Text Converter Online Free – OCR Hub"
-                description="Extract text from images (JPG, PNG) and PDF documents online for free. Highly accurate OCR supporting English and Hindi. 100% private and secure scan."
-                keywords="image to text converter online free, ocr hub, extract text from image, scan image to text hindi, free photo to text converter, online ocr, scanner online, image to word free, scan receipt online, tesseract ocr browser"
+                title="Best Image to Text Converter Online Free – #1 OCR Hub"
+                description="Extract text from images (JPG, PNG) and PDF documents online for free. Highly accurate OCR supporting English and Hindi. 100% private, secure, and fast."
+                keywords="image to text converter online free, ocr hub, extract text from image, best ocr scanner, scan image to text hindi, free photo to text converter"
                 canonicalPath="/ocr"
-                ogImage="/og/ocr.png"
+                ogImage="/og/ocr.jpg"
                 faqItems={[
                     { q: 'How can I convert image to text for free?', a: 'iLoveToolHub offers a completely free OCR service. Just upload your image, select the language, and click Extract Text. You can copy the text or download it as a .txt file instantly.' },
                     { q: 'Does this support Hindi OCR?', a: 'Yes, our OCR engine is highly optimized for Hindi text extraction. Simply select Hindi from the document language dropdown before scanning your image or document.' },

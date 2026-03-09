@@ -1,0 +1,120 @@
+.pdf-protect-page {
+  width: 100%;
+}
+
+.protect-settings-panel {
+  padding: 30px;
+}
+
+.protect-flex-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.password-inputs {
+  display: flex;
+  gap: 20px;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.input-field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.req {
+  color: var(--red);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding-left: 42px !important;
+}
+
+.privacy-disclaimer {
+  background: var(--amber-dim);
+  border: 1px solid rgba(246, 173, 85, 0.2);
+  color: var(--amber);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.action-stack-wide {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.btn-protect-final {
+  padding: 14px 32px !important;
+  width: max-content !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  font-size: 1rem !important;
+}
+
+.locked-success-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+
+.big-lock-animation {
+  width: 100px;
+  height: 100px;
+  background: var(--green-dim);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  animation: scaleBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fade-in {
+  animation: fadeInLock 1s ease forwards;
+}
+
+@keyframes scaleBounce {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeInLock {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .password-inputs {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

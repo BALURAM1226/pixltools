@@ -9,7 +9,7 @@ export default function About() {
                 title="About Us – The Mission Behind iLoveToolHub"
                 description="Discover the story of iLoveToolHub. We are dedicated to providing fast, free, and private browser-based utility tools for everyone, everywhere."
                 canonicalPath="/about"
-                ogImage="/og/about.png"
+                ogImage="/og/og.jpg"
             />
 
             <header className="legal-header">

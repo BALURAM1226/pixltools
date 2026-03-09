@@ -33,7 +33,7 @@ function getContrastRatio(hex1, hex2) {
         const c2 = getRGB(hex2);
         const l1 = getLuminance(c1.r, c1.g, c1.b);
         const l2 = getLuminance(c2.r, c2.g, c2.b);
-
+        
         const lighter = Math.max(l1, l2);
         const darker = Math.min(l1, l2);
 
@@ -87,7 +87,7 @@ export default function ColorContrastChecker() {
                 description="Verify color contrast instantly for WCAG AA and AAA compliance. Ensure your website text, logos, and UI are accessible to everyone. 100% Free."
                 keywords="color contrast checker, wcag checker, wcag aa aaa compliance, text contrast ratio, accessible colors, ui accessibility tool, color contrast ratio calculator, web accessibility tool, ada color checker"
                 canonicalPath="/color-contrast-checker"
-                ogImage="/og/color-contrast-checker.png"
+                ogImage="/og/color-contrast-checker.jpg"
                 faqItems={[
                     { q: 'Is this checker fully WCAG 2.1 compliant?', a: 'Yes. Our algorithm uses the precise relative luminance mathematical formula specified by the W3C Web Content Accessibility Guidelines (WCAG 2.1) to compute scores.' },
                     { q: 'What is considered Large Text in WCAG?', a: 'According to WCAG, large text is defined as text that is 18pt (usually 24px) or larger, OR text that is 14pt (usually 18.66px) and bold.' },
@@ -131,7 +131,7 @@ export default function ColorContrastChecker() {
                             </div>
                         </div>
 
-                        <div className="swap-btn-container">
+                        <div className="swap-button-vertical">
                             <button className="swap-btn" onClick={swapColors} aria-label="Swap foreground and background colors">
                                 <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M7 16V4M7 4L3 8M7 4L11 8" />
@@ -163,7 +163,7 @@ export default function ColorContrastChecker() {
                             </div>
                         </div>
 
-                        <div style={{ marginTop: 16 }}>
+                        <div className="meta-footer">
                             <InfoChips items={[
                                 { label: 'Minimum AA Ratio', value: '4.5:1' },
                                 { label: 'Maximum Contrast', value: '21:1' },
@@ -223,11 +223,14 @@ export default function ColorContrastChecker() {
                             style={{
                                 backgroundColor: hexValid(bg) ? bg : '#ffffff',
                                 color: hexValid(fg) ? fg : '#000000',
-                                transition: 'all 0.3s ease'
+                                transition: 'all 0.3s ease',
+                                padding: '24px',
+                                borderRadius: '12px',
+                                border: '1px solid var(--border)'
                             }}
                         >
-                            <h2 className="preview-title">Accessibility matters.</h2>
-                            <p className="preview-text">
+                            <h2 className="preview-title" style={{ marginTop: 0 }}>Accessibility matters.</h2>
+                            <p className="preview-text" style={{ marginBottom: 0 }}>
                                 This is a live preview of how your text will look to users on this exact background.
                                 Proper color contrast helps people with visual impairments, color blindness, and even
                                 average users reading their screens in harsh sunlight.

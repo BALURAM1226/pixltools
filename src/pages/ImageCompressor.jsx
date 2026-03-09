@@ -255,7 +255,7 @@ function ImageCompressorInner() {
         description="Reduce image size to 50KB, 100KB, or 200KB instantly. Perfect for official applications and document portals globally. 100% private and secure."
         keywords="compress image to 50kb online, reduce image size to 100kb, photo size reducer, official document compressor, free online image compressor, compress photo for government form, image kb reducer"
         canonicalPath="/image-compressor"
-        ogImage="/og/image-compressor.png"
+        ogImage="/og/image-compressor.jpg"
         faqItems={[
           { q: 'How can I compress my image to exactly 50KB or 100KB?', a: 'For government forms or exam uploads, use the Target Max Size slider. Set it to 0.05MB for a 50KB file or 0.1MB for a 100KB file. iLoveToolHub will automatically adjust the quality to stay under your limit.' },
           { q: 'Is this tool safe for government document uploads?', a: 'Yes. iLoveToolHub processes everything locally in your browser. Your official images or documents are never uploaded to our servers, making it 100% safe for sensitive document preparation.' },
@@ -288,12 +288,16 @@ function ImageCompressorInner() {
               <PreviewBox minHeight={200}>
                 <img src={preview} alt="Original" />
               </PreviewBox>
-              <InfoChips items={[
-                { label: 'Original size', value: fmtBytes(origSize) },
-                { label: 'Dimensions', value: origDim ? `${origDim.w}×${origDim.h}` : '…' },
-                { label: 'Format', value: file?.name.split('.').pop().toUpperCase() || '?' },
-              ]} />
-              <ResetBtn onClick={reset} />
+              <div className="meta-footer">
+                <InfoChips items={[
+                  { label: 'Original size', value: fmtBytes(origSize) },
+                  { label: 'Dimensions', value: origDim ? `${origDim.w}×${origDim.h}` : '…' },
+                  { label: 'Format', value: file?.name.split('.').pop().toUpperCase() || '?' },
+                ]} />
+                <div className="reset-wrap">
+                  <ResetBtn onClick={reset} />
+                </div>
+              </div>
             </div>
           )}
         </Panel>
@@ -330,8 +334,8 @@ function ImageCompressorInner() {
           </Panel>
         ) : (
           <Panel title="Step 2: Compression Settings">
-            <div className="settings-scroll">
-              <div style={{ marginBottom: 20 }}>
+            <div className="settings-scroll settings-stack">
+              <div className="meta-footer" style={{ marginTop: 0 }}>
                 <TargetSizeControl
                   enabled={targetSizeEnabled}
                   onToggle={setTargetSizeEnabled}
@@ -380,11 +384,13 @@ function ImageCompressorInner() {
                 <button type="button" className="preset-chip" onClick={() => { setMaxSizeMB(3); setQuality(92); setMaxDim(3840); setOutputFmt('image/jpeg'); }} aria-describedby="presets-label">High Qual</button>
               </div>
 
-              <Btn onClick={compress} loading={isRunning} disabled={isRunning} aria-label="Start Image Compression">
-                🗜️ Start Compression
-              </Btn>
-              <StatusBar status={status} />
-              {isRunning && <ProgressBar value={progress} label="Compressing images" />}
+              <div className="action-stack">
+                <Btn onClick={compress} loading={isRunning} disabled={isRunning} aria-label="Start Image Compression">
+                  🗜️ Start Compression
+                </Btn>
+                <StatusBar status={status} />
+                {isRunning && <ProgressBar value={progress} label="Compressing images" />}
+              </div>
             </div>
           </Panel>
         )}
@@ -398,7 +404,7 @@ function ImageCompressorInner() {
             </PreviewBox>
 
             {result && (
-              <div className="result-actions">
+              <div className="meta-footer">
                 <div className="savings-card-mini">
                   <div className="savings-title">Reduction: <strong>{reduction}%</strong></div>
                   <div className="savings-meta">{fmtBytes(origSize)} → {fmtBytes(compSize)}</div>
