@@ -870,6 +870,18 @@
 .result-panel-refined {
   border: 1px solid var(--accent-dim) !important;
   background: var(--bg-card) !important;
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .result-panel-refined {
+  border: 1px solid #94a3b8 !important; /* Proper contrast for outer border */
+  background: #f8fafc !important; 
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .result-panel-refined .panel-title {
+  color: var(--text-secondary); /* Darker than muted for better visibility */
+  opacity: 1;
 }
 
 .result-preview-container {
@@ -882,6 +894,11 @@
   margin: 0 24px 24px;
   border-radius: var(--radius-lg);
   transition: all var(--transition);
+}
+
+[data-theme="light"] .result-preview-container {
+  border-color: #94a3b8; /* matched outer border for clean contrast */
+  background: #ffffff;
 }
 
 .result-preview-container:hover {
